@@ -4,6 +4,8 @@
  */
 package model;
 
+import java.util.Date;
+
 /**
  *
  * @author lebac
@@ -14,18 +16,17 @@ public class Blog {
     private String content;
     private int author_id;
     private int update_by;
-    private String update_date;
+    private Date update_date;
     private String thumbnail;
     private String brief_infor;
-    private String category_name;
-    private String create_date;
-    private String nameAuthor;
-    private Boolean status;
+    private int category_id;
+    private Date create_date;
+    private int status;
 
     public Blog() {
     }
 
-    public Blog(int blog_id, String tittle, String content, int author_id, int update_by, String update_date, String thumbnail, String brief_infor, String category_name, String create_date, String nameAuthor, Boolean status) {
+    public Blog(int blog_id, String tittle, String content, int author_id, int update_by, Date update_date, String thumbnail, String brief_infor, int category_id, Date create_date, int status) {
         this.blog_id = blog_id;
         this.tittle = tittle;
         this.content = content;
@@ -34,9 +35,8 @@ public class Blog {
         this.update_date = update_date;
         this.thumbnail = thumbnail;
         this.brief_infor = brief_infor;
-        this.category_name = category_name;
+        this.category_id = category_id;
         this.create_date = create_date;
-        this.nameAuthor = nameAuthor;
         this.status = status;
     }
 
@@ -80,11 +80,11 @@ public class Blog {
         this.update_by = update_by;
     }
 
-    public String getUpdate_date() {
+    public Date getUpdate_date() {
         return update_date;
     }
 
-    public void setUpdate_date(String update_date) {
+    public void setUpdate_date(Date update_date) {
         this.update_date = update_date;
     }
 
@@ -104,41 +104,35 @@ public class Blog {
         this.brief_infor = brief_infor;
     }
 
-    public String getCategory_name() {
-        return category_name;
+    public int getCategory_id() {
+        return category_id;
     }
 
-    public void setCategory_name(String category_name) {
-        this.category_name = category_name;
+    public void setCategory_id(int category_id) {
+        this.category_id = category_id;
     }
 
-    public String getCreate_date() {
+    public Date getCreate_date() {
         return create_date;
     }
 
-    public void setCreate_date(String create_date) {
+    public void setCreate_date(Date create_date) {
         this.create_date = create_date;
     }
 
-    public String getNameAuthor() {
-        return nameAuthor;
-    }
-
-    public void setNameAuthor(String nameAuthor) {
-        this.nameAuthor = nameAuthor;
-    }
-
-    public Boolean getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Boolean status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
     @Override
     public String toString() {
-        return "Blog{" + "blog_id=" + blog_id + ", tittle=" + tittle + ", content=" + content + ", author_id=" + author_id + ", update_by=" + update_by + ", update_date=" + update_date + ", thumbnail=" + thumbnail + ", brief_infor=" + brief_infor + ", category_name=" + category_name + ", create_date=" + create_date + ", nameAuthor=" + nameAuthor + ", status=" + status + '}';
+        return "Blog{" + "blog_id=" + blog_id + ", tittle=" + tittle + ", content=" + content + ", author_id=" + author_id + ", update_by=" + update_by + ", update_date=" + update_date + ", thumbnail=" + thumbnail + ", brief_infor=" + brief_infor + ", category_id=" + category_id + ", create_date=" + create_date + ", status=" + status + '}';
     }
+
+    
     
 }
