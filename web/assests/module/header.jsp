@@ -4,15 +4,17 @@
 <header id="header" class="fixed-top">
     <div class="container d-flex align-items-center">
 
-        <h1 class="logo me-auto"><a href="index">Children's Care</a></h1>
+        <h1 class="logo me-auto"><a href="HomePage">Children's Care</a></h1>
         <!-- Uncomment below if you prefer to use an image logo -->
         <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
 
         <nav id="navbar" class="navbar order-last order-lg-0">
             <ul>
 
-                <li><a class="nav-link scrollto active" href="/project_swp391/index">Home</a></li>
-                    <c:if test="${sessionScope.listSetting.get(1).setting_status==true}">
+                <li><a class="nav-link scrollto active" href="HomePage">Home</a></li>
+                <li><a class="nav-link scrollto" href="BlogList">Blogs</a></li>
+
+                <c:if test="${sessionScope.listSetting.get(1).setting_status==true}">
 
                     <li><a class="nav-link scrollto" href="servicelist">Services</a></li>
                     </c:if>
@@ -34,7 +36,7 @@
                             <li><a href="/project_swp391/listslidermanager">Slider List Manager</a></li>
                             <li><a href="/project_swp391/ListServiceManager">Service List Manager</a></li>
                             <li><a href="/project_swp391/customerList">Customer List Manager</a></li>
-                            
+
                         </ul>
                     </li>
                 </c:if>
@@ -43,10 +45,10 @@
                         <ul>
                             <li><a href="user_profile">Edit profile</a></li>
                             <li><a href="myreservation">My Reservation</a></li>
-                            <c:if test="${sessionScope.account.user_role == 2}">
-                            <li><a href="MyCustomerList">Customer List</a></li>
-                            <li><a href="DoctorMedicalexammination">Medical exammination</a></li>
-                            </c:if>
+                                <c:if test="${sessionScope.account.user_role == 2}">
+                                <li><a href="MyCustomerList">Customer List</a></li>
+                                <li><a href="DoctorMedicalexammination">Medical exammination</a></li>
+                                </c:if>
                             <li><a href="UserMedicalexammination">Medical exammination</a></li>
                             <li><a href="changpassword">Change Password</a></li>
                             <li><a href="logout">Logout</a></li>

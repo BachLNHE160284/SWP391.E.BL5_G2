@@ -7,6 +7,7 @@ package dal;
 import context.DBContext;
 import model.Blog;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import model.Category_Blog;
@@ -92,4 +93,61 @@ public class BlogDAO {
 //    dao.addBlog(blog);
 //    System.out.println("Blog added successfully.");
 //}
+    
+    
+    public List<Blog> getPaginatedBlogs(int page, int pageSize) {
+        List<Blog> blogs = new ArrayList<>();
+        String sql = "SELECT * FROM blog ORDER BY update_date DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        
+        try ( Connection con = new DBContext().getConnection();
+                PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, (page - 1) * pageSize);
+            ps.setInt(2, pageSize);
+            ResultSet rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                Blog blog = new Blog();
+                blog.setBlog_id(rs.getInt("blog_id"));
+                blog.setTittle(rs.getString("title"));
+                blog.setBrief_infor(rs.getString("brief_infor"));
+                blog.setThumbnail(rs.getString("thumbnail"));
+                blog.setUpdate_date(rs.getDate("update_date"));
+                blogs.add(blog);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return blogs;
+    }
+
+    public int getTotalBlogs() {
+        String sql = "SELECT COUNT(*) FROM blog";
+        try (Connection con = new DBContext().getConnection();
+                PreparedStatement ps = con.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+        public static void main(String[] args) {
+        BlogDAO blogDAO = new BlogDAO();
+
+        // Set pagination parameters
+        int page = 1; // Get the first page
+        int pageSize = 5; // Number of blogs per page
+
+        // Get the paginated blogs
+        List<Blog> blogs = blogDAO.getPaginatedBlogs(page, pageSize);
+
+        // Print out the blogs
+        for (Blog blog : blogs) {
+            System.out.println(blog.toString());
+        }
+    }
+    
 }
