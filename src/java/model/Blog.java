@@ -22,8 +22,24 @@ public class Blog {
     private int category_id;
     private Date create_date;
     private int status;
+    private String category_name;
 
     public Blog() {
+    }
+
+    public Blog(int blog_id, String tittle, String content, int author_id, int update_by, Date update_date, String thumbnail, String brief_infor, int category_id, Date create_date, int status, String category_name) {
+        this.blog_id = blog_id;
+        this.tittle = tittle;
+        this.content = content;
+        this.author_id = author_id;
+        this.update_by = update_by;
+        this.update_date = update_date;
+        this.thumbnail = thumbnail;
+        this.brief_infor = brief_infor;
+        this.category_id = category_id;
+        this.create_date = create_date;
+        this.status = status;
+        this.category_name = category_name;
     }
 
     public Blog(int blog_id, String tittle, String content, int author_id, int update_by, Date update_date, String thumbnail, String brief_infor, int category_id, Date create_date, int status) {
@@ -38,6 +54,14 @@ public class Blog {
         this.category_id = category_id;
         this.create_date = create_date;
         this.status = status;
+    }
+
+    public String getCategory_name() {
+        return category_name;
+    }
+
+    public void setCategory_name(String category_name) {
+        this.category_name = category_name;
     }
 
     public int getBlog_id() {

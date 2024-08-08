@@ -585,12 +585,12 @@
                                             <div class="meta-top">
                                                 <ul>
                                                     <li class="d-flex align-items-center"><i class="bi bi-clock"></i> 
-                                                        <a href="blogs-detail?id=${blog.blog_id}">
+                                                        <a href="BlogDetails?blogid=${blog.blog_id}">
                                                             <time datetime="${blog.create_date}">${blog.create_date}</time>
                                                         </a>
                                                     </li>
                                                     <li class="d-flex align-items-center"><i class="bi bi-folder"></i>
-                                                        <a href="blogs-list?cid=${blog.category_id}"></a> <!-- Displaying category -->
+                                                        <a href="BlogList?cid=${blog.category_id}"></a> <!-- Displaying category -->
                                                     </li>
                                                 </ul>
                                             </div>
@@ -602,7 +602,7 @@
 
                                             <!-- Read More Link -->
                                             <div class="read-more mt-auto align-self-end">
-                                                <a href="blogs-detail?id=${blog.blog_id}">Read More</a>
+                                                <a href="BlogDetails?blogid=${blog.blog_id}">Read More</a>
                                             </div>
 
                                         </article>
@@ -631,7 +631,7 @@
                                     <h3 class="sidebar-title">Categories</h3>
                                     <ul class="mt-3">
                                         <c:forEach items="${list}" var="i">
-                                            <li><a href="blogs-list?cid=${i.category_id}">${i.category_name} <span>(0${listQuantity.get(i.category_id - 1)})</span></a></li>
+                                            <li><a href="BlogList?cid=${i.category_id}">${i.category_name} <span>(0${listQuantity.get(i.category_id - 1)})</span></a></li>
                                             </c:forEach>
                                     </ul>
                                 </div><!-- End sidebar categories-->
@@ -645,7 +645,7 @@
                                             <div class="post-item mt-3">
                                                 <img src="./resouce/image/${c.blog_image}" alt="" class="flex-shrink-0">
                                                 <div>
-                                                    <h4><a href="blogs-detail?id=${c.blog_id}">${c.title}</a></h4>
+                                                    <h4><a href="BlogDetails?blogid=${c.blog_id}">${c.title}</a></h4>
                                                     <time datetime="${c.blog_created_date}">${c.blog_created_date}</time>
                                                 </div>
                                             </div><!-- End recent post item-->

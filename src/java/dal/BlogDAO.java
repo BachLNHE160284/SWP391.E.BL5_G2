@@ -70,11 +70,11 @@ public class BlogDAO {
         return list.get(0);
     }
 
-//    public static void main(String[] args) {
-//        BlogDAO bd = new BlogDAO();
-//        System.out.println(bd.getAllBlogNewtop6().size());
-//
-//    }
+    public static void main(String[] args) {
+        BlogDAO bd = new BlogDAO();
+        System.out.println(bd.getAllBlogNewtop6().size());
+
+    }
 //    public static void main(String[] args) {
 //    BlogDAO dao = new BlogDAO();
 //
@@ -134,20 +134,50 @@ public class BlogDAO {
         }
         return 0;
     }
-        public static void main(String[] args) {
-        BlogDAO blogDAO = new BlogDAO();
+//        public static void main(String[] args) {
+//        BlogDAO blogDAO = new BlogDAO();
+//
+//        // Set pagination parameters
+//        int page = 1; // Get the first page
+//        int pageSize = 5; // Number of blogs per page
+//
+//        // Get the paginated blogs
+//        List<Blog> blogs = blogDAO.getPaginatedBlogs(page, pageSize);
+//
+//        // Print out the blogs
+//        for (Blog blog : blogs) {
+//            System.out.println(blog.toString());
+//        }
+//    }
+    public Blog getBlogById(int blogId) {
+        CategoryBlogDAO d = new CategoryBlogDAO();
 
-        // Set pagination parameters
-        int page = 1; // Get the first page
-        int pageSize = 5; // Number of blogs per page
+        try {
+            Connection con = new DBContext().getConnection();
+            String query = "SELECT * FROM blog WHERE blog_id = ?";
+            PreparedStatement statement = con.prepareStatement(query);
+            statement.setInt(1, blogId);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Blog blog = new Blog();
+                blog.setBlog_id(rs.getInt(1));
+                blog.setTittle(rs.getString(2));
+                blog.setContent(rs.getString(3));
+                blog.setAuthor_id(rs.getInt(4));
+                blog.setUpdate_by(rs.getInt(5));
+                blog.setUpdate_date(rs.getDate(6));
+                blog.setThumbnail(rs.getString(7));
+                int status = rs.getInt(11);
+                blog.setBrief_infor(rs.getString(8));
+                blog.setCategory_name(d.GetNameCategoryBlogByID(rs.getInt(9)));
+                blog.setCreate_date(rs.getDate(10));
+                //blog.setNameAuthor(ud.getNameUserById(blog.getAuthor_id()));
+                return blog;
+            }
+        } catch (Exception e) {
 
-        // Get the paginated blogs
-        List<Blog> blogs = blogDAO.getPaginatedBlogs(page, pageSize);
-
-        // Print out the blogs
-        for (Blog blog : blogs) {
-            System.out.println(blog.toString());
         }
+        return null;
     }
     
 }
