@@ -1,4 +1,7 @@
-
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ */
 
 package controller;
 
@@ -10,15 +13,16 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Service;
 
 /**
  *
  * @author lebac
  */
-@WebServlet(name="ServiceManagementServlet", urlPatterns={"/ServiceManagementServlet"})
-public class ServiceManagementServlet extends HttpServlet {
+@WebServlet(name="ViewServiceServlet", urlPatterns={"/ViewServiceServlet"})
+public class ViewServiceServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -35,10 +39,10 @@ public class ServiceManagementServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ServiceManagementServlet</title>");  
+            out.println("<title>Servlet ViewServiceServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ServiceManagementServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet ViewServiceServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -56,10 +60,16 @@ public class ServiceManagementServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
 //        processRequest(request, response);
+        try {
+            //        processRequest(request, response);
+            int id = Integer.parseInt(request.getParameter("id"));
             ServiceDAO dao = new ServiceDAO();
-            List<Service> service = dao.getAllService();
+            Service service = dao.getServiceById(id);
             request.setAttribute("service", service);
-            request.getRequestDispatcher("ServiceManager/serviceManagement.jsp").forward(request, response);
+            request.getRequestDispatcher("ServiceManager/viewService.jsp").forward(request, response);
+        } catch (Exception ex) {
+            Logger.getLogger(UpdateServiceServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     } 
 
     /** 
