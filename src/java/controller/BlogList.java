@@ -10,13 +10,10 @@ import dal.CategoryBlogDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.Part;
-import java.io.File;
 import java.util.List;
 import model.Blog;
 import model.Category_Blog;
@@ -25,9 +22,8 @@ import model.Category_Blog;
  *
  * @author ntung
  */
-@WebServlet(name="AddBlog", urlPatterns={"/AddBlog"})
-@MultipartConfig
-public class AddBlog extends HttpServlet {
+@WebServlet(name="BlogList", urlPatterns={"/BlogList"})
+public class BlogList extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -44,15 +40,15 @@ public class AddBlog extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet AddBlog</title>");  
+            out.println("<title>Servlet BlogList</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet AddBlog at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet BlogList at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
     } 
-    
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 
      * Handles the HTTP <code>GET</code> method.
@@ -64,11 +60,25 @@ public class AddBlog extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-//        processRequest(request, response);
-        CategoryBlogDAO ctb = new CategoryBlogDAO();
-        List<Category_Blog> cate = ctb.getAllCategoryBlog();
-        request.setAttribute("cate", cate);
-        request.getRequestDispatcher("AddBlog.jsp").forward(request, response);
+        int page = 1;
+        int pageSize = 5;
+        if (request.getParameter("page") != null) {
+            page = Integer.parseInt(request.getParameter("page"));
+        }
+
+        BlogDAO blogDAO = new BlogDAO();
+        CategoryBlogDAO cd = new CategoryBlogDAO();
+        List<Category_Blog> list = cd.getAllCategoryBlog();
+        request.setAttribute("list", list);
+        
+        List<Blog> blogs = blogDAO.getPaginatedBlogs(page, pageSize);
+        int totalBlogs = blogDAO.getTotalBlogs();
+        int totalPages = (int) Math.ceil((double) totalBlogs / pageSize);
+
+        request.setAttribute("blogs", blogs);
+        request.setAttribute("currentPage", page);
+        request.setAttribute("totalPages", totalPages);
+        request.getRequestDispatcher("BlogList.jsp").forward(request, response);
     } 
 
     /** 
@@ -81,47 +91,7 @@ public class AddBlog extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        BlogDAO blog = new BlogDAO();
-        
-        
-        String blogtitle = request.getParameter("title");
-        String content = request.getParameter("content");
-        int authorId = Integer.parseInt(request.getParameter("authorId"));
-        int updatedBy = Integer.parseInt(request.getParameter("updatedBy"));
-        String briefInfo = request.getParameter("briefInfo");
-        int categoryId = Integer.parseInt(request.getParameter("category_id"));
-        int status = Integer.parseInt(request.getParameter("status"));
-        Part filePart = request.getPart("thumbnail");
-            // Xử lý upload ảnh
-
-            // Lấy tên file và đường dẫn upload
-            String fileName = filePart.getSubmittedFileName();
-            String uploadPath = getServletContext().getRealPath("") + File.separator + "uploads";
-
-            // Tạo thư mục uploads nếu chưa tồn tại
-            File uploadDir = new File(uploadPath);
-            if (!uploadDir.exists()) {
-                uploadDir.mkdirs();
-            }
-
-            // Đường dẫn đầy đủ để lưu file
-            String filePath = uploadPath + File.separator + fileName;
-
-            // Ghi file vào thư mục uploads
-            filePart.write(filePath);
-
-            // Tạo đối tượng Service
-            Blog bl = new Blog();
-            bl.setTittle(blogtitle);
-            bl.setContent(content);
-            bl.setAuthor_id(authorId);
-            bl.setUpdate_by(updatedBy);
-            bl.setBrief_infor(briefInfo);
-            bl.setCategory_id(categoryId);
-            bl.setStatus(status);
-            bl.setThumbnail("uploads/" + fileName);
-            blog.addBlog(bl);
-        response.sendRedirect("AddBlog");
+        processRequest(request, response);
     }
 
     /** 
