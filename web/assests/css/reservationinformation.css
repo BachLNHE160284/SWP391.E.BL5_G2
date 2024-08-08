@@ -1,0 +1,209 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Jun 9, 2022, 11:38:42 PM
+    Author     : truon
+*/
+
+.main {
+    padding-left: var(--sidebar-size);
+}
+
+.main-header {
+    height: var(--main-header-height);
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    background-color: var(--box-bg);
+    box-shadow: var(--shadow);
+}
+
+.dark .main-header {
+    border-bottom: 2px solid var(--border-color);
+}
+
+.mobile-toggle {
+    display: none;
+}
+
+.main-title {
+    text-transform: capitalize;
+    font-size: 1.5rem;
+}
+
+.main-content {
+    padding: 20px;
+}
+
+.box {
+    background-color: var(--box-bg);
+    padding: 20px;
+    border: 0.5px solid var(--border-color);
+    border-radius: var(--box-border-radius);
+}
+
+.box-hover:hover {
+    border-color: var(--main-color);
+}
+
+.counter-title {
+    margin-bottom: 20px;
+    text-transform: capitalize;
+}
+
+.counter-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.counter-info i {
+    color: var(--main-color);
+}
+
+.box-header {
+    text-transform: capitalize;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.box-body {
+    padding: 20px 0;
+}
+
+.product-list {
+    list-style-type: none;
+}
+
+.product-list-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 0;
+}
+
+.item-info {
+    display: flex;
+    align-items: center;
+}
+
+.item-info img {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    margin-right: 10px;
+}
+
+.product-name,
+.product-sales {
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.product-name {
+    margin-bottom: 5px;
+}
+
+.product-sales {
+    margin-top: 5px;
+}
+
+.text-second {
+    color: var(--text-second-color);
+}
+
+.item-sale-info {
+    text-align: right;
+}
+
+.f-height {
+    height: 100%;
+}
+
+table {
+    width: 100%;
+    min-width: 1000px;
+}
+
+.order-owner {
+    display: flex;
+    align-items: center;
+    text-transform: capitalize;
+    font-weight: 500;
+}
+
+.order-owner img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+table thead tr {
+    text-align: left;
+}
+
+table th,
+table td {
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.order-status {
+    padding: 5px 15px;
+    border-radius: 5px;
+    font-weight: 500;
+}
+
+.order-ready {
+    color: #2a59d1;
+    background-color: rgba(62, 121, 247, 0.1);
+}
+
+.order-shipped {
+    color: #00ab6f;
+    background-color: rgba(4, 209, 130, 0.1);
+}
+
+.payment-status {
+    display: flex;
+    align-items: center;
+}
+
+.payment-status .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.payment-paid .dot {
+    background-color: green;
+}
+
+.payment-pending .dot {
+    background-color: #ffc542;
+}
+
+.overflow-scroll {
+    overflow-y: auto;
+}
+
+.overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: none;
+}
+
+.overlay.active {
+    display: block;
+}
