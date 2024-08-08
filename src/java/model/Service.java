@@ -10,6 +10,7 @@ package model;
  */
 public class Service {
     private int service_id;
+    private int category_id;
     private String name_service;
     private float original_prices;
     private float sale_prices;
@@ -22,13 +23,14 @@ public class Service {
     private int service_Status;
     private String create_date;
     private String img_service;
-    private Category categopry;
+    private Category category;
 
     public Service() {
     }
 
-    public Service(int service_id, String name_service, float original_prices, float sale_prices, int quantity, String category_name, String thumbnail, String brief_infor, String service_detail, String date_add, int service_Status, String create_date, String img_service, Category categopry) {
+    public Service(int service_id, int category_id, String name_service, float original_prices, float sale_prices, int quantity, String category_name, String thumbnail, String brief_infor, String service_detail, String date_add, int service_Status, String create_date, String img_service, Category category) {
         this.service_id = service_id;
+        this.category_id = category_id;
         this.name_service = name_service;
         this.original_prices = original_prices;
         this.sale_prices = sale_prices;
@@ -41,7 +43,7 @@ public class Service {
         this.service_Status = service_Status;
         this.create_date = create_date;
         this.img_service = img_service;
-        this.categopry = categopry;
+        this.category = category;
     }
 
     public int getService_id() {
@@ -50,6 +52,14 @@ public class Service {
 
     public void setService_id(int service_id) {
         this.service_id = service_id;
+    }
+
+    public int getCategory_id() {
+        return category_id;
+    }
+
+    public void setCategory_id(int category_id) {
+        this.category_id = category_id;
     }
 
     public String getName_service() {
@@ -148,18 +158,20 @@ public class Service {
         this.img_service = img_service;
     }
 
-    public Category getCategopry() {
-        return categopry;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setCategopry(Category categopry) {
-        this.categopry = categopry;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     @Override
     public String toString() {
-        return "Service{" + "service_id=" + service_id + ", name_service=" + name_service + ", original_prices=" + original_prices + ", sale_prices=" + sale_prices + ", quantity=" + quantity + ", category_name=" + category_name + ", thumbnail=" + thumbnail + ", brief_infor=" + brief_infor + ", service_detail=" + service_detail + ", date_add=" + date_add + ", service_Status=" + service_Status + ", create_date=" + create_date + ", img_service=" + img_service + ", categopry=" + categopry + '}';
+        return "Service{" + "service_id=" + service_id + ", category_id=" + category_id + ", name_service=" + name_service + ", original_prices=" + original_prices + ", sale_prices=" + sale_prices + ", quantity=" + quantity + ", category_name=" + category_name + ", thumbnail=" + thumbnail + ", brief_infor=" + brief_infor + ", service_detail=" + service_detail + ", date_add=" + date_add + ", service_Status=" + service_Status + ", create_date=" + create_date + ", img_service=" + img_service + ", category=" + category + '}';
     }
+
+    
 
     
     

@@ -123,7 +123,7 @@ public class AddServiceServlet extends HttpServlet {
             service.setOriginal_prices(originalPrices);
             service.setSale_prices(salePrices);
             service.setQuantity(quantity);
-            service.setCategopry(new Category(categoryId)); // assuming Category constructor with ID
+            service.setCategory(new Category(categoryId)); // assuming Category constructor with ID
             service.setThumbnail(thumbnail);
             service.setBrief_infor(briefInfo);
             service.setService_detail(serviceDetail);
@@ -134,7 +134,7 @@ public class AddServiceServlet extends HttpServlet {
             serviceDAO.addService(service);
 
             // Chuyển hướng đến trang danh sách dịch vụ hoặc thông báo thành công
-            response.sendRedirect("ServiceManager/serviceManagement.jsp");
+            response.sendRedirect("ServiceManagementServlet");
         } catch (NumberFormatException e) {
             Logger.getLogger(AddServiceServlet.class.getName()).log(Level.SEVERE, "Invalid number format", e);
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid number format.");
