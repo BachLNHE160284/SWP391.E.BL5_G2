@@ -4,9 +4,17 @@
         <servlet-name>DemoController1</servlet-name>
         <servlet-class>controller.DemoController1</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Register</servlet-name>
+        <servlet-class>controller.Register</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>DemoController1</servlet-name>
         <url-pattern>/DemoController1</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Register</servlet-name>
+        <url-pattern>/register</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
