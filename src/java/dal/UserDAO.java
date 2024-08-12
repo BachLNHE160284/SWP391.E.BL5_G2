@@ -11,7 +11,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import model.Role;
 import model.User;
+import model.UserDTO;
 
 /**
  *
@@ -189,6 +193,35 @@ public class UserDAO {
         } catch (Exception e) {
 
         }
+    }
+    
+    public List<UserDTO> getAll(){
+        String query = "SELECT * FROM [SWP391BL5G2_4].[dbo].[user] u LEFT JOIN [role] r on u.role_id = r.role_id";
+        ResultSet rs = null;
+        PreparedStatement ps = null;
+        Connection conn = null;
+        List<UserDTO> users = new ArrayList<>();
+        try {
+            conn = new DBContext().getConnection(); // Open connection to SQL
+            ps = conn.prepareStatement(query);
+            rs = ps.executeQuery();
+            while(rs.next()){
+                UserDTO user = new UserDTO();
+                user.setUser_id(rs.getInt("user_id"));
+                user.setFullname(rs.getString("fullname"));
+                user.setGender(rs.getBoolean("gender"));
+                user.setEmail_address("email_address");
+                user.setPhone_number("phone_number");
+                Role role = new Role();
+                role.setRole_name(rs.getString("role_name"));
+                user.setRole(role);
+                user.setStatus(rs.getInt("Status"));
+                users.add(user);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return users;
     }
 
     public static void main(String[] args) {
