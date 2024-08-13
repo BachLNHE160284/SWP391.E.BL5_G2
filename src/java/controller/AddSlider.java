@@ -4,26 +4,26 @@
  */
 package controller;
 
-import dal.BlogDAO;
-import dal.CategoryBlogDAO;
+import dal.SliderDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.List;
-import model.Blog;
-import model.Category_Blog;
+import jakarta.servlet.http.Part;
+import java.io.File;
+import model.Slider;
 
 /**
  *
  * @author ntung
  */
-@WebServlet(name = "BlogList", urlPatterns = {"/BlogList"})
-public class BlogList extends HttpServlet {
+@WebServlet(name = "AddSlider", urlPatterns = {"/AddSlider"})
+@MultipartConfig
+public class AddSlider extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,10 +42,10 @@ public class BlogList extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet BlogList</title>");
+            out.println("<title>Servlet AddSlider</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet BlogList at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet AddSlider at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -63,38 +63,7 @@ public class BlogList extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int page = 1;
-        int pageSize = 5;
-        if (request.getParameter("page") != null) {
-            page = Integer.parseInt(request.getParameter("page"));
-        }
-
-        BlogDAO blogDAO = new BlogDAO();
-        CategoryBlogDAO cd = new CategoryBlogDAO();
-        List<Category_Blog> list = cd.getAllCategoryBlog();
-        List<Integer> listQuantity = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            int quantity = blogDAO.getQuantityByCateId(list.get(i).getCategory_id());
-            listQuantity.add(quantity);
-        }
-
-        List<Blog> listBlog = blogDAO.getAllBlogs();
-        request.setAttribute("listQuantity", listQuantity);
-        request.setAttribute("list", list);
-
-        if (request.getParameter("cid") != null) {
-            int cid = Integer.parseInt(request.getParameter("cid"));
-            listBlog = blogDAO.getAllBlogsByCateId(cid);
-            request.setAttribute("listBlog", listBlog);
-        }
-        List<Blog> blogs = blogDAO.getPaginatedBlogs(page, pageSize);
-        int totalBlogs = blogDAO.getTotalBlogs();
-        int totalPages = (int) Math.ceil((double) totalBlogs / pageSize);
-
-        request.setAttribute("blogs", blogs);
-        request.setAttribute("currentPage", page);
-        request.setAttribute("totalPages", totalPages);
-        request.getRequestDispatcher("BlogList.jsp").forward(request, response);
+        request.getRequestDispatcher("AddSlider.jsp").forward(request, response);
     }
 
     /**
@@ -108,7 +77,42 @@ public class BlogList extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        SliderDAO slider = new SliderDAO();
+
+        String backlink = request.getParameter("backlink");
+        boolean status = Boolean.parseBoolean(request.getParameter("status"));
+        String sliderTitle = request.getParameter("sliderTitle");
+        String sliderDetail = request.getParameter("sliderDetail");
+        int updateBy = Integer.parseInt(request.getParameter("updateBy"));
+        Part filePart = request.getPart("sliderImg");
+        // Xử lý upload ảnh
+
+        // Lấy tên file và đường dẫn upload
+        String fileName = filePart.getSubmittedFileName();
+        String uploadPath = getServletContext().getRealPath("") + File.separator + "uploads";
+
+        // Tạo thư mục uploads nếu chưa tồn tại
+        File uploadDir = new File(uploadPath);
+        if (!uploadDir.exists()) {
+            uploadDir.mkdirs();
+        }
+
+        // Đường dẫn đầy đủ để lưu file
+        String filePath = uploadPath + File.separator + fileName;
+
+        // Ghi file vào thư mục uploads
+        filePart.write(filePath);
+
+        // Tạo đối tượng
+        Slider sl = new Slider();
+        sl.setBacklink(backlink);
+        sl.isStatus();
+        sl.setSlider_title(sliderTitle);
+        sl.setSlider_detail(sliderDetail);
+        sl.setUpdate_by(updateBy);
+        sl.setSlider_img("uploads/" + fileName);
+        slider.addSlider(sl);
+        response.sendRedirect("AddSlider");
     }
 
     /**
