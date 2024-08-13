@@ -103,85 +103,200 @@ public class ServiceDAO extends DBContext {
         }
     }
 
-    
     public Service getServiceById(int service_id) {
-    Service service = null;
-    String sql = "SELECT s.*, c.category_name FROM service s "
-            + "JOIN category c ON s.category_id = c.category_id "
-            + "WHERE s.service_id = ?";
-    try (
-         PreparedStatement ps = getConnection().prepareStatement(sql)) {
-        ps.setInt(1, service_id);
-        ResultSet rs = ps.executeQuery();
+        Service service = null;
+        String sql = "SELECT s.*, c.category_name FROM service s "
+                + "JOIN category c ON s.category_id = c.category_id "
+                + "WHERE s.service_id = ?";
+        try (
+                 PreparedStatement ps = getConnection().prepareStatement(sql)) {
+            ps.setInt(1, service_id);
+            ResultSet rs = ps.executeQuery();
 
-        if (rs.next()) {
-            service = new Service();
-            service.setService_id(rs.getInt("service_id"));
-            service.setName_service(rs.getString("name_service"));
-            service.setOriginal_prices(rs.getFloat("original_prices"));
-            service.setSale_prices(rs.getFloat("sale_prices"));
-            service.setQuantity(rs.getInt("quantity"));
-            
-            // Set Category with category_id and category_name
-            Category category = new Category();
-            category.setCategory_id(rs.getInt("category_id"));
-            category.setCategory_name(rs.getString("category_name"));
-            service.setCategory(category);
+            if (rs.next()) {
+                service = new Service();
+                service.setService_id(rs.getInt("service_id"));
+                service.setName_service(rs.getString("name_service"));
+                service.setOriginal_prices(rs.getFloat("original_prices"));
+                service.setSale_prices(rs.getFloat("sale_prices"));
+                service.setQuantity(rs.getInt("quantity"));
 
-            service.setThumbnail(rs.getString("thumbnail"));
-            service.setBrief_infor(rs.getString("brief_infor"));
-            service.setService_detail(rs.getString("service_detail"));
-            service.setImg_service(rs.getString("img_service"));
-            service.setDate_add(rs.getString("date_add"));
-            service.setService_Status(rs.getInt("service_Status"));
-            service.setCreate_date(rs.getString("create_date"));
+                // Set Category with category_id and category_name
+                Category category = new Category();
+                category.setCategory_id(rs.getInt("category_id"));
+                category.setCategory_name(rs.getString("category_name"));
+                service.setCategory(category);
+
+                service.setThumbnail(rs.getString("thumbnail"));
+                service.setBrief_infor(rs.getString("brief_infor"));
+                service.setService_detail(rs.getString("service_detail"));
+                service.setImg_service(rs.getString("img_service"));
+                service.setDate_add(rs.getString("date_add"));
+                service.setService_Status(rs.getInt("service_Status"));
+                service.setCreate_date(rs.getString("create_date"));
+            }
+        } catch (Exception e) {
+            System.out.println(e);
         }
-    } catch (Exception e) {
-        System.out.println(e);
+        return service;
     }
-    return service;
-}
+
     public void deleteService(int serviceId) {
-    String sql = "DELETE FROM service WHERE service_id = ?";
-    try (PreparedStatement ps = getConnection().prepareStatement(sql)) {
-        ps.setInt(1, serviceId);
-        ps.executeUpdate();
-    } catch (Exception e) {
-        System.out.println(e);
+        String sql = "DELETE FROM service WHERE service_id = ?";
+        try ( PreparedStatement ps = getConnection().prepareStatement(sql)) {
+            ps.setInt(1, serviceId);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
-}
-    
+
+    public int countSearch(String search) {
+        String sql = "select count(*) from service where name_service like ?";
+        try {
+            PreparedStatement ps = getConnection().prepareStatement(sql);
+            ps.setString(1, "%" + search + "%");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (Exception e) {
+        }
+        return 0;
+    }
+
+    public List<Service> searchServices(String searchTerm, String sortField, String sortOrder, int page, int pageSize) throws Exception {
+        List<Service> services = new ArrayList<>();
+        String sql = "SELECT s.service_id, s.name_service, s.original_prices, s.sale_prices, s.quantity, s.thumbnail, s.brief_infor,\n"
+                + "    s.service_detail, s.date_add, s.service_Status, s.create_date, s.img_service, c.category_id, c.category_name\n"
+                + "FROM service s\n"
+                + "INNER JOIN category c ON s.category_id = c.category_id\n"
+                + "WHERE s.name_service LIKE ?\n"
+                + "ORDER BY " + sortField + " " + sortOrder + "\n"
+                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
+        try ( Connection conn = getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, "%" + searchTerm + "%");
+            ps.setInt(2, (page - 1) * pageSize);
+            ps.setInt(3, pageSize);
+            try ( ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Service service = new Service();
+                    service.setService_id(rs.getInt("service_id"));
+                    service.setCategory_id(rs.getInt("category_id"));
+                    service.setName_service(rs.getString("name_service"));
+                    service.setOriginal_prices(rs.getFloat("original_prices"));
+                    service.setSale_prices(rs.getFloat("sale_prices"));
+                    service.setQuantity(rs.getInt("quantity"));
+                    // Assuming you have a method to get Category by id
+                    service.setCategory_name(rs.getString("category_name"));
+                    service.setThumbnail(rs.getString("thumbnail"));
+                    service.setBrief_infor(rs.getString("brief_infor"));
+                    service.setService_detail(rs.getString("service_detail"));
+                    service.setImg_service(rs.getString("img_service"));
+                    service.setDate_add(rs.getString("date_add"));
+                    service.setService_Status(rs.getInt("service_Status"));
+                    service.setCreate_date(rs.getString("create_date"));
+                    services.add(service);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return services;
+    }
+
+    public int getTotalServiceCount() throws Exception {
+        String sql = "SELECT COUNT(*) FROM service";
+        try ( Connection conn = getConnection();  PreparedStatement ps = conn.prepareStatement(sql);  ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return 0;
+    }
+
+    public List<Service> pagingService(int page, String sortField, String sortOrder) throws Exception {
+        List<Service> services = new ArrayList<>();
+        String sql = "SELECT s.service_id, s.name_service, s.original_prices, s.sale_prices, s.quantity, s.thumbnail, s.brief_infor,\n"
+                + "    s.service_detail, s.date_add, s.service_Status, s.create_date, s.img_service, c.category_id, c.category_name\n"
+                + "FROM service s\n"
+                + "INNER JOIN category c ON s.category_id = c.category_id\n"
+                + "ORDER BY " + sortField + " " + sortOrder + "\n"
+                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
+        try ( Connection conn = getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, (page - 1) * 4);
+            ps.setInt(2, 4);
+            try ( ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Service service = new Service();
+                    service.setService_id(rs.getInt("service_id"));
+                    service.setCategory_id(rs.getInt("category_id"));
+                    service.setName_service(rs.getString("name_service"));
+                    service.setOriginal_prices(rs.getFloat("original_prices"));
+                    service.setSale_prices(rs.getFloat("sale_prices"));
+                    service.setQuantity(rs.getInt("quantity"));
+                    // Assuming you have a method to get Category by id
+                    service.setCategory_name(rs.getString("category_name"));
+                    service.setThumbnail(rs.getString("thumbnail"));
+                    service.setBrief_infor(rs.getString("brief_infor"));
+                    service.setService_detail(rs.getString("service_detail"));
+                    service.setImg_service(rs.getString("img_service"));
+                    service.setDate_add(rs.getString("date_add"));
+                    service.setService_Status(rs.getInt("service_Status"));
+                    service.setCreate_date(rs.getString("create_date"));
+                    services.add(service);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return services;
+    }
+
+//    public static void main(String[] args) {
+//        ServiceDAO dao = new ServiceDAO();
+//        int a = dao.countSearch("da");
+//        System.out.println(a);
+//
+//    }
     public static void main(String[] args) {
-        ServiceDAO dao = new ServiceDAO();
+        ServiceDAO serviceDAO = new ServiceDAO();
 
-//        // Create a Category object
-//        Category category = new Category();
-//        category.setCategory_id(2);
-//        
-//
-//        // Create a Service object and set its properties
-//        Service service = new Service();
-//        service.setName_service("Test Service222");
-//        service.setOriginal_prices(100.0f);
-//        service.setSale_prices(80.0f);
-//        service.setQuantity(10);
-////        service.setCategory(category);
-//        service.setCategory(category); 
-//        service.setThumbnail("thumbnail.jpg");
-//        service.setBrief_infor("Brief Info");
-//        service.setService_detail("Service Detail");
-//        service.setImg_service("img_service.jpg");
-//
-//        // Add the service using the DAO
-//        dao.addService(service);
-//        System.out.println("Service added successfully.");
+        try {
+            // Thay đổi các tham số này để kiểm tra các trường hợp khác nhau
+            int page = 1; // Trang cần kiểm tra
+            String sortField = "service_id"; // Trường sắp xếp
+            String sortOrder = "ASC"; // Thứ tự sắp xếp
 
-//        List<Service> services = dao.getAllService();
-//        for (Service service1 : services) {
-//            System.out.println(service1.toString());
-//        }
-        Service service = dao.getServiceById(1);
-        System.out.println(service.toString());
+            // Gọi phương thức pagingService
+            List<Service> services = serviceDAO.pagingService(page, sortField, sortOrder);
+
+            // In kết quả
+            if (services.isEmpty()) {
+                System.out.println("Không có dịch vụ nào.");
+            } else {
+                for (Service service : services) {
+                    System.out.println("ID: " + service.getService_id());
+                    System.out.println("Tên dịch vụ: " + service.getName_service());
+                    System.out.println("Giá gốc: " + service.getOriginal_prices());
+                    System.out.println("Giá khuyến mãi: " + service.getSale_prices());
+                    System.out.println("Số lượng: " + service.getQuantity());
+                    System.out.println("Danh mục: " + service.getCategory_name());
+                    System.out.println("Thumbnail: " + service.getThumbnail());
+                    System.out.println("Thông tin ngắn: " + service.getBrief_infor());
+                    System.out.println("Chi tiết dịch vụ: " + service.getService_detail());
+                    System.out.println("Ngày thêm: " + service.getDate_add());
+                    System.out.println("Trạng thái: " + (service.getService_Status() == 1 ? "Active" : "Inactive"));
+                    System.out.println("Ngày tạo: " + service.getCreate_date());
+                    System.out.println("Ảnh dịch vụ: " + service.getImg_service());
+                    System.out.println("-----------------------------");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

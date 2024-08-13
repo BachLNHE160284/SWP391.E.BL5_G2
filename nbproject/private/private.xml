@@ -3,17 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/E:/FULearning/Summer2024/SWP391/Project/IDE%20new/SWP391.E.BL5_G2/web/BlogList.jsp</file>
-            <file>file:/E:/FULearning/Summer2024/SWP391/Project/IDE%20new/SWP391.E.BL5_G2/web/BlogDetails.jsp</file>
-            <file>file:/E:/FULearning/Summer2024/SWP391/Project/IDE%20new/SWP391.E.BL5_G2/src/java/controller/HomePage.java</file>
-            <file>file:/E:/FULearning/Summer2024/SWP391/Project/IDE%20new/SWP391.E.BL5_G2/web/index.html</file>
-            <file>file:/E:/FULearning/Summer2024/SWP391/Project/IDE%20new/SWP391.E.BL5_G2/web/AddSlider.jsp</file>
-            <file>file:/E:/FULearning/Summer2024/SWP391/Project/IDE%20new/SWP391.E.BL5_G2/src/java/controller/AddSlider.java</file>
-            <file>file:/E:/FULearning/Summer2024/SWP391/Project/IDE%20new/SWP391.E.BL5_G2/src/java/controller/BlogList.java</file>
-            <file>file:/E:/FULearning/Summer2024/SWP391/Project/IDE%20new/SWP391.E.BL5_G2/web/HomePage.jsp</file>
-            <file>file:/E:/FULearning/Summer2024/SWP391/Project/IDE%20new/SWP391.E.BL5_G2/src/java/controller/AddBlog.java</file>
-            <file>file:/E:/FULearning/Summer2024/SWP391/Project/IDE%20new/SWP391.E.BL5_G2/src/java/controller/BlogDetails.java</file>
-            <file>file:/E:/FULearning/Summer2024/SWP391/Project/IDE%20new/SWP391.E.BL5_G2/src/java/dal/BlogDAO.java</file>
+            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/web/ServiceManager/addService.jsp</file>
+            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/dal/ServiceDAO.java</file>
+            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/web/ServiceManager/viewService.jsp</file>
         </group>
     </open-files>
 </project-private>
