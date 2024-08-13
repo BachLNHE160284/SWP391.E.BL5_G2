@@ -14,9 +14,9 @@ public class Constance {
      */
     final public static String PORTNUMBER = "1433";
     final public static String SERVERNAME = "localhost";
-    final public static String DATABASENAME = "SWP391BL5G2_4";
+    final public static String DATABASENAME = "SWP391BL5G2_REAL";
     final public static String USER_ACCOUNT_DATABASE = "sa";
-    final public static String USER_PASS_DATABASE = "123";
+    final public static String USER_PASS_DATABASE = "sa";
 
     /**
      * setup gửi gmail
