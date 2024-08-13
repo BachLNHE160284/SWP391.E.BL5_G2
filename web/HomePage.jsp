@@ -930,7 +930,7 @@
                                     <div class="meta">
                                         <span class="post-date">${blog.create_date}</span>
                                     </div>
-                                    <h4 class="post-title">${blog.tittle}</h4>
+                                        <h4 class="post-title"><a href="BlogDetails?blogid=${blog.blog_id}">${blog.tittle}</a></h4>
                                     <!-- <a class="readmore stretched-link"><span>Read More</span><i class="bi bi-arrow-right"></i></a> -->
                                 </div>
                             </div>
@@ -939,7 +939,7 @@
                 </div>
 
                 <div class="text-center mt-auto">
-                    <a href="Blogs" class="buy-btn">
+                    <a href="BlogList" class="buy-btn">
                         <h5>MORE BLOGS ...</h5>
                     </a>
                 </div>
@@ -1105,7 +1105,7 @@
                         <p>There are many developer from FPT University with love.</p>
                     </div>
 
-                    <div class="row">
+<!--                    <div class="row">
 
                         <div class="col-lg-2dot4 col-md-6 d-flex align-items-stretch">
                             <div class="member" data-aos="fade-up" data-aos-delay="100">
@@ -1195,7 +1195,7 @@
                             </div>
                         </div>
 
-                    </div>
+                    </div>-->
 
                 </div>
             </section><!-- End Team Section -->

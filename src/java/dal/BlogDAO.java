@@ -70,11 +70,11 @@ public class BlogDAO {
         return list.get(0);
     }
 
-    public static void main(String[] args) {
-        BlogDAO bd = new BlogDAO();
-        System.out.println(bd.getAllBlogNewtop6().size());
-
-    }
+//    public static void main(String[] args) {
+//        BlogDAO bd = new BlogDAO();
+//        System.out.println(bd.getAllBlogNewtop6().size());
+//
+//    }
 //    public static void main(String[] args) {
 //    BlogDAO dao = new BlogDAO();
 //
@@ -178,6 +178,151 @@ public class BlogDAO {
 
         }
         return null;
+    }
+    
+    
+    public int getQuantityByCateId(int category_id) {
+        try {
+            Connection conn = new DBContext().getConnection();
+            String sql = "  select COUNT(*) from [blog]\n" +
+"                    where Category_ID = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, category_id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
+
+        } catch (Exception e) {
+        }
+        return 0;
+    }
+//    public static void main(String[] args) {
+//        // Create an instance of BlogDAO
+//        BlogDAO blogDAO = new BlogDAO();
+//
+//        // Test with a sample category_id
+//        int categoryId = 1; // Replace with an actual category_id present in your database
+//        int quantity = blogDAO.getQuantityByCateId(categoryId);
+//
+//        // Print the result
+//        System.out.println("The number of blogs in category " + categoryId + " is: " + quantity);
+//    }
+    
+    public List<Blog> getAllBlogsByCateId(int cid) {
+        List<Blog> list = new ArrayList<>();
+        try {
+            Connection conn = new DBContext().getConnection();
+            String sql = "select * from blog where category_id = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, cid);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Blog blog = new Blog(
+                        rs.getInt("blog_id"),
+                        rs.getString("title"),
+                        rs.getString("content"),
+                        rs.getInt("author_id"),
+                        rs.getInt("updated_by"),
+                        rs.getDate("update_date"),
+                        rs.getString("thumbnail"),
+                        rs.getString("brief_infor"),
+                        rs.getInt("category_id"),
+                        rs.getDate("create_date"),
+                        rs.getInt("status")
+                    );
+                list.add(blog);
+            }
+            return list;
+        } catch (Exception e) {
+        }
+        return null;
+    }
+    
+//     public static void main(String[] args) {
+//        // Create an instance of BlogDAO
+//        BlogDAO blogDAO = new BlogDAO();
+//        
+//        // Define a sample category_id for testing
+//        int categoryId = 1; // Replace with an actual category_id present in your database
+//        
+//        // Get all blogs for the specified category_id
+//        List<Blog> blogs = blogDAO.getAllBlogsByCateId(categoryId);
+//        
+//        // Print the details of each blog
+//        if (blogs != null && !blogs.isEmpty()) {
+//            for (Blog blog : blogs) {
+//                System.out.println("Title: " + blog.getTittle());
+//                System.out.println("Content: " + blog.getContent());
+//                System.out.println("Author ID: " + blog.getAuthor_id());
+//                System.out.println("Updated By: " + blog.getUpdate_by());
+//                System.out.println("Update Date: " + blog.getUpdate_date());
+//                System.out.println("Thumbnail: " + blog.getThumbnail());
+//                System.out.println("Brief Info: " + blog.getBrief_infor());
+//                System.out.println("Category Name: " + blog.getCategory_name());
+//                System.out.println("Create Date: " + blog.getCreate_date());
+//                System.out.println("Status: " + blog.getStatus());
+//                System.out.println("---------");
+//            }
+//        } else {
+//            System.out.println("No blogs found for category ID " + categoryId);
+//        }
+//    }
+    public List<Blog> getAllBlogs() {
+        List<Blog> list = new ArrayList<>();
+        try {
+            Connection conn = new DBContext().getConnection();
+            String sql = "select * from blog";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Blog blog = new Blog(
+                        rs.getInt("blog_id"),
+                        rs.getString("title"),
+                        rs.getString("content"),
+                        rs.getInt("author_id"),
+                        rs.getInt("updated_by"),
+                        rs.getDate("update_date"),
+                        rs.getString("thumbnail"),
+                        rs.getString("brief_infor"),
+                        rs.getInt("category_id"),
+                        rs.getDate("create_date"),
+                        rs.getInt("status")
+                    );
+                list.add(blog);
+            }
+            return list;
+        } catch (Exception e) {
+        }
+        return null;
+    }
+    
+    public static void main(String[] args) {
+        // Create an instance of BlogDAO
+        BlogDAO blogDAO = new BlogDAO();
+        
+        // Get all blogs from the database
+        List<Blog> blogs = blogDAO.getAllBlogs();
+        
+        // Print the details of each blog
+        if (blogs != null && !blogs.isEmpty()) {
+            for (Blog blog : blogs) {
+                System.out.println("Blog ID: " + blog.getBlog_id());
+                System.out.println("Title: " + blog.getTittle());
+                System.out.println("Content: " + blog.getContent());
+                System.out.println("Author ID: " + blog.getAuthor_id());
+                System.out.println("Updated By: " + blog.getUpdate_by());
+                System.out.println("Update Date: " + blog.getUpdate_date());
+                System.out.println("Thumbnail: " + blog.getThumbnail());
+                System.out.println("Brief Info: " + blog.getBrief_infor());
+                System.out.println("Category ID: " + blog.getCategory_id());
+                System.out.println("Create Date: " + blog.getCreate_date());
+                System.out.println("Status: " + blog.getStatus());
+                System.out.println("---------");
+            }
+        } else {
+            System.out.println("No blogs found.");
+        }
     }
     
 }

@@ -11,7 +11,7 @@
         <nav id="navbar" class="navbar order-last order-lg-0">
             <ul>
 
-                <li><a class="nav-link scrollto active" href="HomePage">Home</a></li>
+                <li><a class="nav-link scrollto " href="HomePage">Home</a></li>
                 <li><a class="nav-link scrollto" href="BlogList">Blogs</a></li>
 
                 <c:if test="${sessionScope.listSetting.get(1).setting_status==true}">

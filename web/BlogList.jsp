@@ -578,7 +578,7 @@
 
                                             <!-- Blog Title -->
                                             <h2 class="title">
-                                                <a href="blogs-detail?id=${blog.blog_id}">${blog.tittle}</a>
+                                                <a href="BlogDetails?blogid=${blog.blog_id}">${blog.tittle}</a>
                                             </h2>
 
                                             <!-- Blog Meta Information -->
@@ -631,7 +631,7 @@
                                     <h3 class="sidebar-title">Categories</h3>
                                     <ul class="mt-3">
                                         <c:forEach items="${list}" var="i">
-                                            <li><a href="BlogList?cid=${i.category_id}">${i.category_name} <span>(0${listQuantity.get(i.category_id - 1)})</span></a></li>
+                                            <li><a href="BlogList?cid=${i.category_id}">${i.category_name} <span>(${listQuantity.get(i.category_id - 1)})</span></a></li>
                                             </c:forEach>
                                     </ul>
                                 </div><!-- End sidebar categories-->

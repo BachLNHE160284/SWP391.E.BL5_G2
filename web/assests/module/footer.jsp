@@ -37,19 +37,23 @@
           <div class="col-lg-3 col-md-6 footer-links">
             <h4>Our Services</h4>
             <ul>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Web Design</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Web Development</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Product Management</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Marketing</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Graphic Design</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Skin</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Ears</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Lung</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Eyes</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Throat</a></li>
             </ul>
           </div>
 
           <div class="col-lg-4 col-md-6 footer-newsletter">
             <h4>Join Our Community</h4>
             <p>Children's Care best services in Vietnamese, Thailand, Laos, Campuchia...</p>
-            <form action="" method="post">
+            <form action="https://api.web3forms.com/submit" method="POST">
+                <!-- Replace with your Access Key -->
+                        <input type="hidden" name="access_key" value="7413ee65-93aa-4d66-bf2f-8c1b86b1f65a">
               <input type="email" name="email"><input type="submit" value="Subscribe">
+              <!-- Honeypot Spam Protection -->
+                        <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
             </form>
           </div>
 
