@@ -95,7 +95,8 @@
                     <label for="img_service" class="form-label">Image Service</label>
                     <input type="file" class="form-control" id="img_service" name="img_service" accept="image/*">
                 </div>
-                <button type="submit" class="btn btn-primary w-100">Add Service</button>
+                <button type="submit" class="btn btn-primary w-100 mb-3">Add Service</button>
+                <a href="ServiceManagementServlet" class="btn btn-primary w-100">Back to Service Management</a>
             </form>
         </div>
 
