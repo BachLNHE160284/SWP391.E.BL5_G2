@@ -196,7 +196,7 @@ public class UserDAO {
     }
     
     public List<UserDTO> getAll(){
-        String query = "SELECT * FROM [SWP391BL5G2_4].[dbo].[user] u LEFT JOIN [role] r on u.role_id = r.role_id";
+        String query = "SELECT * FROM [dbo].[user] u LEFT JOIN [role] r on u.role_id = r.role_id";
         ResultSet rs = null;
         PreparedStatement ps = null;
         Connection conn = null;
@@ -212,6 +212,7 @@ public class UserDAO {
                 user.setGender(rs.getBoolean("gender"));
                 user.setEmail_address("email_address");
                 user.setPhone_number("phone_number");
+                user.setAvatar(rs.getString("avartar"));
                 Role role = new Role();
                 role.setRole_name(rs.getString("role_name"));
                 user.setRole(role);
