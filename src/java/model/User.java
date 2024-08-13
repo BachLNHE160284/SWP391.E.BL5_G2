@@ -9,14 +9,15 @@ package model;
  * @author lebac
  */
 public class User {
+
     private int user_id;
     private String fullname;
-    private int gender;
+    private boolean gender;
     private String phone_number;
     private String email_address;
     private String address;
     private String username;
-    private String password ;
+    private String password;
     private String avartar;
     private int role_id;
     private int Status;
@@ -25,7 +26,7 @@ public class User {
     public User() {
     }
 
-    public User(int user_id, String fullname, int gender, String phone_number, String email_address, String address, String username, String password, String avartar, int role_id, int Status, String create_date) {
+    public User(int user_id, String fullname, boolean gender, String phone_number, String email_address, String address, String username, String password, String avartar, int role_id, int Status, String create_date) {
         this.user_id = user_id;
         this.fullname = fullname;
         this.gender = gender;
@@ -39,6 +40,8 @@ public class User {
         this.Status = Status;
         this.create_date = create_date;
     }
+
+    
 
     public int getUser_id() {
         return user_id;
@@ -56,11 +59,11 @@ public class User {
         this.fullname = fullname;
     }
 
-    public int getGender() {
+    public boolean isGender() {
         return gender;
     }
 
-    public void setGender(int gender) {
+    public void setGender(boolean gender) {
         this.gender = gender;
     }
 
@@ -136,11 +139,4 @@ public class User {
         this.create_date = create_date;
     }
 
-    @Override
-    public String toString() {
-        return "User{" + "user_id=" + user_id + ", fullname=" + fullname + ", gender=" + gender + ", phone_number=" + phone_number + ", email_address=" + email_address + ", address=" + address + ", username=" + username + ", password=" + password + ", avartar=" + avartar + ", role_id=" + role_id + ", Status=" + Status + ", create_date=" + create_date + '}';
-    }
-    
-    
-    
 }

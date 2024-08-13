@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import model.Category_Blog;
@@ -35,6 +36,29 @@ public class CategoryBlogDAO extends DBContext {
             
         }
         return lctb;
+    }
+    public String GetNameCategoryBlogByID(int id) {
+        
+        List<Category_Blog> list = new ArrayList<>();
+        try {
+            Connection con = new DBContext().getConnection();
+            String sql = "select*from category_blog";
+            Statement stm = con.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            while (rs.next()) {
+                Category_Blog category1 = new Category_Blog();
+                category1.setCategory_id(rs.getInt(1));
+                category1.setCategory_name(rs.getString(2));
+                list.add(category1);
+            }
+        } catch (Exception ex) {
+        }
+        for (Category_Blog o : list) {
+            if (o.getCategory_id() == id) {
+                return o.getCategory_name();
+            }
+        }
+        return null;
     }
 //    
 //    public static void main(String[] args) {
