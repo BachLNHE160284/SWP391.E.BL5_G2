@@ -7,54 +7,61 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Add New Blog</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
+            background-color: #f8f9fa;
         }
+
         .container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
             max-width: 600px;
-            margin: auto;
+            margin-top: 50px;
         }
-        .form-group {
-            margin-bottom: 15px;
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
         }
-        .form-group label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        .form-group input,
-        .form-group textarea,
-        .form-group select {
-            width: 100%;
-            padding: 8px;
-            box-sizing: border-box;
-        }
-        .form-group textarea {
-            resize: vertical;
-        }
-        .form-group button {
-            padding: 10px 15px;
-            background-color: #007bff;
-            color: #fff;
+
+        .btn-primary {
+            background-color: #ff6f61;
             border: none;
-            cursor: pointer;
         }
-        .form-group button:hover {
-            background-color: #0056b3;
+
+        .btn-primary:hover {
+            background-color: #ff4b3a;
         }
+
+        .form-label {
+            font-weight: bold;
+        }
+
+        .form-control,
+        .form-select {
+            border-radius: 4px;
+        }
+
+        .success-message,
+        .error-message {
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
         .success-message {
             color: green;
-            font-weight: bold;
         }
+
         .error-message {
             color: red;
-            font-weight: bold;
         }
     </style>
 </head>
@@ -63,56 +70,54 @@
         <h1>Add New Blog</h1>
         
         <form action="AddBlog" method="post" enctype="multipart/form-data">
-            <div class="form-group">
-                <label for="title">Title:</label>
-                <input type="text" id="title" name="title" required/>
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" class="form-control" id="title" name="title" required>
             </div>
-            <div class="form-group">
-                <label for="content">Content:</label>
-                <textarea id="content" name="content" rows="5" required></textarea>
+            <div class="mb-3">
+                <label for="content" class="form-label">Content</label>
+                <textarea class="form-control" id="content" name="content" rows="5" required></textarea>
             </div>
-            <div class="form-group">
-                <label for="authorId">Author ID:</label>
-                <input type="number" id="authorId" name="authorId" required/>
+            <div class="mb-3">
+                <label for="authorId" class="form-label">Author ID</label>
+                <input type="number" class="form-control" id="authorId" name="authorId" required>
             </div>
-            <div class="form-group">
-                <label for="updatedBy">Updated By (User ID):</label>
-                <input type="number" id="updatedBy" name="updatedBy"/>
+            <div class="mb-3">
+                <label for="updatedBy" class="form-label">Updated By (User ID)</label>
+                <input type="number" class="form-control" id="updatedBy" name="updatedBy">
             </div>
-            <div class="form-group">
-                <label for="thumbnail">Thumbnail URL:</label>
-                <input type="file" class="form-control-file" id="thumbnail" name="thumbnail"/>
-                
+            <div class="mb-3">
+                <label for="thumbnail" class="form-label">Thumbnail URL</label>
+                <input type="file" class="form-control" id="thumbnail" name="thumbnail">
             </div>
-            <div class="form-group">
-                <label for="briefInfo">Brief Information:</label>
-                <input type="text" id="briefInfo" name="briefInfo"/>
+            <div class="mb-3">
+                <label for="briefInfo" class="form-label">Brief Information</label>
+                <textarea class="form-control" id="briefInfo" name="briefInfo" rows="2"></textarea>
             </div>
-            <div class="form-group">
+            <div class="mb-3">
                 <label for="category_id" class="form-label">Category</label>
                 <select id="category_id" name="category_id" class="form-select" required>
                     <c:forEach var="category" items="${cate}">
-                                <option value="${category.category_id}">${category.category_name}</option>
-                            </c:forEach>
+                        <option value="${category.category_id}">${category.category_name}</option>
+                    </c:forEach>
                 </select>
             </div>
-            <div class="form-group">
-                <label for="status">Status:</label>
-                <select id="status" name="status">
+            <div class="mb-3">
+                <label for="status" class="form-label">Status</label>
+                <select id="status" name="status" class="form-select">
                     <option value="1">Active</option>
                     <option value="0">Inactive</option>
                 </select>
             </div>
-            <div class="form-group">
-                <button type="submit">Add Blog</button>
-            </div>
+            <button type="submit" class="btn btn-primary w-100 mb-3">Add Blog</button>
+            <a href="BlogManagementServlet" class="btn btn-primary w-100">Back to Blog Management</a>
         </form>
         
-        <% 
+        <%
             String successMessage = request.getAttribute("successMessage") != null ? (String) request.getAttribute("successMessage") : "";
             String errorMessage = request.getAttribute("errorMessage") != null ? (String) request.getAttribute("errorMessage") : "";
 
-            if (!successMessage.isEmpty()) { 
+            if (!successMessage.isEmpty()) {
         %>
         <p class="success-message"><%= successMessage %></p>
         <% 
@@ -124,6 +129,8 @@
             } 
         %>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="scripts.js"></script>
 </body>
 </html>
-

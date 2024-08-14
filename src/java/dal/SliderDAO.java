@@ -7,6 +7,10 @@ package dal;
 import context.DBContext;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import model.Slider;
 
 /**
@@ -31,6 +35,28 @@ public class SliderDAO {
             e.printStackTrace();
         }
 
+    }
+    
+    public List<Slider> getAllSliderWithStatus(int status){
+        List<Slider> list = new ArrayList<>();
+        try {
+            Connection con = new DBContext().getConnection();
+            String sql = "select * from Slider where status = "+status+";";
+            PreparedStatement stm = con.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Slider sl = new Slider();
+                sl.setSlider_id(rs.getInt(1));
+                sl.setSlider_img(rs.getString(2));
+                sl.setBacklink(rs.getString(3));
+                sl.setSlider_title(rs.getString(5));
+                sl.setSlider_detail(rs.getString(6));
+                list.add(sl);
+            }   
+        } catch (Exception ex) {
+            
+        }
+        return list;
     }
     
     

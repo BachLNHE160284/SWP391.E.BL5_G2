@@ -4,24 +4,25 @@
  */
 package controller;
 
-import dal.UserDAO;
+import dal.CategoryDAO;
+import dal.ServiceDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import model.User;
+import java.util.List;
+import model.Category;
+import model.Service;
 
 /**
  *
- * @author Admin
+ * @author ntung
  */
-@WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
-public class LoginServlet extends HttpServlet {
+@WebServlet(name = "ServiceList", urlPatterns = {"/ServiceList"})
+public class ServiceList extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,10 +41,10 @@ public class LoginServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoginServlet</title>");
+            out.println("<title>Servlet ServiceList</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LoginServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ServiceList at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -61,7 +62,15 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        ServiceDAO serviceDao = new ServiceDAO();
+        CategoryDAO ctd = new CategoryDAO();
+        List<Service> listService = serviceDao.getAllService();
+        List<Category> listCate = ctd.getAllCategories();
+
+        request.setAttribute("listService", listService);
+        request.setAttribute("listCate", listCate);
+        request.getRequestDispatcher("ServiceList.jsp").forward(request, response);
+
     }
 
     /**
@@ -75,65 +84,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        String email = request.getParameter("email");
-        String pass = request.getParameter("password");
-        String remember = request.getParameter("remember");
-
-        //Set cookies: username, password, rememner
-        Cookie cu = new Cookie("cusername", email);
-        Cookie cp = new Cookie("cpassword", pass);
-        Cookie cr = new Cookie("cremember", remember);
-
-        if (remember != null) {
-            cu.setMaxAge(60 * 60 * 24 * 365);
-            cp.setMaxAge(60 * 60 * 24 * 365);
-            cr.setMaxAge(60 * 60 * 24 * 365);
-
-        } else {
-            cu.setMaxAge(0);
-            cp.setMaxAge(0);
-            cr.setMaxAge(0);
-        }
-        //Lưu vào browser
-        response.addCookie(cu);
-        response.addCookie(cp);
-        response.addCookie(cr);
-
-        UserDAO dao = new UserDAO();
-        User acc = dao.login(email, pass);
-
-        if (acc == null) {
-
-            request.setAttribute("mess", "Account does not exist! Please Sign up! ");
-            request.getRequestDispatcher("/Login.jsp").forward(request, response);
-        } else {
-            HttpSession session = request.getSession();
-            if (acc.getStatus() == 1) {
-                session.setAttribute("acc", acc);
-                switch (acc.getRole_id()) {
-                    case 1:
-                        response.sendRedirect("HomePage");
-                        break;
-                    case 2:
-                        response.sendRedirect("HomePage");
-                        break;
-                    case 3:
-                        response.sendRedirect("HomePage");
-                        break;
-                    case 4:
-                        response.sendRedirect("HomePage");
-                        break;
-                    default:
-                        response.sendRedirect("login");
-                        break;
-                }
-            } else {
-                request.setAttribute("mess", "Your account has been locked! Please contact the admin to unlock your account!");
-                request.getRequestDispatcher("/Login.jsp").forward(request, response);
-            }
-        }
-
+        processRequest(request, response);
     }
 
     /**

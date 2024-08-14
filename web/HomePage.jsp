@@ -677,13 +677,12 @@
                     <div class="col-12">
                         <div class="swiper sliderFeaturedPosts">
                             <div class="swiper-wrapper">
-                                <c:forEach items="${sliderList}" var="slide">
+                                <c:forEach items="${listslider}" var="slide">
                                     <div class="swiper-slide">
-                                        <a href="/project_swp391/service-detail?service_id=${slide.service_id}" class="img-bg d-flex align-items-end" style="background-image: url('./resouce/image/service/${slide.image_link}');">
+                                        <a href="${i.backlink}" class="img-bg d-flex align-items-end"></a>
                                             <div class="img-bg-inner">
-                                                <h2>${slide.service_title}</h2>
-                                                <p>${slide.notes}</p>
-                                                <p>${slide.slider_id}</p>
+                                                <h2>${slide.slider_title}</h2>
+                                                <p>${slide.slider_detail}</p>
 
                                             </div>
                                         </a>
