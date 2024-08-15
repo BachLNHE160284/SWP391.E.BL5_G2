@@ -1,6 +1,6 @@
 <%-- 
-    Document   : serviceManagement
-    Created on : Aug 7, 2024, 7:38:04 PM
+    Document   : postManagement
+    Created on : Aug 14, 2024, 7:56:50 PM
     Author     : lebac
 --%>
 
@@ -11,7 +11,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Service Management</title>
+        <title>Post Management</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.3/css/bootstrap.min.css">
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.3/js/bootstrap.min.js"></script>
@@ -187,15 +187,14 @@
     </head>
     <body>
         <div class="container">
-            <h2 class="mb-4 text-center">Service Management</h2>
-            <a href="AddServiceServlet" class="btn-custom" title="Add Service">
-                <i class="fas fa-plus"></i> Add Service
+            <h2 class="mb-4 text-center">Post Management</h2>
+            <a href="AddBlog" class="btn-custom" title="Add Post">
+                <i class="fas fa-plus"></i> Add Post
             </a>
-
-            <form id="searchSortForm" action="ServiceManagementServlet" method="get" class="search-sort-container">
+            <form id="searchSortForm" action="PostManagementServlet" method="get" class="search-sort-container">
                 <!-- Search Form -->
                 <div class="search-form">
-                    <input type="text" name="search" placeholder="Search by service name" value="${param.search}">
+                    <input type="text" name="search" placeholder="Search by title" value="${param.search}">
                     <button type="submit" class="btn-search">Search</button>
                 </div>
 
@@ -203,10 +202,10 @@
                 <div class="sort-controls">
                     <label for="sortField">Sort by:</label>
                     <select id="sortField" name="sortField" onchange="submitSortingForm()">
-                        <option value="service_id" ${param.sortField == 'service_id' ? 'selected' : ''}>Service ID</option>
-                        <option value="name_service" ${param.sortField == 'name_service' ? 'selected' : ''}>Service Name</option>
-                        <option value="category_name" ${param.sortField == 'category_name' ? 'selected' : ''}>Category Name</option>
-                        <option value="date_add" ${param.sortField == 'date_add' ? 'selected' : ''}>Date Add</option>
+                        <option value="blog_id" ${param.sortField == 'blog_id' ? 'selected' : ''}>Blog ID</option>
+                        <option value="title" ${param.sortField == 'title' ? 'selected' : ''}>Title</option>
+                        <option value="content" ${param.sortField == 'content' ? 'selected' : ''}>Content</option>
+                        <option value="brief_infor" ${param.sortField == 'brief_infor' ? 'selected' : ''}>Brief Information</option>
                     </select>
                     <select id="sortOrder" name="sortOrder" onchange="submitSortingForm()">
                         <option value="ASC" ${param.sortOrder == 'ASC' ? 'selected' : ''}>Ascending</option>
@@ -214,44 +213,45 @@
                     </select>
                 </div>
             </form>
+
             <div class="table-responsive">
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th scope="col" style="width: 120px;">Service ID</th>
-                            <th scope="col" style="width: 150px;">Service Name</th>
-                            <th scope="col" style="width: 200px;">Category</th>
-                            <th scope="col" style="width: 200px;">Service Detail</th>
-                            <th scope="col" style="width: 150px;">Date Added</th>
+                            <th scope="col" style="width: 120px;">Blog ID</th>
+                            <th scope="col" style="width: 150px;">Title</th>
+                            <th scope="col" style="width: 200px;">Content</th>
+                            <th scope="col" style="width: 200px;">Brief Information</th>
+                            <th scope="col" style="width: 150px;">Category Name</th>
                             <th scope="col" style="width: 100px;">Status</th>
-                            <th scope="col" style="width: 150px;">Image Service</th>
+                            <th scope="col" style="width: 150px;">Thumbnail</th>
                             <th scope="col" style="width: 200px;">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <c:forEach var="services" items="${services}">
+                        <c:forEach var="blog" items="${blogs}">
                             <tr>
-                                <th scope="row">${services.service_id}</th>
-                                <td>${services.name_service}</td>
-                                <td>${services.category_name}</td>
-                                <td>${services.service_detail}</td>
-                                <td class="dateAdd">${services.date_add}</td>
-                                <td class="${services.service_Status == 1 ? 'status-active' : 'status-inactive'}">
-                                    ${services.service_Status == 1 ? 'Active' : 'Inactive'}
+                                <th scope="row">${blog.blog_id}</th>
+                                <td>${blog.tittle}</td>
+                                <td>${blog.content}</td>
+                                <td>${blog.brief_infor}</td>
+                                <td>${blog.category_name}</td>
+                                <td class="${blog.status == 1 ? 'status-active' : 'status-inactive'}">
+                                    ${blog.status == 1 ? 'Active' : 'Inactive'}
                                 </td>
                                 <td>
-                                    <c:if test="${not empty services.img_service}">
-                                        <img src="${services.img_service}" alt="Image Service" class="service-image">
+                                    <c:if test="${not empty blog.thumbnail}">
+                                        <img src="${blog.thumbnail}" alt="Image Service" class="service-image">
                                     </c:if>
                                 </td>
                                 <td>
-                                    <a href="ViewServiceServlet?id=${services.service_id}" class="btn btn-info btn-sm">
+                                    <a href="ViewPostServlet?id=${blog.blog_id}" class="btn btn-info btn-sm" title="View">
                                         <i class="fas fa-eye"></i>
                                     </a>
-                                    <a href="UpdateServiceServlet?id=${services.service_id}" class="btn btn-warning btn-sm">
+                                    <a href="UpdatePostServlet?id=${blog.blog_id}" class="btn btn-warning btn-sm" title="Update">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <a href="javascript:void(0);" class="btn btn-danger btn-sm" onclick="confirmDelete('${services.service_id}');">
+                                    <a href="javascript:void(0);" class="btn btn-danger btn-sm" title="Delete" onclick="confirmDelete('${blog.blog_id}');">
                                         <i class="fas fa-trash-alt"></i>
                                     </a>
                                 </td>
@@ -261,7 +261,7 @@
                 </table>
                 <div class="pagination">
                     <c:forEach begin="1" end="${endPage}" var="i">
-                        <c:url value="ServiceManagementServlet" var="pageUrl">
+                        <c:url value="PostManagementServlet" var="pageUrl">
                             <c:param name="index" value="${i}"/>
                             <c:param name="search" value="${param.search}"/>
                             <c:param name="sortField" value="${param.sortField}"/>
@@ -273,10 +273,10 @@
             </div>
         </div>
         <script>
-            function confirmDelete(serviceId) {
-                var result = confirm("Are you sure you want to delete this service?");
+            function confirmDelete(blogId) {
+                var result = confirm("Are you sure you want to delete this post?");
                 if (result) {
-                    window.location.href = "DeleteServiceServlet?id=" + serviceId;
+                    window.location.href = "DeleteBlogServlet?id=" + blogId;
                 }
             }
             function submitSortingForm() {
@@ -298,20 +298,6 @@
                 // Submit the form when sortOrder changes
                 submitSortingForm();
             });
-
-            document.querySelectorAll('.dateAdd').forEach(function (element) {
-                var dateString = element.innerText;
-                var date = new Date(dateString);
-
-                if (!isNaN(date)) { // Kiểm tra nếu giá trị ngày hợp lệ
-                    var formattedDate = ("0" + date.getDate()).slice(-2) + "/" +
-                            ("0" + (date.getMonth() + 1)).slice(-2) + "/" +
-                            date.getFullYear();
-
-                    element.innerText = formattedDate;
-                }
-            });
-
         </script>
     </body>
 </html>

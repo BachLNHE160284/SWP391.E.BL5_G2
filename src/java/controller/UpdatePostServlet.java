@@ -1,4 +1,4 @@
- /*
+/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
@@ -6,6 +6,7 @@ package controller;
 
 import dal.BlogDAO;
 import dal.CategoryBlogDAO;
+import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -15,18 +16,18 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
-import java.io.File;
 import java.util.List;
 import model.Blog;
 import model.Category_Blog;
+import model.User;
 
 /**
  *
- * @author ntung
+ * @author lebac
  */
-@WebServlet(name = "AddBlog", urlPatterns = {"/AddBlog"})
+@WebServlet(name = "UpdatePostServlet", urlPatterns = {"/UpdatePostServlet"})
 @MultipartConfig
-public class AddBlog extends HttpServlet {
+public class UpdatePostServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -45,10 +46,10 @@ public class AddBlog extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet AddBlog</title>");
+            out.println("<title>Servlet UpdatePostServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet AddBlog at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet UpdatePostServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -67,10 +68,19 @@ public class AddBlog extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 //        processRequest(request, response);
-        CategoryBlogDAO ctb = new CategoryBlogDAO();
-        List<Category_Blog> cate = ctb.getAllCategoryBlog();
+        int id = Integer.parseInt(request.getParameter("id"));
+        BlogDAO dao = new BlogDAO();
+        CategoryBlogDAO cateb = new CategoryBlogDAO();
+        UserDAO user = new UserDAO();
+        List<User> u = user.getAllUser();
+        List<Category_Blog> cate = cateb.getAllCategoryBlog();
+        Blog blog = dao.getBlogByID(id);
+        request.setAttribute("u", u);
         request.setAttribute("cate", cate);
-        request.getRequestDispatcher("AddBlog.jsp").forward(request, response);
+        request.setAttribute("blog", blog);
+        request.getRequestDispatcher("PostManager/updatePost.jsp").forward(request, response);
+        
+        
     }
 
     /**
@@ -84,53 +94,50 @@ public class AddBlog extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        BlogDAO blog = new BlogDAO();
-
-        String blogtitle = request.getParameter("title");
+//        processRequest(request, response);
+        // Lấy dữ liệu từ form
+        int blogId = Integer.parseInt(request.getParameter("blog_id"));
+        String title = request.getParameter("tittle");
         String content = request.getParameter("content");
-        //int authorId = Integer.parseInt(request.getParameter("authorId"));
-        // Get the authorId from the session
-        Integer authorId = (Integer) request.getSession().getAttribute("authorId");
-        if (authorId == null) {
-            // Handle the case where authorId is not in the session
-            response.sendRedirect("Login.jsp");
-            return;
-        }
-        int updatedBy = Integer.parseInt(request.getParameter("updatedBy"));
-        String briefInfo = request.getParameter("briefInfo");
+        int authorId = Integer.parseInt(request.getParameter("author_id"));
+//        int updatedBy = Integer.parseInt(request.getParameter("updated_by"));
+//        String thumbnail = request.getParameter("thumbnail");
+        String briefInfo = request.getParameter("brief_infor");
         int categoryId = Integer.parseInt(request.getParameter("category_id"));
         int status = Integer.parseInt(request.getParameter("status"));
-        Part filePart = request.getPart("thumbnail");
-        // Xử lý upload ảnh
+        
+        Part imgPart = request.getPart("img_service");
+            String imgService;
+            if (imgPart != null && imgPart.getSize() > 0) {
+                imgService = "uploads/" + imgPart.getSubmittedFileName();
+                imgPart.write(getServletContext().getRealPath("/") + imgService);
+            } else {
+                imgService = request.getParameter("currentImagePath"); // Nếu không có ảnh mới, giữ nguyên ảnh cũ
+            }
+        
+        
+        
 
-        // Lấy tên file và đường dẫn upload
-        String fileName = filePart.getSubmittedFileName();
-        String uploadPath = getServletContext().getRealPath("") + File.separator + "uploads";
+        // Tạo đối tượng Blog với dữ liệu từ form
+        Blog blog = new Blog();
+        blog.setBlog_id(blogId);
+        blog.setTittle(title);
+        blog.setContent(content);
+        blog.setAuthor_id(authorId);
+//        blog.setUpdate_by(updatedBy);
+        blog.setThumbnail(imgService);
+        blog.setBrief_infor(briefInfo);
+        blog.setCategory_id(categoryId);
+        blog.setStatus(status);
 
-        // Tạo thư mục uploads nếu chưa tồn tại
-        File uploadDir = new File(uploadPath);
-        if (!uploadDir.exists()) {
-            uploadDir.mkdirs();
-        }
+        // Sử dụng BlogDAO để cập nhật blog
+        BlogDAO blogDAO = new BlogDAO();
+        blogDAO.updateBlog(blog);
 
-        // Đường dẫn đầy đủ để lưu file
-        String filePath = uploadPath + File.separator + fileName;
+        // Điều hướng về trang quản lý blog hoặc hiển thị thông báo
+        response.sendRedirect("PostManagementServlet");
+    
 
-        // Ghi file vào thư mục uploads
-        filePart.write(filePath);
-
-        // Tạo đối tượng Service
-        Blog bl = new Blog();
-        bl.setTittle(blogtitle);
-        bl.setContent(content);
-        bl.setAuthor_id(authorId);
-        bl.setUpdate_by(updatedBy);
-        bl.setBrief_infor(briefInfo);
-        bl.setCategory_id(categoryId);
-        bl.setStatus(status);
-        bl.setThumbnail("uploads/" + fileName);
-        blog.addBlog(bl);
-        response.sendRedirect("AddBlog");
     }
 
     /**
