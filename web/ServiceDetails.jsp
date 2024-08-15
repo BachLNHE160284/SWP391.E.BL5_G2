@@ -1,12 +1,11 @@
 <%-- 
-    Document   : ServiceList
-    Created on : Aug 14, 2024, 2:33:50 PM
+    Document   : ServiceDetails
+    Created on : Aug 15, 2024, 3:12:41 PM
     Author     : ntung
 --%>
 
 
-
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,7 +14,7 @@
         <meta charset="utf-8">
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-        <title>Service List</title>
+        <title>Service Detail</title>
         <meta content="" name="description">
         <meta content="" name="keywords">
 
@@ -35,9 +34,31 @@
         <link href="assests/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
         <link href="assests/vendor/remixicon/remixicon.css" rel="stylesheet">
         <link href="assests/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+
         <!-- Template Main CSS File -->
         <link href="assests/css/style.css" rel="stylesheet">
+
+        <!-- =======================================================
+        * Template Name: Medilab - v4.7.1
+        * Template URL: https://bootstrapmade.com/medilab-free-medical-bootstrap-theme/
+        * Author: BootstrapMade.com
+        * License: https://bootstrapmade.com/license/
+        ======================================================== -->
+        <style>
+            .imagebig{
+                width: 1000px;
+                height: 500px;
+            }
+            p img{
+                border: 2px solid white;
+                width: 120px;
+            }
+
+            p img:hover {
+                border: 2px solid red;
+                cursor: pointer;
+            }
+        </style>
         <style>
             body{
                 background:#eee
@@ -892,13 +913,6 @@
                 top: 2px;
             }
         </style>
-
-        <!-- =======================================================
-        * Template Name: Medilab - v4.7.1
-        * Template URL: https://bootstrapmade.com/medilab-free-medical-bootstrap-theme/
-        * Author: BootstrapMade.com
-        * License: https://bootstrapmade.com/license/
-        ======================================================== -->
     </head>
 
     <body>
@@ -923,91 +937,94 @@
         <jsp:include page="assests/module/header.jsp" flush="true"/>
         <!-- End Header -->
 
-        <main id="main" style="padding: 100px 0 0;">
+        <main id="main" style="padding: 85px" >
 
             <!-- ======= Breadcrumbs Section ======= -->
-            <section class="breadcrumbs">
-                <div class="container">
-                    <div class="container mt-5 mb-5">
-                        <div class="d-flex justify-content-center row">
-                            <div class="col-md-10">
-                                <div class="row" >
-                                    <div class="col-md-9" >
-                                        <div class="row ">
-                                            <c:forEach items="${listCate}" var="c">
-                                                <div class="col-md-2">
-                                                    <div class="frame">
-                                                        <button onclick="loadCate(this)" name="cate" value="${c.getCategory_id()}" class="custom-btn btn-5"><span>${c.getCategory_name()}</span></button>
-                                                    </div>
-                                                </div>
 
-                                            </c:forEach>
+
+            <section class="breadcrumbs">
+
+                <div class="container-fluid ">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="row ">
+                                <c:forEach items="${listCate}" var="c">
+                                    <div class="col-md-2">
+                                        <div class="frame">
+                                            <a href="servicesbycategory?cid=${c.getCategory_id()}"><button name="cate" value="${c.getCategory_id()}" class="custom-btn btn-5"><span>${c.getCategory_name()}</span></button></a>
                                         </div>
                                     </div>
-                                    <!--                                    <div class="col-md-3">
-                                                                            <div >
-                                                                                <nav class="navbar navbar-light bg-light w-100 "  style="display: block">
-                                                                                    <form class="form-inline">
-                                                                                        <div class="input-group input-group-sm">
-                                                                                            <input onchange="searchByName(this)" value="${txtS}" name="txt" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Search...">
-                                                                                            <div class="input-group-append">
-                                                                                                <button style="border-radius: 0px" class="btn btn-secondary btn-number">
-                                                                                                    <i class="fa fa-search"></i>
-                                                                                                </button>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </form>
-                                                                                </nav>
-                                                                            </div>
-                                                                        </div>-->
-                                </div>
-                                <div id="content" style="padding: 50px 0 0;">
-                                    <c:forEach items="${services}" var="service">
-                                        <div class="services row p-2 bg-white border rounded mt-2">
-                                            <div class="col-md-3 mt-1">
-                                                <img class="img-fluid img-responsive rounded product-image" 
-                                                     src="./${service.thumbnail}" 
-                                                     alt="${service.name_service}">
-                                            </div>
-                                            <div class="col-md-6 mt-1">
-                                                <h5>${service.name_service}</h5>
-                                                <div class="d-flex flex-row">
-                                                    <div class="ratings mr-2">
-                                                        <c:forEach begin="1" end="${service.service_Status}" varStatus="status">
-                                                            <span class="fa fa-star checked"></span>
-                                                        </c:forEach>
-                                                        <c:forEach begin="1" end="${5 - service.service_Status}" varStatus="status">
-                                                            <span class="fa fa-star"></span>
-                                                        </c:forEach>
-                                                    </div>
-                                                    <br>
-                                                </div>
-                                                <div>${service.create_date}</div>
-                                                <div>
-                                                    ${service.brief_infor}
-                                                </div>
-                                            </div>
-                                            <div class="align-items-center align-content-center col-md-3 border-left mt-1">
-                                                <div class="d-flex flex-row align-items-center">
-                                                    <h4 class="mr-1">${service.sale_prices}</h4>
-                                                    <span class="strike-text">${service.original_prices}</span>
-                                                </div>
-                                                <div class="d-flex flex-column mt-4">
-                                                    <button onclick="window.location.href = './ServiceDetails?serviceID=${service.service_id}'" 
-                                                            class="btn btn-primary btn-sm" 
-                                                            type="button">Details Service</button>
-                                                    <button onclick="addToCart(${service.service_id})" 
-                                                            class="btn btn-outline-primary btn-sm mt-2" 
-                                                            type="button">Book Service</button>
-                                                </div>
+
+                                </c:forEach>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div >
+                                <nav class="navbar navbar-light bg-light w-100 "  style="display: block">
+                                    <form action="serchservice" class="form-inline">
+                                        <div class="input-group input-group-sm">
+                                            <input name="txt" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Search...">
+                                            <div class="input-group-append">
+                                                <button type="submit" style="border-radius: 0px" class="btn btn-secondary btn-number">
+                                                    <i class="fa fa-search"></i>
+                                                </button>
                                             </div>
                                         </div>
-                                    </c:forEach>
-                                </div>
+                                    </form>
+                                </nav>
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-8">
+                            <div class="container mt-5 align-items-center">
+                                <div class="row">
+                                    <div class="">
+                                        <!-- Post content-->
+                                        <article>
+                                            <!-- Post header-->
+                                            <header class="mb-4">
+                                                <!-- Post title-->
+                                                <h1 class="fw-bolder mb-1">${service.name_service}</h1>
+                                                <h3 class="fw-bolder mb-1"><i>${service.brief_infor}</i></h3>
+                                            </header>
+                                            <!-- Preview image figure-->
+                                            <figure class="mb-4">
+                                                <img id="main-img" class="imagebig img-fluid rounded" src="./resources/image/service/${service.thumbnail}" alt="Service Image" />
+                                                <p style="margin-right: 215px;">
+                                                    <!-- Add any additional images if available -->
+                                                    <c:forEach var="image" items="${service.img_service}">
+                                                        <img class="img-fluid rounded" src="./resources/image/service/${image}" alt="Service Image" style="height: 100px; margin-top: 15px" />
+                                                    </c:forEach>
+                                                </p>
+                                            </figure>
+                                            <!-- Post content-->
+                                            <section class="mb-5" style="margin-right: 610px;">
+                                                <p style="margin-right: 50px" class="fs-5 mb-4">Rate star: ${service.service_Status}/5 <i style="color: yellow" class="bi bi-star-fill"></i></p>
+                                                <p style="margin-right: 50px" class="fs-5 mb-4">Old Price: ${service.original_prices}$</p>
+                                                <p class="fs-5 mb-4">Discount Price: <i class="text-danger">${service.sale_prices}$</i></p>
+                                            </section>
+                                            <h1>Service description:</h1>
+                                            <p>${service.service_detail}</p>
+                                        </article>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+
+                        </div>               
+                    </div>
                 </div>
+
+            </section>
+
+
+
+
         </main><!-- End #main -->
 
         <!-- ======= Footer ======= -->
@@ -1026,80 +1043,56 @@
 
         <!-- Template Main JS File -->
         <script src="assests/js/main.js"></script>
+
+
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="http://code.jquery.com/jquery-3.5.0.min.js"></script>
         <script>
-        function addToCart(serviceId) {
-            // Implement AJAX request to add service to cart
-            console.log('Adding service to cart: ' + serviceId);
-        }
-    </script>
-        <!--        <script>
-                    function searchByName(param) {
-                        var txtSearch = param.value;
-                        $.ajax({
-                            url: "/project_swp391/searchserviceajax",
-                            type: "get", //send it through get method
-                            data: {
-                                txt: txtSearch
-                            },
-                            success: function (data) {
-                                var row = document.getElementById("content");
-                                row.innerHTML = data;
-                            },
-                            error: function (xhr) {
-                                //Do Something to handle error
-                            }
-                        });
+            $(() => {
+                $('p img').click(function () {
+                    let imgPath = $(this).attr('src');
+                    $('#main-img').attr('src', imgPath);
+                })
+            })
+
+            function searchByName(param) {
+                var txtSearch = param.value;
+                $.ajax({
+                    url: "/project_swp391/searchserviceajax",
+                    type: "get", //send it through get method
+                    data: {
+                        txt: txtSearch
+                    },
+                    success: function (data) {
+                        var row = document.getElementById("content");
+                        row.innerHTML = data;
+                    },
+                    error: function (xhr) {
+                        //Do Something to handle error
                     }
-                    function loadCate(data){
-                        var cate = data.value;
-                        $.ajax({
-                            url: "/project_swp391/servicesbycate",
-                            type: "get", //send it through get method
-                            data: {
-                                cate: cate
-                            },
-                            success: function (data) {
-                                var row = document.getElementById("content");
-                                row.innerHTML = data;
-                            },
-                            error: function (xhr) {
-                                //Do Something to handle error
-                            }
-                        });
+                });
+            }
+            function loadCate(data) {
+                var cate = data.value;
+                $.ajax({
+                    url: "/project_swp391/servicesbycate",
+                    type: "get", //send it through get method
+                    data: {
+                        cate: cate
+                    },
+                    success: function (data) {
+                        var row = document.getElementById("content");
+                        row.innerHTML = data;
+                    },
+                    error: function (xhr) {
+                        //Do Something to handle error
                     }
-                    
-                    $(document).ready(function () {
-                        $(window).scroll(function () {
-                            if ($(window).scrollTop() > $(document).height() - $(window).height() - 1) {
-                                var amount = document.getElementsByClassName("services").length;
-                                $.ajax({
-                                    url: "/project_swp391/lazyloadingservices",
-                                    type: "get",
-                                    data: {
-                                        exist: amount
-                                    },
-                                    success: function (data) {
-                                        var row = document.getElementById("content");
-                                        row.innerHTML += data;
-                                    }
-                                });
-                            }
-                        });
-                    });
-                    function addToCardAsync(id){
-                        axios.get('addtocardasync',{
-                            params: {
-                                id:id
-                            }
-                        }).then((response)=>{
-                            // lấy data
-                            document.getElementById("cart-number").innerHTML = response.data;
-                            // cập nhật
-                        })
-                    }
-                </script>  -->
+                });
+            }
+        </script>
     </body>
 
 </html>
+
+

@@ -21,8 +21,8 @@ import model.Service;
  *
  * @author ntung
  */
-@WebServlet(name = "ServiceList", urlPatterns = {"/ServiceList"})
-public class ServiceList extends HttpServlet {
+@WebServlet(name = "ServiceDetails", urlPatterns = {"/ServiceDetails"})
+public class ServiceDetails extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,20 +36,31 @@ public class ServiceList extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ServiceList</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ServiceList at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+//        try (PrintWriter out = response.getWriter()) {
+//            /* TODO output your page here. You may use following sample code. */
+//            out.println("<!DOCTYPE html>");
+//            out.println("<html>");
+//            out.println("<head>");
+//            out.println("<title>Servlet ServiceDetails</title>");  
+//            out.println("</head>");
+//            out.println("<body>");
+//            out.println("<h1>Servlet ServiceDetails at " + request.getContextPath () + "</h1>");
+//            out.println("</body>");
+//            out.println("</html>");
+//        }
+        int id = Integer.parseInt(request.getParameter("serviceID"));
+        CategoryDAO cd = new CategoryDAO();
+        ServiceDAO dpr = new ServiceDAO();
+        List<Category> listCategory = cd.getAllCategories();
+        request.setAttribute("listcategory", listCategory);
+        Service service = dpr.getServiceById1(id);
+        List<String> limg = dpr.getimg(service.getImg_service());
+        request.setAttribute("service", service);
+        request.setAttribute("listimg", limg);
+        //List<Service> newproduct = dpr.GetListLastProduct();
+        //request.setAttribute("newproduct", newproduct);
+        request.getRequestDispatcher("ServiceDetails.jsp").forward(request, response);
     }
-    private static final int PAGE_SIZE = 10;
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -63,32 +74,7 @@ public class ServiceList extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        ServiceDAO serviceDao = new ServiceDAO();
-//        CategoryDAO ctd = new CategoryDAO();
-//        List<Service> listService = serviceDao.getAllService();
-//        List<Category> listCate = ctd.getAllCategories();
-//
-//        request.setAttribute("listService", listService);
-//        request.setAttribute("listCate", listCate);
-        String pageIndexStr = request.getParameter("page");
-        int pageIndex = 1;
-        if (pageIndexStr != null) {
-            pageIndex = Integer.parseInt(pageIndexStr);
-        }
-
-        ServiceDAO serviceDAO = new ServiceDAO();
-        CategoryDAO ctd = new CategoryDAO();
-        List<Category> listCate = ctd.getAllCategories();
-        List<Service> services = serviceDAO.getServices(pageIndex, PAGE_SIZE);
-        int totalServices = serviceDAO.getTotalServices();
-        int totalPages = (int) Math.ceil((double) totalServices / PAGE_SIZE);
-
-        request.setAttribute("listCate", listCate);
-        request.setAttribute("services", services);
-        request.setAttribute("currentPage", pageIndex);
-        request.setAttribute("totalPages", totalPages);
-        request.getRequestDispatcher("ServiceList.jsp").forward(request, response);
-
+        processRequest(request, response);
     }
 
     /**

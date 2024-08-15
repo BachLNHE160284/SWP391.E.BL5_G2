@@ -492,6 +492,7 @@
 
 
                                         <h2 class="title">${blog.tittle}</h2>
+                                        
 
                                         <div class="meta-top">
                                             <ul>

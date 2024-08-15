@@ -299,4 +299,101 @@ public class ServiceDAO extends DBContext {
         }
     }
 
+    public List<Service> getServices(int pageIndex, int pageSize) {
+        List<Service> services = new ArrayList<>();
+        String query = "SELECT s.*, c.category_name FROM service s "
+                + "JOIN category c ON s.category_id = c.category_id "
+                + "ORDER BY s.date_add DESC "
+                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+        try ( Connection conn = new DBContext().getConnection();  PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setInt(1, (pageIndex - 1) * pageSize);
+            ps.setInt(2, pageSize);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Service service = new Service();
+                service.setService_id(rs.getInt("service_id"));
+                service.setName_service(rs.getString("name_service"));
+                service.setOriginal_prices(rs.getFloat("original_prices"));
+                service.setSale_prices(rs.getFloat("sale_prices"));
+                service.setQuantity(rs.getInt("quantity"));
+                service.setThumbnail(rs.getString("thumbnail"));
+                service.setBrief_infor(rs.getString("brief_infor"));
+                service.setService_detail(rs.getString("service_detail"));
+                service.setDate_add(rs.getString("date_add"));
+                service.setService_Status(rs.getInt("service_Status"));
+                service.setCreate_date(rs.getString("create_date"));
+                service.setImg_service(rs.getString("img_service"));
+
+                // Setting category information
+                Category category = new Category(rs.getInt("category_id"), rs.getString("category_name"));
+                service.setCategory(category);
+
+                services.add(service);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return services;
+    }
+
+    public int getTotalServices() {
+        String query = "SELECT COUNT(*) AS total FROM service";
+        try ( Connection conn = new DBContext().getConnection();  PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("total");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public Service getServiceById1(int serviceId) {
+        Service service = null;
+        String query = "SELECT * FROM service WHERE service_id = ?";
+
+        try ( Connection connection = new DBContext().getConnection();  PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, serviceId);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                service = new Service();
+                service.setService_id(resultSet.getInt("service_id"));
+                service.setCategory_id(resultSet.getInt("category_id"));
+                service.setName_service(resultSet.getString("name_service"));
+                service.setOriginal_prices(resultSet.getFloat("original_prices"));
+                service.setSale_prices(resultSet.getFloat("sale_prices"));
+                service.setQuantity(resultSet.getInt("quantity"));
+                service.setThumbnail(resultSet.getString("thumbnail"));
+                service.setBrief_infor(resultSet.getString("brief_infor"));
+                service.setService_detail(resultSet.getString("service_detail"));
+                service.setDate_add(resultSet.getString("date_add"));
+                service.setService_Status(resultSet.getInt("service_Status"));
+                service.setCreate_date(resultSet.getString("create_date"));
+                service.setImg_service(resultSet.getString("img_service"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return service;
+    }
+    
+    
+    public List<String> getimg(String img) {
+        String[] imgl = img.split(",");
+        List<String> imgl1 = new ArrayList<String>();
+        for (int i = 0; i < imgl.length; i++) {
+            imgl1.add(imgl[i].trim());
+        }
+        return imgl1;
+    }
+
 }

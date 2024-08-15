@@ -81,7 +81,7 @@
                                 <img style="margin-top: 25px;height: 50px; width: 50px; border-radius: 50%;" 
                                      src="./${sessionScope.acc.avartar}" alt="User Image">
                             </p> 
-                            <p>${sessionScope.acc.username}</p>
+                            <p>${sessionScope.acc.fullname}</p>
                         </a>     
                     </c:when>
                     <c:otherwise>

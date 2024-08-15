@@ -637,22 +637,7 @@
                                 </div><!-- End sidebar categories-->
 
                                 <!-- Recent Posts -->
-                                <div class="sidebar-item recent-posts">
-                                    <h3 class="sidebar-title">New Posts</h3>
-
-                                    <div class="mt-3">
-                                        <c:forEach items="${listTop5}" var="c">
-                                            <div class="post-item mt-3">
-                                                <img src="./resouce/image/${c.blog_image}" alt="" class="flex-shrink-0">
-                                                <div>
-                                                    <h4><a href="BlogDetails?blogid=${c.blog_id}">${c.title}</a></h4>
-                                                    <time datetime="${c.blog_created_date}">${c.blog_created_date}</time>
-                                                </div>
-                                            </div><!-- End recent post item-->
-                                        </c:forEach>
-                                    </div>
-
-                                </div><!-- End sidebar recent posts-->
+                                
 
                             </div><!-- End sidebar -->
 
