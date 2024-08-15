@@ -195,8 +195,8 @@ public class UserDAO extends DBContext {
         }
     }
 
-    public List<UserDTO> getAll() {
-        String query = "SELECT * FROM [SWP391BL5G2_4].[dbo].[user] u LEFT JOIN [role] r on u.role_id = r.role_id";
+    public List<UserDTO> getAllUserExceptAdmin() {
+        String query = "SELECT u.* , r.role_name , r.role_id as rid FROM [SWP391BL5G2_4].[dbo].[user] u LEFT JOIN [role] r on u.role_id = r.role_id WHERE r.role_name != 'admin'";
         ResultSet rs = null;
         PreparedStatement ps = null;
         Connection conn = null;
@@ -214,6 +214,7 @@ public class UserDAO extends DBContext {
                 user.setPhone_number("phone_number");
                 user.setAvatar(rs.getString("avartar"));
                 Role role = new Role();
+                role.setRole_id(rs.getInt("role_id"));
                 role.setRole_name(rs.getString("role_name"));
                 user.setRole(role);
                 user.setStatus(rs.getInt("Status"));
@@ -225,16 +226,32 @@ public class UserDAO extends DBContext {
         return users;
     }
 
+    public int editUser(UserDTO user) {
+        String query = "UPDATE [user] SET role_id = ? , status = ? WHERE user_id = ?";
+        ResultSet rs = null;
+        PreparedStatement ps = null;
+        Connection conn = null;
+        try {
+            conn = new DBContext().getConnection(); // Open connection to SQL
+            ps = conn.prepareStatement(query);
+            ps.setInt(1, user.getRole().getRole_id());
+            ps.setInt(2, user.getStatus());
+            ps.setInt(3, user.getUser_id());
+            int affectedRows = ps.executeUpdate();
+            return affectedRows;
+        } catch (Exception ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
+
     //BachLNHE160284
     public List<User> getAllUser() {
         List<User> users = new ArrayList<>();
         String sql = "SELECT * FROM [user];";
 
         try (
-                Connection conn = getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql);
-                ResultSet rs = ps.executeQuery() 
-                ) {
+                Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
                 User user = new User();

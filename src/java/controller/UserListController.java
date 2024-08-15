@@ -5,6 +5,7 @@
 package controller;
 
 import com.google.gson.Gson;
+import dal.RoleDAO;
 import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,6 +15,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.Role;
 import model.UserDTO;
 
 /**
@@ -33,11 +35,13 @@ public class UserListController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("alo");
         UserDAO userDAO = new UserDAO();
+        RoleDAO roleDAO = new RoleDAO();
         Gson gson = new Gson();
-        List<UserDTO> users = userDAO.getAll();
+        List<Role> roles = roleDAO.getAll();
+        List<UserDTO> users = userDAO.getAllUserExceptAdmin();
         request.setAttribute("users", gson.toJson(users));
+        request.setAttribute("roles", roles);
         request.getRequestDispatcher("user-list.jsp").forward(request, response);
     }
 
