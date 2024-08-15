@@ -5,7 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -72,11 +72,11 @@
                     </tr>
                     <tr>
                         <td><strong>Update Date</strong></td>
-                        <td>${blog.update_date}</td>
+                        <td><fmt:formatDate value="${blog.update_date}" pattern="dd/MM/yyyy" /></td>
                     </tr>
                     <tr>
                         <td><strong>Create Date</strong></td>
-                        <td>${blog.create_date}</td>
+                        <td><fmt:formatDate value="${blog.create_date}" pattern="dd/MM/yyyy" /></td>
                     </tr>
                     <tr>
                         <td><strong>Brief Information</strong></td>

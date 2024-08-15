@@ -5,7 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -52,11 +52,11 @@
                     </tr>
                     <tr>
                         <td><strong>Original Prices</strong></td>
-                        <td>${service.original_prices}</td>
+                        <td><fmt:formatNumber value="${service.original_prices}" type="number" groupingUsed="true" minFractionDigits="0" />đ</td>
                     </tr>
                     <tr>
                         <td><strong>Sale Prices</strong></td>
-                        <td>${service.sale_prices}</td>
+                        <td><fmt:formatNumber value="${service.sale_prices}" type="number" groupingUsed="true" minFractionDigits="0" />đ</td>
                     </tr>
                     <tr>
                         <td><strong>Quantity</strong></td>
@@ -80,14 +80,14 @@
                     </tr>
                     <tr>
                         <td><strong>Update Date</strong></td>
-                        <td>${service.date_add}</td>
+                        <td id="dateAdd">${service.date_add}</td>
                     </tr>
                     <tr>
                         <td><strong>Create Date</strong></td>
-                        <td>${service.create_date}</td>
+                        <td id="dateCreate">${service.create_date}</td>
                     </tr>
                     <c:if test="${not empty service.img_service}">
-                        
+
                         <tr>
                             <td><strong>Service Image</strong></td>
                             <td colspan="2">
@@ -102,5 +102,25 @@
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <script src="scripts.js"></script>
+        <script>
+            var updateDateString = document.getElementById("dateAdd").innerText;
+            var updateDate = new Date(updateDateString);
+
+            var formattedUpdateDate = ("0" + updateDate.getDate()).slice(-2) + "/" +
+                    ("0" + (updateDate.getMonth() + 1)).slice(-2) + "/" +
+                    updateDate.getFullYear();
+
+            document.getElementById("dateAdd").innerText = formattedUpdateDate;
+
+// Định dạng ngày tháng cho Create Date
+            var createDateString = document.getElementById("dateCreate").innerText;
+            var createDate = new Date(createDateString);
+
+            var formattedCreateDate = ("0" + createDate.getDate()).slice(-2) + "/" +
+                    ("0" + (createDate.getMonth() + 1)).slice(-2) + "/" +
+                    createDate.getFullYear();
+
+            document.getElementById("dateCreate").innerText = formattedCreateDate;
+        </script>
     </body>
 </html>

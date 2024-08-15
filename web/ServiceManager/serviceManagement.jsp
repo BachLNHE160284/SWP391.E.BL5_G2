@@ -235,7 +235,7 @@
                                 <td>${services.name_service}</td>
                                 <td>${services.category_name}</td>
                                 <td>${services.service_detail}</td>
-                                <td>${services.date_add}</td>
+                                <td class="dateAdd">${services.date_add}</td>
                                 <td class="${services.service_Status == 1 ? 'status-active' : 'status-inactive'}">
                                     ${services.service_Status == 1 ? 'Active' : 'Inactive'}
                                 </td>
@@ -298,6 +298,20 @@
                 // Submit the form when sortOrder changes
                 submitSortingForm();
             });
+
+            document.querySelectorAll('.dateAdd').forEach(function (element) {
+                var dateString = element.innerText;
+                var date = new Date(dateString);
+
+                if (!isNaN(date)) { // Kiểm tra nếu giá trị ngày hợp lệ
+                    var formattedDate = ("0" + date.getDate()).slice(-2) + "/" +
+                            ("0" + (date.getMonth() + 1)).slice(-2) + "/" +
+                            date.getFullYear();
+
+                    element.innerText = formattedDate;
+                }
+            });
+
         </script>
     </body>
 </html>
