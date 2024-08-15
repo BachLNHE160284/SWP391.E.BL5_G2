@@ -21,7 +21,7 @@ import model.UserDTO;
  *
  * @author MinhHieu
  */
-public class UserDAO {
+public class UserDAO extends DBContext {
 
     Connection conn = null;
     PreparedStatement ps = null;
@@ -194,8 +194,8 @@ public class UserDAO {
 
         }
     }
-    
-    public List<UserDTO> getAll(){
+
+    public List<UserDTO> getAll() {
         String query = "SELECT * FROM [SWP391BL5G2_4].[dbo].[user] u LEFT JOIN [role] r on u.role_id = r.role_id";
         ResultSet rs = null;
         PreparedStatement ps = null;
@@ -205,7 +205,7 @@ public class UserDAO {
             conn = new DBContext().getConnection(); // Open connection to SQL
             ps = conn.prepareStatement(query);
             rs = ps.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 UserDTO user = new UserDTO();
                 user.setUser_id(rs.getInt("user_id"));
                 user.setFullname(rs.getString("fullname"));
@@ -221,6 +221,41 @@ public class UserDAO {
         } catch (Exception ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return users;
+    }
+
+    //BachLNHE160284
+    public List<User> getAllUser() {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT * FROM [user];";
+
+        try (
+                Connection conn = getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery() 
+                ) {
+
+            while (rs.next()) {
+                User user = new User();
+                user.setUser_id(rs.getInt("user_id"));
+                user.setFullname(rs.getString("fullname"));
+                user.setGender(rs.getBoolean("gender"));
+                user.setPhone_number(rs.getString("phone_number"));
+                user.setEmail_address(rs.getString("email_address"));
+                user.setAddress(rs.getString("address"));
+                user.setUsername(rs.getString("username"));
+                user.setPassword(rs.getString("password"));
+                user.setAvartar(rs.getString("avartar"));
+                user.setRole_id(rs.getInt("role_id"));
+                user.setStatus(rs.getInt("Status"));
+                user.setCreate_date(rs.getString("create_date"));
+
+                users.add(user);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
         return users;
     }
 

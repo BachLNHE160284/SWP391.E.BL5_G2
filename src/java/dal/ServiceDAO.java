@@ -12,6 +12,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Category;
 import model.Service;
 
@@ -21,6 +23,7 @@ import model.Service;
  */
 public class ServiceDAO extends DBContext {
 
+    //BACHLNHE160284
     public void addService(Service service) {
         String sql = "INSERT INTO service (name_service, original_prices, sale_prices, quantity, category_id, thumbnail, "
                 + "brief_infor, service_detail, img_service, date_add, service_Status, create_date) "
@@ -42,6 +45,7 @@ public class ServiceDAO extends DBContext {
         }
     }
 
+    //BACHLNHE160284
     public List<Service> getAllService() {
         List<Service> services = new ArrayList<>();
         String sql = "SELECT s.service_id, s.name_service, s.original_prices, s.sale_prices, s.quantity, s.thumbnail, s.brief_infor,\n"
@@ -79,6 +83,7 @@ public class ServiceDAO extends DBContext {
         return services;
     }
 
+    //BACHLNHE160284
     public void updateService(Service service) {
         String sql = "UPDATE service SET name_service = ?, original_prices = ?, sale_prices = ?, quantity = ?, "
                 + "category_id = ?, thumbnail = ?, brief_infor = ?, service_detail = ?, img_service = ?, "
@@ -103,6 +108,7 @@ public class ServiceDAO extends DBContext {
         }
     }
 
+    //BACHLNHE160284
     public Service getServiceById(int service_id) {
         Service service = null;
         String sql = "SELECT s.*, c.category_name FROM service s "
@@ -141,6 +147,7 @@ public class ServiceDAO extends DBContext {
         return service;
     }
 
+    //BACHLNHE160284
     public void deleteService(int serviceId) {
         String sql = "DELETE FROM service WHERE service_id = ?";
         try ( PreparedStatement ps = getConnection().prepareStatement(sql)) {
@@ -151,6 +158,7 @@ public class ServiceDAO extends DBContext {
         }
     }
 
+    //BACHLNHE160284
     public int countSearch(String search) {
         String sql = "select count(*) from service where name_service like ?";
         try {
@@ -165,6 +173,7 @@ public class ServiceDAO extends DBContext {
         return 0;
     }
 
+    //BACHLNHE160284
     public List<Service> searchServices(String searchTerm, String sortField, String sortOrder, int page, int pageSize) throws Exception {
         List<Service> services = new ArrayList<>();
         String sql = "SELECT s.service_id, s.name_service, s.original_prices, s.sale_prices, s.quantity, s.thumbnail, s.brief_infor,\n"
@@ -205,6 +214,7 @@ public class ServiceDAO extends DBContext {
         return services;
     }
 
+    //BACHLNHE160284
     public int getTotalServiceCount() throws Exception {
         String sql = "SELECT COUNT(*) FROM service";
         try ( Connection conn = getConnection();  PreparedStatement ps = conn.prepareStatement(sql);  ResultSet rs = ps.executeQuery()) {
@@ -217,6 +227,7 @@ public class ServiceDAO extends DBContext {
         return 0;
     }
 
+    //BACHLNHE160284
     public List<Service> pagingService(int page, String sortField, String sortOrder) throws Exception {
         List<Service> services = new ArrayList<>();
         String sql = "SELECT s.service_id, s.name_service, s.original_prices, s.sale_prices, s.quantity, s.thumbnail, s.brief_infor,\n"
@@ -255,48 +266,6 @@ public class ServiceDAO extends DBContext {
         return services;
     }
 
-//    public static void main(String[] args) {
-//        ServiceDAO dao = new ServiceDAO();
-//        int a = dao.countSearch("da");
-//        System.out.println(a);
-//
-//    }
-    public static void main(String[] args) {
-        ServiceDAO serviceDAO = new ServiceDAO();
-
-        try {
-            // Thay đổi các tham số này để kiểm tra các trường hợp khác nhau
-            int page = 1; // Trang cần kiểm tra
-            String sortField = "service_id"; // Trường sắp xếp
-            String sortOrder = "ASC"; // Thứ tự sắp xếp
-
-            // Gọi phương thức pagingService
-            List<Service> services = serviceDAO.pagingService(page, sortField, sortOrder);
-
-            // In kết quả
-            if (services.isEmpty()) {
-                System.out.println("Không có dịch vụ nào.");
-            } else {
-                for (Service service : services) {
-                    System.out.println("ID: " + service.getService_id());
-                    System.out.println("Tên dịch vụ: " + service.getName_service());
-                    System.out.println("Giá gốc: " + service.getOriginal_prices());
-                    System.out.println("Giá khuyến mãi: " + service.getSale_prices());
-                    System.out.println("Số lượng: " + service.getQuantity());
-                    System.out.println("Danh mục: " + service.getCategory_name());
-                    System.out.println("Thumbnail: " + service.getThumbnail());
-                    System.out.println("Thông tin ngắn: " + service.getBrief_infor());
-                    System.out.println("Chi tiết dịch vụ: " + service.getService_detail());
-                    System.out.println("Ngày thêm: " + service.getDate_add());
-                    System.out.println("Trạng thái: " + (service.getService_Status() == 1 ? "Active" : "Inactive"));
-                    System.out.println("Ngày tạo: " + service.getCreate_date());
-                    System.out.println("Ảnh dịch vụ: " + service.getImg_service());
-                    System.out.println("-----------------------------");
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+    
 
 }

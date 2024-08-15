@@ -39,71 +39,63 @@
             .btn-primary:hover {
                 background-color: #ff4b3a;
             }
-
-            .form-label {
-                font-weight: bold;
-            }
-
-            .form-control {
-                border-radius: 4px;
-            }
-
-            .form-select {
-                border-radius: 4px;
-            }
         </style>
     </head>
     <body>
         <div class="container mt-5">
             <h2 class="mb-4">View Service</h2>
             <form id="addProductForm" action="AddServiceServlet" method="POST" enctype="multipart/form-data">
-                <div class="mb-3">
-                    <label for="name_service" class="form-label">Service Name</label>
-                    <input type="text" class="form-control" id="name_service" name="name_service" value="${service.name_service}" readonly required>
-                </div>
-                <div class="mb-3">
-                    <label for="original_prices" class="form-label">Original Prices</label>
-                    <input type="number" step="0.01" class="form-control" id="original_prices" name="original_prices" value="${service.original_prices}" readonly required>
-                </div>
-                <div class="mb-3">
-                    <label for="sale_prices" class="form-label">Sale Prices</label>
-                    <input type="number" step="0.01" class="form-control" id="sale_prices" name="sale_prices" value="${service.sale_prices}" readonly required>
-                </div>
-                <div class="mb-3">
-                    <label for="quantity" class="form-label">Quantity</label>
-                    <input type="number" class="form-control" id="quantity" name="quantity" value="${service.quantity}" readonly required>
-                </div>
-                <div class="mb-3">
-                    <label for="category_name" class="form-label">Category</label>
-                    <input type="text" class="form-control" id="category_name" name="category_name" value="${service.category.category_name}" readonly required>
-                </div>
-                
-                <div class="mb-3">
-                    <label for="thumbnail" class="form-label">Thumbnail</label>
-                    <input type="text" class="form-control" id="thumbnail" name="thumbnail" value="${service.thumbnail}" readonly>
-                </div>
-                <div class="mb-3">
-                    <label for="brief_infor" class="form-label">Brief Information</label>
-                    <textarea class="form-control" id="brief_infor" name="brief_infor" rows="2" readonly>${service.thumbnail}</textarea>
-                </div>
-                <div class="mb-3">
-                    <label for="service_detail" class="form-label">Service Detail</label>
-                    <textarea class="form-control" id="service_detail" name="service_detail" rows="3" readonly>${service.service_detail}</textarea>
-                </div>
-                <div class="mb-3">
-                    <label for="date_add" class="form-label">Update Date</label>
-                    <input type="text" class="form-control" id="date_add" name="date_add" value="${service.date_add}" readonly>
-                </div>
-                <div class="mb-3">
-                    <label for="create_date" class="form-label">Create Date</label>
-                    <input type="text" class="form-control" id="create_date" name="create_date" value="${service.create_date}" readonly>
-                </div>
-                <c:if test="${not empty service.img_service}">
-                        <div class="mb-3">
-                            <label for="img_service" class="form-label"></label>
-                            <img id="img_service" name="img_service" src="${pageContext.request.contextPath}/${service.img_service}" width="200" />
-                        </div>
+                <table class="table table-bordered">
+                    <tr>
+                        <td><strong>Service Name</strong></td>
+                        <td>${service.name_service}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Original Prices</strong></td>
+                        <td>${service.original_prices}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Sale Prices</strong></td>
+                        <td>${service.sale_prices}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Quantity</strong></td>
+                        <td>${service.quantity}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Category</strong></td>
+                        <td>${service.category.category_name}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Thumbnail</strong></td>
+                        <td>${service.thumbnail}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Brief Information</strong></td>
+                        <td>${service.brief_infor}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Service Detail</strong></td>
+                        <td>${service.service_detail}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Update Date</strong></td>
+                        <td>${service.date_add}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Create Date</strong></td>
+                        <td>${service.create_date}</td>
+                    </tr>
+                    <c:if test="${not empty service.img_service}">
+                        
+                        <tr>
+                            <td><strong>Service Image</strong></td>
+                            <td colspan="2">
+                                <img id="img_service" name="img_service" src="${pageContext.request.contextPath}/${service.img_service}" width="200" />
+                            </td>
+                        </tr>
                     </c:if>
+                </table>
                 <a href="ServiceManagementServlet" class="btn btn-primary w-100">Back to Service Management</a>
             </form>
         </div>
