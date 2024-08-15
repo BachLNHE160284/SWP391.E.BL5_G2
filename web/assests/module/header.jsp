@@ -13,6 +13,7 @@
 
                 <li><a class="nav-link scrollto " href="HomePage">Home</a></li>
                 <li><a class="nav-link scrollto" href="BlogList">Blogs</a></li>
+                <li><a class="nav-link scrollto" href="ServiceList">Services</a></li>
 
                 <c:if test="${sessionScope.listSetting.get(1).setting_status==true}">
 
@@ -40,7 +41,7 @@
                         </ul>
                     </li>
                 </c:if>
-                <c:if test="${sessionScope.account.user_id != null || sessionScope.admin.user_id != null}">
+                <c:if test="${sessionScope.acc != null || sessionScope.acc != null}">
                     <li class="dropdown"><a href="#"><span>User Manager</span><i class="bi bi-chevron-right"></i></a>
                         <ul>
                             <li><a href="user_profile">Edit profile</a></li>
@@ -51,7 +52,7 @@
                                 </c:if>
                             <li><a href="UserMedicalexammination">Medical exammination</a></li>
                             <li><a href="changpassword">Change Password</a></li>
-                            <li><a href="logout">Logout</a></li>
+                            <li><a href="Logout">Logout</a></li>
                         </ul>
                     </li>
                 </c:if>
@@ -72,26 +73,40 @@
             </span>
         </a>
         <c:choose>
-            <c:when test="${sessionScope.account != null || sessionScope.admin != null}">
+            <c:when test="${sessionScope.acc != null || sessionScope.admin != null}">
                 <c:choose>
-                    <c:when test="${sessionScope.account != null}">
-                        <a href="user_profile" class="btn btn-#fff ms-lg-2">
-                            <p><img style="margin-top: 25px;height: 50px; width: 50px; border-radius: 50%;" src="./resouce/image/${sessionScope.account.user_image}"></p> <p> ${sessionScope.account.user_name}</p></a>     
-                            </c:when>
-                            <c:otherwise>
-                        <a href="user_profile" class="btn btn-#fff ms-lg-2">
-                            <p><img style="margin-top: 25px;height: 50px; width: 50px; border-radius: 50%; background-color: #fff;border-color: #fff;border: 2px solid #fff;" src="./resouce/image/${sessionScope.admin.user_image}"></p> <p> ${sessionScope.admin.user_name}</p></a>
-                            </c:otherwise>
-                        </c:choose>
+                    <c:when test="${sessionScope.acc != null}">
+                        <a href="#" class="btn btn-#fff ms-lg-2">
+                            <p>
+                                <img style="margin-top: 25px;height: 50px; width: 50px; border-radius: 50%;" 
+                                     src="./${sessionScope.acc.avartar}" alt="User Image">
+                            </p> 
+                            <p>${sessionScope.acc.username}</p>
+                        </a>     
                     </c:when>
                     <c:otherwise>
-                <a href="login" style="padding: 25px; margin-top: 20px;"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16" style="color: gray;">
+                        <a href="#" class="btn btn-#fff ms-lg-2">
+                            <p>
+                                <img style="margin-top: 25px;height: 50px; width: 50px; border-radius: 50%; background-color: #fff; border-color: #fff; border: 2px solid #fff;" 
+                                     src="./${sessionScope.admin.avartar}" alt="Admin Image">
+                            </p> 
+                            <p>${sessionScope.admin.username}</p>
+                        </a>
+                    </c:otherwise>
+                </c:choose>
+            </c:when>
+            <c:otherwise>
+                <a href="Login.jsp" style="padding: 25px; margin-top: 20px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16" style="color: gray;">
                     <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
                     <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
                     </svg>
-                    <p>Login</p></a>
-                </c:otherwise>
-            </c:choose>
+                    <p>Login</p>
+                </a>
+            </c:otherwise>
+        </c:choose>
+
+
 
     </div>
 </header>

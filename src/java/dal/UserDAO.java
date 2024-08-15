@@ -212,6 +212,7 @@ public class UserDAO extends DBContext {
                 user.setGender(rs.getBoolean("gender"));
                 user.setEmail_address("email_address");
                 user.setPhone_number("phone_number");
+                user.setAvatar(rs.getString("avartar"));
                 Role role = new Role();
                 role.setRole_name(rs.getString("role_name"));
                 user.setRole(role);

@@ -16,6 +16,7 @@ public class UserDTO {
     private String email_address;
     private Role role;
     private int status;
+    private String avatar;
 
     public int getUser_id() {
         return user_id;
@@ -72,6 +73,15 @@ public class UserDTO {
     public void setStatus(int status) {
         this.status = status;
     }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+    
     
     
 }

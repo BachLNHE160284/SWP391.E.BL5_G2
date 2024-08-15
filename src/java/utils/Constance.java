@@ -12,7 +12,7 @@ public class Constance {
     /**
      * SETUP kết nối database
      */
-    final public static String PORTNUMBER = "1433";
+    final public static String PORTNUMBER = "1143";
     final public static String SERVERNAME = "localhost";
     final public static String DATABASENAME = "SWP391BL5G2_REAL";
     final public static String USER_ACCOUNT_DATABASE = "sa";

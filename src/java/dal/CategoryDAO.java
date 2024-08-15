@@ -16,7 +16,7 @@ import model.Category;
  * @author lebac
  */
 public class CategoryDAO extends DBContext{
-    public List<Category> getAllCategories() throws Exception {
+    public List<Category> getAllCategories() {
         List<Category> list = new ArrayList<>();
         try {
             String sql = "select * from category";
@@ -28,7 +28,7 @@ public class CategoryDAO extends DBContext{
                 cate.setCategory_name(rs.getString("category_name"));
                 list.add(cate);
             }
-        } catch (SQLException | ClassNotFoundException ex) {
+        } catch (Exception ex) {
         }
         return list;
     }
