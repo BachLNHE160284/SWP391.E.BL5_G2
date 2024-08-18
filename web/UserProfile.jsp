@@ -62,17 +62,17 @@
                     <div class="card profile-card bg-light">
                         <div class="card-body">
                             <h3>About You</h3>
-                            <p><strong>User ID:</strong> ${acc.user_id}</p>
-                            <p><strong>Full Name:</strong> ${acc.fullname}</p>
-                            <p><strong>Gender:</strong> ${acc.gender ? "Male" : "Female"}</p>
-                            <p><strong>Phone Number:</strong> ${acc.phone_number}</p>
-                            <p><strong>Email Address:</strong> ${acc.email_address}</p>
-                            <p><strong>Address:</strong> ${acc.address}</p>
-                            <p><strong>Username:</strong> ${acc.username}</p>
-                            <p><strong>Avatar:</strong> <img src="${acc.avartar}" alt="User Avatar" style="width:100px;height:auto;border-radius:50%;"></p>
-                            <p><strong>Role ID:</strong> ${acc.role_id}</p>
-                            <p><strong>Status:</strong> ${acc.status == 1 ? "Active" : "Inactive"}</p>
-                            <p><strong>Create Date:</strong> ${acc.create_date}</p>
+                            <p class="info-field"><strong>User ID:</strong> <span>${acc.user_id}</span></p>
+                            <p class="info-field"><strong>Full Name:</strong> <span>${acc.fullname}</span></p>
+                            <p class="info-field"><strong>Gender:</strong> <span>${acc.gender ? "Male" : "Female"}</span></p>
+                            <p class="info-field"><strong>Phone Number:</strong> <span>${acc.phone_number}</span></p>
+                            <p class="info-field"><strong>Email Address:</strong> <span>${acc.email_address}</span></p>
+                            <p class="info-field"><strong>Address:</strong> <span>${acc.address}</span></p>
+                            <p class="info-field"><strong>Username:</strong> <span>${acc.username}</span></p>
+                            <p class="info-field"><strong>Avatar:</strong> <img src="${acc.avartar}" alt="User Avatar" style="width:100px;height:auto;border-radius:50%;"></p>
+                            <p class="info-field"><strong>Role ID:</strong> <span>${acc.role_id}</span></p>
+                            <p class="info-field"><strong>Status:</strong> <span>${acc.status == 1 ? "Active" : "Inactive"}</span></p>
+                            <p class="info-field"><strong>Create Date:</strong> <span>${acc.create_date}</span></p>
                         </div>
                     </div>
                 </div>

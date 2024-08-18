@@ -1,7 +1,6 @@
 package controller;
 
 import dal.UserDAO;
-import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -9,6 +8,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.User;
+
+import java.io.IOException;
 
 @WebServlet(name = "UserProfile", urlPatterns = {"/userProfile"})
 public class UserProfile extends HttpServlet {
@@ -19,8 +20,8 @@ public class UserProfile extends HttpServlet {
         // Retrieve the current session
         HttpSession session = request.getSession();
 
-        // Get the user's email address from the session (assuming the user is logged in and the email is stored in session)
-        String email = (String) session.getAttribute("email");
+        // Get the user's email address from the session
+        String email = (String) session.getAttribute("userEmail");
 
         // If email is not found in the session, handle accordingly
         if (email == null) {

@@ -350,6 +350,7 @@ public class UserDAO extends DBContext {
         }
         return null; // Return null if user not found or an exception occurred
     }
+    
 
     public static void main(String[] args) {
         UserDAO dAO = new UserDAO();

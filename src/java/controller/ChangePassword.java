@@ -1,75 +1,89 @@
 package controller;
 
 import dal.UserDAO;
-import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.util.regex.Pattern;
 import model.User;
+
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @WebServlet(name = "ChangePassword", urlPatterns = {"/changePassword"})
 public class ChangePassword extends HttpServlet {
 
-    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{10,40}$");
-
-    private boolean isPasswordValid(String password) {
-        return PASSWORD_PATTERN.matcher(password).matches();
-    }
-
-    private boolean isOldPasswordCorrect(HttpServletRequest request, User acc) {
-        String oldPass = request.getParameter("oldpass");
-        return acc != null && acc.getPassword().equals(oldPass);
-    }
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/ChangePassword.jsp").forward(request, response);
+        // Forward to changePassword.jsp to display the form
+        request.getRequestDispatcher("/changePassword.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Retrieve parameters from the request
+        String oldPassword = request.getParameter("oldpass");
+        String newPassword = request.getParameter("newpass");
+        String rePassword = request.getParameter("repass");
+
+        // Get email from the session
         HttpSession session = request.getSession();
-        User acc = (User) session.getAttribute("acc");
+        String email = (String) session.getAttribute("userEmail");
 
-        if (acc == null || !isOldPasswordCorrect(request, acc)) {
-            request.setAttribute("mess", "Wrong old password");
+        if (email == null) {
+            // Handle case where email is not available in session (user might not be logged in)
             request.setAttribute("messType", "error");
-            request.getRequestDispatcher("/ChangePassword.jsp").forward(request, response);
+            request.setAttribute("mess", "User is not logged in.");
+            request.getRequestDispatcher("/changePassword.jsp").forward(request, response);
             return;
         }
 
-        String newPass = request.getParameter("newpass");
-        String rePass = request.getParameter("repass");
+        UserDAO userDAO = new UserDAO();
+        try {
+            // Check if the new passwords match
+            if (!newPassword.equals(rePassword)) {
+                request.setAttribute("messType", "error");
+                request.setAttribute("mess", "New passwords do not match.");
+                request.getRequestDispatcher("/changePassword.jsp").forward(request, response);
+                return;
+            }
 
-        if (newPass == null || !newPass.equals(rePass)) {
-            request.setAttribute("mess", "New password and confirmation password do not match");
+            // Retrieve the current user to verify old password
+            User currentUser = userDAO.getUserByEmail(email);
+            if (currentUser == null || !currentUser.getPassword().equals(oldPassword)) {
+                request.setAttribute("messType", "error");
+                request.setAttribute("mess", "Old password is incorrect.");
+                request.getRequestDispatcher("/changePassword.jsp").forward(request, response);
+                return;
+            }
+
+            // Update the password
+            boolean isUpdated = userDAO.updateByEmail(email, newPassword);
+            if (isUpdated) {
+                request.setAttribute("messType", "success");
+                request.setAttribute("mess", "Password successfully changed.");
+                // Optionally, you might want to refresh user data in session
+                User updatedUser = userDAO.getUserByEmail(email);
+                session.setAttribute("userEmail", updatedUser.getEmail_address()); // Update session with new user data
+                session.setAttribute("currentUser", updatedUser); // If you have a User object in session
+            } else {
+                request.setAttribute("messType", "error");
+                request.setAttribute("mess", "Failed to change password. Please try again.");
+            }
+
+            // Forward to UserProfile.jsp to display the updated profile
+            request.getRequestDispatcher("/UserProfile.jsp").forward(request, response);
+
+        } catch (Exception ex) {
+            Logger.getLogger(ChangePassword.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute("messType", "error");
-            request.getRequestDispatcher("/ChangePassword.jsp").forward(request, response);
-            return;
+            request.setAttribute("mess", "An error occurred. Please try again later.");
+            request.getRequestDispatcher("/changePassword.jsp").forward(request, response);
         }
-
-        if (!isPasswordValid(newPass)) {
-            request.setAttribute("mess", "Password must be 10-40 characters long and include at least one letter and one number");
-            request.setAttribute("messType", "error");
-            request.getRequestDispatcher("/ChangePassword.jsp").forward(request, response);
-            return;
-        }
-
-        UserDAO dao = new UserDAO();
-        dao.changePassword(acc.getEmail_address(), newPass);
-        request.setAttribute("mess", "Password changed successfully");
-        request.setAttribute("messType", "success");
-        request.getRequestDispatcher("/ChangePassword.jsp").forward(request, response);
-    }
-
-    @Override
-    public String getServletInfo() {
-        return "Servlet for changing password";
     }
 }
