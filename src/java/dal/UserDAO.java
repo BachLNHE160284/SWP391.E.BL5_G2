@@ -280,7 +280,7 @@ public class UserDAO extends DBContext {
         String sql = "SELECT * FROM [user];";
 
         try (
-                Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+                 Connection conn = getConnection();  PreparedStatement ps = conn.prepareStatement(sql);  ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
                 User user = new User();
@@ -304,6 +304,51 @@ public class UserDAO extends DBContext {
         }
 
         return users;
+    }
+
+    public User getUserByEmail(String email) {
+        String query = "SELECT * FROM [SWP391BL5G2_4].[dbo].[user] WHERE [email_address] = ?";
+
+        try {
+            conn = new DBContext().getConnection(); // Open connection to SQL
+            ps = conn.prepareStatement(query);
+            ps.setString(1, email);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return new User(
+                        rs.getInt("user_id"),
+                        rs.getString("fullname"),
+                        rs.getBoolean("gender"),
+                        rs.getString("phone_number"),
+                        rs.getString("email_address"),
+                        rs.getString("address"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getString("avartar"),
+                        rs.getInt("role_id"),
+                        rs.getInt("Status"),
+                        rs.getString("create_date")
+                );
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Log the exception
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace(); // Log the exception
+            }
+        }
+        return null; // Return null if user not found or an exception occurred
     }
 
     public static void main(String[] args) {
