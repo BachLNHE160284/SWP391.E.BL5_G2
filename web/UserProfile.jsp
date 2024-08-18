@@ -46,17 +46,6 @@
 <body>
 
     <div class="container my-5">
-        <div class="text-center mb-4">
-            <form action="updateProfile" method="get" class="d-inline">
-                <button type="submit" class="btn btn-dark btn-sm">Update Profile</button>
-            </form>
-
-            <!-- Change Password Button -->
-            <form action="changePassword" method="get" class="d-inline">
-                <button type="submit" class="btn btn-dark btn-sm ml-2">Change Password</button>
-            </form>
-        </div>
-
         <h1 class="text-center mb-5">Your Profile</h1>
 
         <div class="row">
@@ -78,6 +67,15 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div class="text-center mb-4">
+            <!-- Button to navigate to the Update Profile page -->
+            <a href="updateProfile" class="btn btn-dark btn-sm">Update Profile</a>
+            <!-- Button to navigate to the Change Password page -->
+            <a href="changePassword" class="btn btn-dark btn-sm ml-2">Change Password</a>
+            <!-- Button to navigate back to the Home Page -->
+            <a href="HomePage.jsp" class="btn btn-dark btn-sm ml-2">Back to Home Page</a>
         </div>
 
         <!-- Bootstrap JS and dependencies -->
