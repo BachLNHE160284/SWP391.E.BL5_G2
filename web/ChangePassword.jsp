@@ -73,7 +73,6 @@
 <body>
     <div class="form-container">
         <h1 class="form-title">Change Password</h1>
-        <p>Change Password email: <strong><%= request.getAttribute("userEmail") %></strong></p>
         <form action="changePassword" method="post">
             <div class="mb-3">
                 <label for="oldpass" class="form-label">Old Password</label>
@@ -86,15 +85,27 @@
             </div>
 
             <div class="mb-3">
-                <label for="repass" class="form-label">Re-enter New Password</label>
-                <input type="password" class="form-control" id="repass" name="repass" placeholder="Re-enter New Password" required>
+                <label for="repass" class="form-label">Confirm New Password</label>
+                <input type="password" class="form-control" id="repass" name="repass" placeholder="Confirm New Password" required>
             </div>
 
-            <div class="message <%= request.getAttribute("messType") != null ? request.getAttribute("messType") : "" %>">
-                <p><strong><%= request.getAttribute("mess") != null ? request.getAttribute("mess") : "" %></strong></p>
-            </div>
+            <button type="submit" class="btn-submit">Change Password</button>
 
-            <input type="submit" value="Change Password" class="btn btn-submit">
+            <div class="message">
+                <% 
+                    String messType = (String) request.getAttribute("messType");
+                    String mess = (String) request.getAttribute("mess");
+                    if (mess != null) {
+                        String color = "black";
+                        if ("success".equals(messType)) {
+                            color = "blue";
+                        } else if ("error".equals(messType)) {
+                            color = "red";
+                        }
+                %>
+                <p class="<%= messType %>" style="color: <%= color %>;"><%= mess %></p>
+                <% } %>
+            </div>
         </form>
     </div>
 </body>
