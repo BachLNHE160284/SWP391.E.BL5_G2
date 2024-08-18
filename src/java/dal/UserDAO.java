@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -210,8 +211,8 @@ public class UserDAO extends DBContext {
                 user.setUser_id(rs.getInt("user_id"));
                 user.setFullname(rs.getString("fullname"));
                 user.setGender(rs.getBoolean("gender"));
-                user.setEmail_address("email_address");
-                user.setPhone_number("phone_number");
+                user.setEmail_address(rs.getString("email_address"));
+                user.setPhone_number(rs.getString("phone_number"));
                 user.setAvatar(rs.getString("avartar"));
                 Role role = new Role();
                 role.setRole_id(rs.getInt("role_id"));
@@ -237,6 +238,34 @@ public class UserDAO extends DBContext {
             ps.setInt(1, user.getRole().getRole_id());
             ps.setInt(2, user.getStatus());
             ps.setInt(3, user.getUser_id());
+            int affectedRows = ps.executeUpdate();
+            return affectedRows;
+        } catch (Exception ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
+
+    public int addNewUser(User user) {
+        try {
+            String sql = "INSERT INTO [dbo].[user]\n"
+                    + "           ([email_address]\n"
+                    + "           ,[username]\n"
+                    + "           ,[password]\n"
+                    + "           ,[role_id]\n"
+                    + "           ,[Status]\n"
+                    + "           ,[create_date]) VALUES (? , ? , ? , ? , ? , ?)";
+            ResultSet rs = null;
+            PreparedStatement ps = null;
+            Connection conn = null;
+            conn = new DBContext().getConnection(); // Open connection to SQL
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, user.getEmail_address());
+            ps.setString(2, user.getEmail_address());
+            ps.setString(3, user.getPassword());
+            ps.setInt(4, user.getRole_id());
+            ps.setInt(5, 1);
+            ps.setDate(6, new java.sql.Date(new Date().getTime()));
             int affectedRows = ps.executeUpdate();
             return affectedRows;
         } catch (Exception ex) {

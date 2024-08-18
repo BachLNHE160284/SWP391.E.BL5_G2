@@ -107,7 +107,7 @@
                 </tbody>
             </table>
             <div class="add-user-button">
-                <button class="btn btn-success">Add new user</button>
+                <button class="btn btn-success" id="addUserButton">Add new user</button>
             </div>
         </div>
 
@@ -159,6 +159,42 @@
                 </div>
             </div>
         </div>
+        <!-- Add New User Modal -->
+        <div class="container">
+            <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addUserModalLabel">Add New User</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="addUserForm">
+                                <div class="mb-3">
+                                    <label for="newUserEmail" class="form-label">Email:</label>
+                                    <input type="email" class="form-control" id="newUserEmail" name="email" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="newUserRole" class="form-label">Role:</label>
+                                    <select class="form-select" id="newUserRole" name="role" required>
+                                        <option value="" disabled selected hidden>Select a role</option>
+                                        <c:forEach items="${roles}" var="role">
+                                            <option value="${role.role_id}">${role.role_name}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Add User</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <!-- Edit user popup -->    
         <div class="container">
             <!-- Edit User Info Modal -->
@@ -329,6 +365,65 @@
                         },
                         error: function (error) {
                             alert('Error updating user information.');
+                        }
+                    });
+                });
+                // Show "Add New User" modal when the button is clicked
+                $('#addUserButton').click(function () {
+                    $('#addUserModal').modal('show');
+                });
+
+                // Handle the "Add New User" form submission
+                $('#addUserForm').submit(function (event) {
+                    event.preventDefault(); // Prevent form from submitting normally
+
+                    // Get form values
+                    let email = $('#newUserEmail').val().trim();
+                    let role = $('#newUserRole').val();
+
+                    // Email validation regex
+                    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+                    // Validate email field
+                    if (email === '') {
+                        alert('Email field cannot be empty.');
+                        return;
+                    } else if (!emailRegex.test(email)) {
+                        alert('Please enter a valid email address.');
+                        return;
+                    }
+
+                    // Validate role field
+                    if (role === null) {
+                        alert('Please select a role.');
+                        return;
+                    }
+
+                    // Prepare the data to be sent
+                    let newUserData = {
+                        email: email,
+                        role: role
+                    };
+
+                    // Send AJAX POST request
+                    $.ajax({
+                        url: 'admin-add-user',
+                        method: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(newUserData),
+                        success: function (response) {
+                            if (response === "1") {
+                                alert('User added successfully.');
+                                // Close the modal
+                                $('#addUserModal').modal('hide');
+                                // Optionally, reload the page to update the user list
+                                location.reload();
+                            } else {
+                                alert(response);
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            alert('Error: ' + error);
                         }
                     });
                 });
