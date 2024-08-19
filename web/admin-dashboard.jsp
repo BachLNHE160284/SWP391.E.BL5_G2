@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -78,6 +79,10 @@
                 background-color: #007bff;
                 color: white;
             }
+            .currency {
+                font-size: large;
+                color: blue;
+            }
             tr:nth-child(even) {
                 background-color: #f2f2f2;
             }
@@ -143,7 +148,8 @@
                     <c:forEach var="revenue" items="${statistic.revenues}">
                         <tr>
                             <td>${revenue.category.category_name} </td>
-                            <td>${revenue.revenue}</td>
+                            <c:set var="amount" value="${revenue.revenue}" />
+                            <td class="currency"><fmt:formatNumber value="${amount}" type="currency" currencySymbol="$" currencyCode="USD" /></td>
                         </tr>
                     </c:forEach>
                     <c:if test="${empty statistic.revenues}">
