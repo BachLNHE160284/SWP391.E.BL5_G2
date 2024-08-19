@@ -49,7 +49,7 @@ public class ServiceList extends HttpServlet {
             out.println("</html>");
         }
     }
-    private static final int PAGE_SIZE = 2;
+    private static final int PAGE_SIZE = 5;
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -63,6 +63,7 @@ public class ServiceList extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
 //        ServiceDAO serviceDao = new ServiceDAO();
 //        CategoryDAO ctd = new CategoryDAO();
 //        List<Service> listService = serviceDao.getAllService();
@@ -70,7 +71,28 @@ public class ServiceList extends HttpServlet {
 //
 //        request.setAttribute("listService", listService);
 //        request.setAttribute("listCate", listCate);
+//        String pageIndexStr = request.getParameter("page");
+//        int pageIndex = 1;
+//        if (pageIndexStr != null) {
+//            pageIndex = Integer.parseInt(pageIndexStr);
+//        }
+//
+//        ServiceDAO serviceDAO = new ServiceDAO();
+//        CategoryDAO ctd = new CategoryDAO();
+//        
+//        List<Category> listCate = ctd.getAllCategories();
+//        List<Service> services = serviceDAO.getServices(pageIndex, PAGE_SIZE);
+//        int totalServices = serviceDAO.getTotalServices();
+//        int totalPages = (int) Math.ceil((double) totalServices / PAGE_SIZE);
+//
+//        request.setAttribute("listCate", listCate);
+//        request.setAttribute("services", services);
+//        request.setAttribute("currentPage", pageIndex);
+//        request.setAttribute("totalPages", totalPages);
+//        request.getRequestDispatcher("ServiceList.jsp").forward(request, response);
         String pageIndexStr = request.getParameter("page");
+        String cateIdStr = request.getParameter("cateId");
+
         int pageIndex = 1;
         if (pageIndexStr != null) {
             pageIndex = Integer.parseInt(pageIndexStr);
@@ -78,15 +100,28 @@ public class ServiceList extends HttpServlet {
 
         ServiceDAO serviceDAO = new ServiceDAO();
         CategoryDAO ctd = new CategoryDAO();
+
         List<Category> listCate = ctd.getAllCategories();
-        List<Service> services = serviceDAO.getServices(pageIndex, PAGE_SIZE);
-        int totalServices = serviceDAO.getTotalServices();
+        List<Service> services;
+        int totalServices;
+
+        if (cateIdStr != null && !cateIdStr.isEmpty()) {
+            int cateId = Integer.parseInt(cateIdStr);
+            services = serviceDAO.getServicesByCategoryId(cateId, pageIndex, PAGE_SIZE);
+            totalServices = serviceDAO.getTotalServicesByCategoryId(cateId);
+            request.setAttribute("selectedCateId", cateId); // Để theo dõi danh mục đã chọn
+        } else {
+            services = serviceDAO.getServices(pageIndex, PAGE_SIZE);
+            totalServices = serviceDAO.getTotalServices();
+        }
+
         int totalPages = (int) Math.ceil((double) totalServices / PAGE_SIZE);
 
         request.setAttribute("listCate", listCate);
         request.setAttribute("services", services);
         request.setAttribute("currentPage", pageIndex);
         request.setAttribute("totalPages", totalPages);
+
         request.getRequestDispatcher("ServiceList.jsp").forward(request, response);
 
     }

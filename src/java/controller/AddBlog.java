@@ -1,4 +1,4 @@
- /*
+/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
@@ -11,6 +11,7 @@ import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -88,14 +89,8 @@ public class AddBlog extends HttpServlet {
 
         String blogtitle = request.getParameter("title");
         String content = request.getParameter("content");
-        //int authorId = Integer.parseInt(request.getParameter("authorId"));
-        // Get the authorId from the session
-        Integer authorId = (Integer) request.getSession().getAttribute("authorId");
-        if (authorId == null) {
-            // Handle the case where authorId is not in the session
-            response.sendRedirect("Login.jsp");
-            return;
-        }
+        int authorId = Integer.parseInt(request.getParameter("authorId"));
+
         int updatedBy = Integer.parseInt(request.getParameter("updatedBy"));
         String briefInfo = request.getParameter("briefInfo");
         int categoryId = Integer.parseInt(request.getParameter("category_id"));

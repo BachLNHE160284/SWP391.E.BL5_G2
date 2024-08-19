@@ -526,16 +526,109 @@ public class ServiceDAO extends DBContext {
         return list;
     }
 
+//    public static void main(String[] args) {
+//        // Create an instance of ServiceDAO
+//        ServiceDAO serviceDAO = new ServiceDAO();
+//
+//        // Call the getServiceNew method to retrieve the list of services
+//        List<Service> services = serviceDAO.getServiceNew();
+//
+//        // Print out the services to verify the output
+//        for (Service service : services) {
+//            System.out.println(service.toString());
+//        }
+//    }
+//    public List<Service> getServicesByCategoryId(int categoryId) {
+//        List<Service> services = new ArrayList<>();
+//        String sql = "SELECT * FROM service WHERE category_id = ? AND service_Status = 1";
+//
+//        try ( Connection connection = new DBContext().getConnection();  PreparedStatement ps = connection.prepareStatement(sql)) {
+//
+//            ps.setInt(1, categoryId);
+//            ResultSet rs = ps.executeQuery();
+//
+//            while (rs.next()) {
+//                Service service = new Service();
+//                // Populate the service object
+//                service.setService_id(rs.getInt("service_id"));
+//                service.setName_service(rs.getString("name_service"));
+//                service.setOriginal_prices(rs.getFloat("original_prices"));
+//                service.setSale_prices(rs.getFloat("sale_prices"));
+//                service.setThumbnail(rs.getString("thumbnail"));
+//                service.setBrief_infor(rs.getString("brief_infor"));
+//                // Add more fields as needed
+//                services.add(service);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        return services;
+//    }
+    public List<Service> getServicesByCategoryId(int categoryId, int pageIndex, int pageSize) {
+        List<Service> services = new ArrayList<>();
+        String sql = "SELECT * FROM service WHERE category_id = ? AND service_Status = 1 ORDER BY date_add DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+        try ( Connection connection = new DBContext().getConnection();  PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setInt(1, categoryId);
+            ps.setInt(2, (pageIndex - 1) * pageSize);
+            ps.setInt(3, pageSize);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Service service = new Service();
+                // Populate the service object
+                service.setService_id(rs.getInt("service_id"));
+                service.setName_service(rs.getString("name_service"));
+                service.setOriginal_prices(rs.getFloat("original_prices"));
+                service.setSale_prices(rs.getFloat("sale_prices"));
+                service.setThumbnail(rs.getString("thumbnail"));
+                service.setBrief_infor(rs.getString("brief_infor"));
+                services.add(service);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return services;
+    }
+
+    public int getTotalServicesByCategoryId(int categoryId) {
+        String sql = "SELECT COUNT(*) FROM service WHERE category_id = ? AND service_Status = 1";
+        int totalServices = 0;
+
+        try ( Connection connection = new DBContext().getConnection();  PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setInt(1, categoryId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                totalServices = rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return totalServices;
+    }
+
     public static void main(String[] args) {
-        // Create an instance of ServiceDAO
+        // Khởi tạo đối tượng ServiceDAO
         ServiceDAO serviceDAO = new ServiceDAO();
 
-        // Call the getServiceNew method to retrieve the list of services
-        List<Service> services = serviceDAO.getServiceNew();
+        // Định nghĩa các tham số đầu vào
+        int categoryId = 1; // Ví dụ: danh mục ID
+        int pageIndex = 1;  // Ví dụ: trang đầu tiên
+        int pageSize = 2;   // Ví dụ: 2 dịch vụ mỗi trang
 
-        // Print out the services to verify the output
+        // Gọi phương thức getServicesByCategoryId
+        List<Service> services = serviceDAO.getServicesByCategoryId(categoryId, pageIndex, pageSize);
+
+        // Hiển thị kết quả
+        System.out.println("Services in Category ID " + categoryId + ":");
         for (Service service : services) {
-            System.out.println(service.toString());
+            System.out.println(service);
         }
     }
 }

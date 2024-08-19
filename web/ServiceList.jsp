@@ -934,6 +934,7 @@
                                 <div class="row" >
                                     <div class="col-md-9" >
                                         <div class="row ">
+                                            <!-- Loop through each category to create buttons -->
                                             <c:forEach items="${listCate}" var="c">
                                                 <div class="col-md-2">
                                                     <div class="frame">
@@ -944,8 +945,9 @@
                                                 </div>
                                             </c:forEach>
                                         </div>
-
                                     </div>
+
+                                    <!-- Search bar for services -->
                                     <div class="col-md-3">
                                         <div >
                                             <nav class="navbar navbar-light bg-light w-100 "  style="display: block">
@@ -963,6 +965,8 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <!-- Display services based on selected category -->
                                 <div id="content" style="padding: 50px 0 0;">
                                     <c:forEach items="${services}" var="service">
                                         <div class="services row p-2 bg-white border rounded mt-2">
@@ -975,6 +979,7 @@
                                                 <h5>${service.name_service}</h5>
                                                 <div class="d-flex flex-row">
                                                     <div class="ratings mr-2">
+                                                        <!-- Display star ratings based on service status -->
                                                         <c:forEach begin="1" end="${service.service_Status}" varStatus="status">
                                                             <span class="fa fa-star checked"></span>
                                                         </c:forEach>
@@ -995,6 +1000,7 @@
                                                     <span class="strike-text">${service.original_prices}</span>
                                                 </div>
                                                 <div class="d-flex flex-column mt-4">
+                                                    <!-- Buttons for service details and booking -->
                                                     <button onclick="window.location.href = './ServiceDetails?serviceID=${service.service_id}'" 
                                                             class="btn btn-primary btn-sm" 
                                                             type="button">Details Service</button>
@@ -1009,6 +1015,8 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Pagination controls -->
                     <style>
                         .pagination {
                             display: flex;
@@ -1039,12 +1047,14 @@
 
                     </style>
                     <div class="pagination">
+                        <!-- Loop through each page for pagination -->
                         <c:forEach var="i" begin="1" end="${totalPages}">
                             <a href="ServiceList?page=${i}" class="${i == currentPage ? 'active' : ''}">${i}</a>
                         </c:forEach>
                     </div>
                 </div>
         </main><!-- End #main -->
+
 
         <!-- ======= Footer ======= -->
         <jsp:include page="assests/module/footer.jsp" flush="true"/>
@@ -1064,78 +1074,6 @@
         <script src="assests/js/main.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-        <script>
-                                                        function addToCart(serviceId) {
-                                                            // Implement AJAX request to add service to cart
-                                                            console.log('Adding service to cart: ' + serviceId);
-                                                        }
-        </script>
-        <!--        <script>
-                    function searchByName(param) {
-                        var txtSearch = param.value;
-                        $.ajax({
-                            url: "/project_swp391/searchserviceajax",
-                            type: "get", //send it through get method
-                            data: {
-                                txt: txtSearch
-                            },
-                            success: function (data) {
-                                var row = document.getElementById("content");
-                                row.innerHTML = data;
-                            },
-                            error: function (xhr) {
-                                //Do Something to handle error
-                            }
-                        });
-                    }
-                    function loadCate(data){
-                        var cate = data.value;
-                        $.ajax({
-                            url: "/project_swp391/servicesbycate",
-                            type: "get", //send it through get method
-                            data: {
-                                cate: cate
-                            },
-                            success: function (data) {
-                                var row = document.getElementById("content");
-                                row.innerHTML = data;
-                            },
-                            error: function (xhr) {
-                                //Do Something to handle error
-                            }
-                        });
-                    }
-                    
-                    $(document).ready(function () {
-                        $(window).scroll(function () {
-                            if ($(window).scrollTop() > $(document).height() - $(window).height() - 1) {
-                                var amount = document.getElementsByClassName("services").length;
-                                $.ajax({
-                                    url: "/project_swp391/lazyloadingservices",
-                                    type: "get",
-                                    data: {
-                                        exist: amount
-                                    },
-                                    success: function (data) {
-                                        var row = document.getElementById("content");
-                                        row.innerHTML += data;
-                                    }
-                                });
-                            }
-                        });
-                    });
-                    function addToCardAsync(id){
-                        axios.get('addtocardasync',{
-                            params: {
-                                id:id
-                            }
-                        }).then((response)=>{
-                            // lấy data
-                            document.getElementById("cart-number").innerHTML = response.data;
-                            // cập nhật
-                        })
-                    }
-                </script>  -->
     </body>
 
 </html>
