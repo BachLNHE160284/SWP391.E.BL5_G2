@@ -370,7 +370,7 @@ public class BlogDAO extends DBContext {
                 + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
 
         try ( Connection conn = getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, (page - 1) * 4); // Assuming 4 items per page, you can adjust this number.
+            ps.setInt(1, (page - 1) * 4);
             ps.setInt(2, 4);
 
             try ( ResultSet rs = ps.executeQuery()) {
@@ -423,8 +423,8 @@ public class BlogDAO extends DBContext {
         stmt.setString(5, blog.getThumbnail());
         stmt.setString(6, blog.getBrief_infor());
         stmt.setInt(7, blog.getCategory_id());
-        stmt.setInt(8, blog.getStatus());  // Assuming status is an integer in your database
-        stmt.setInt(9, blog.getBlog_id());  // Assuming blog_id is the primary key in your database
+        stmt.setInt(8, blog.getStatus()); 
+        stmt.setInt(9, blog.getBlog_id()); 
         stmt.executeUpdate();
     } catch (Exception e) {
         e.printStackTrace();
