@@ -18,6 +18,7 @@ public class DashboardDTO {
     private int successReservationCount;
     private int cancelledReservationCount;
     private int submittedReservationCount;
+    private List<ServiceFeedbackDTO> serviceFeedbacks;
 
     public Date getNewReservationFilter() {
         return newReservationFilter;
@@ -65,6 +66,14 @@ public class DashboardDTO {
 
     public void setSubmittedReservationCount(int submittedReservationCount) {
         this.submittedReservationCount = submittedReservationCount;
+    }
+
+    public List<ServiceFeedbackDTO> getServiceFeedbacks() {
+        return serviceFeedbacks;
+    }
+
+    public void setServiceFeedbacks(List<ServiceFeedbackDTO> serviceFeedbacks) {
+        this.serviceFeedbacks = serviceFeedbacks;
     }
     
     

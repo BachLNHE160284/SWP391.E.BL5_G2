@@ -14,7 +14,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Category;
 import model.DashboardDTO;
+import model.Service;
 import model.ServiceCategoryRevenueDTO;
+import model.ServiceFeedbackDTO;
 
 /**
  *
@@ -89,6 +91,31 @@ public class DashboardDAO extends DBContext {
                 categoryRevenueDTOs.add(categoryRevenueDTO);
             }
             restult.setRevenues(categoryRevenueDTOs);
+            sql = "SELECT \n"
+                    + "    s.service_id,\n"
+                    + "    s.name_service,\n"
+                    + "    AVG(f.rate_star) AS average_star\n"
+                    + "FROM \n"
+                    + "    dbo.service s\n"
+                    + "INNER JOIN \n"
+                    + "    dbo.feedback f ON s.service_id = f.service_id\n"
+                    + "GROUP BY \n"
+                    + "    s.service_id, s.name_service\n"
+                    + "HAVING \n"
+                    + "    COUNT(f.rate_star) > 0;";
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            List<ServiceFeedbackDTO> feedbackDTOs = new ArrayList<>();
+            while(rs.next()){
+                ServiceFeedbackDTO feedbackDTO = new ServiceFeedbackDTO();
+                Service service = new Service();
+                service.setService_id(rs.getInt("service_id"));
+                service.setName_service(rs.getString("name_service"));
+                feedbackDTO.setService(service);
+                feedbackDTO.setStar(rs.getDouble("average_star"));
+                feedbackDTOs.add(feedbackDTO);
+            }
+            restult.setServiceFeedbacks(feedbackDTOs);
             return restult;
         } catch (Exception ex) {
             Logger.getLogger(DashboardDAO.class.getName()).log(Level.SEVERE, null, ex);

@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -80,7 +81,24 @@
             tr:nth-child(even) {
                 background-color: #f2f2f2;
             }
+            .star {
+                color: #f0ad4e;
+                font-size: 20px;
+            }
+            .half-star {
+                position: relative;
+            }
+            .half-star::before {
+                content: '\2605'; /* Full star */
+                color: gold;
+                position: absolute;
+                left: 1px;
+                overflow: hidden;
+                width: 50%; /* Show only half of the star */
+            }
+
         </style>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     </head>
     <body>
         <div class="container">
@@ -133,6 +151,38 @@
                             <td colspan="2">No data available</td>
                         </tr>
                     </c:if>
+                </tbody>
+            </table>
+            <h2>Service Feedbacks</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Service Name</th>
+                        <th>Average Rating</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:forEach var="feedback" items="${statistic.serviceFeedbacks}">
+                        <tr>
+                            <td>${feedback.service.name_service}</td>
+                            <td>
+                                <c:set var="fullStars" value="${feedback.star - (feedback.star % 1)}"/>
+                                <c:set var="fractionalPart" value="${feedback.star % 1}"/>
+
+                                <c:forEach begin="1" end="${fullStars.intValue()}">
+                                    <i class="fa-sharp fa-solid fa-star star"></i>
+                                </c:forEach>
+
+                                <c:if test="${fractionalPart >= 0.25 && fractionalPart < 0.75}">
+                                    <i class="fa-sharp fa-solid fa-star-half-stroke" style="color : #f0ad4e; font-size: 20px;"></i>
+                                </c:if>
+
+                                <c:if test="${fractionalPart >= 0.75}">
+                                    <i class="fa-sharp fa-solid fa-star star"></i>
+                                </c:if> / ${feedback.star}
+                            </td>
+                        </tr>
+                    </c:forEach>
                 </tbody>
             </table>
         </div>
