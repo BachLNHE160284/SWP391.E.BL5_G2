@@ -40,7 +40,7 @@ public class UserListController extends HttpServlet {
         RoleDAO roleDAO = new RoleDAO();
         Gson gson = new Gson();
         List<Role> roles = roleDAO.getAll();
-        List<UserDTO> users = userDAO.getAllUserExceptAdmin();
+        List<UserDTO> users = userDAO.getAllUserDto();
         request.setAttribute("users", gson.toJson(users));
         request.setAttribute("roles", roles);
         request.getRequestDispatcher("user-list.jsp").forward(request, response);

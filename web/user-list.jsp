@@ -286,7 +286,7 @@
                         user.phone_number ? user.phone_number : 'NONE',
                         user.role ? user.role.role_name : 'NONE',
                         user.status ? ' <span class="status-icon active"><i class="fas fa-check-circle"></i> Active</span>' : '<span class="status-icon inactive"><i class="fas fa-times-circle"></i> Inactive</span>',
-                        '<button class="btn btn-primary btn-edit" data-user-id="' + user.user_id + '">Edit</button>  <button class="btn btn-info view-user" data-user-id="' + user.user_id + '">View</button>'
+                        user.role.role_name.toLowerCase() === 'admin' ? '<button class="btn btn-info view-user" data-user-id="' + user.user_id + '">View</button>'  : '<button class="btn btn-primary btn-edit" data-user-id="' + user.user_id + '">Edit</button>  <button class="btn btn-info view-user" data-user-id="' + user.user_id + '">View</button>'
                     ]).draw(false);
                 });
 

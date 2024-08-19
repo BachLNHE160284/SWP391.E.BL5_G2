@@ -196,8 +196,8 @@ public class UserDAO extends DBContext {
         }
     }
 
-    public List<UserDTO> getAllUserExceptAdmin() {
-        String query = "SELECT u.* , r.role_name , r.role_id as rid FROM [SWP391BL5G2_4].[dbo].[user] u LEFT JOIN [role] r on u.role_id = r.role_id WHERE r.role_name != 'admin'";
+    public List<UserDTO> getAllUserDto() {
+        String query = "SELECT u.* , r.role_name , r.role_id as rid FROM [SWP391BL5G2_4].[dbo].[user] u LEFT JOIN [role] r on u.role_id = r.role_id";
         ResultSet rs = null;
         PreparedStatement ps = null;
         Connection conn = null;
