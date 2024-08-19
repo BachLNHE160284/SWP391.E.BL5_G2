@@ -617,14 +617,14 @@
 
                             <div class="sidebar">
 
-                                <!-- Search Form -->
+<!--                                 Search Form 
                                 <div class="sidebar-item search-form">
                                     <h3 class="sidebar-title">Search</h3>
                                     <form action="blogs-list" class="mt-3">
                                         <input name="txt" type="text" style="border: 1px solid;">
                                         <button type="submit"><i class="bi bi-search"></i></button>
                                     </form>
-                                </div><!-- End sidebar search form-->
+                                </div> End sidebar search form-->
 
                                 <!-- Categories -->
                                 <div class="sidebar-item categories">

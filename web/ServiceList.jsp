@@ -937,29 +937,31 @@
                                             <c:forEach items="${listCate}" var="c">
                                                 <div class="col-md-2">
                                                     <div class="frame">
-                                                        <button onclick="loadCate(this)" name="cate" value="${c.getCategory_id()}" class="custom-btn btn-5"><span>${c.getCategory_name()}</span></button>
+                                                        <button onclick="location.href = 'ServiceList?cateId=${c.getCategory_id()}'" class="custom-btn btn-5">
+                                                            <span>${c.getCategory_name()}</span>
+                                                        </button>
                                                     </div>
                                                 </div>
-
                                             </c:forEach>
                                         </div>
+
                                     </div>
-                                    <!--                                    <div class="col-md-3">
-                                                                            <div >
-                                                                                <nav class="navbar navbar-light bg-light w-100 "  style="display: block">
-                                                                                    <form class="form-inline">
-                                                                                        <div class="input-group input-group-sm">
-                                                                                            <input onchange="searchByName(this)" value="${txtS}" name="txt" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Search...">
-                                                                                            <div class="input-group-append">
-                                                                                                <button style="border-radius: 0px" class="btn btn-secondary btn-number">
-                                                                                                    <i class="fa fa-search"></i>
-                                                                                                </button>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </form>
-                                                                                </nav>
-                                                                            </div>
-                                                                        </div>-->
+                                    <div class="col-md-3">
+                                        <div >
+                                            <nav class="navbar navbar-light bg-light w-100 "  style="display: block">
+                                                <form action="serchservice" class="form-inline">
+                                                    <div class="input-group input-group-sm">
+                                                        <input name="txt" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Search...">
+                                                        <div class="input-group-append">
+                                                            <button type="submit" style="border-radius: 0px" class="btn btn-secondary btn-number">
+                                                                <i class="fa fa-search"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </nav>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div id="content" style="padding: 50px 0 0;">
                                     <c:forEach items="${services}" var="service">
@@ -1007,6 +1009,40 @@
                             </div>
                         </div>
                     </div>
+                    <style>
+                        .pagination {
+                            display: flex;
+                            justify-content: center;
+                            padding: 10px 0;
+                        }
+
+                        .pagination a {
+                            color: black;
+                            float: left;
+                            padding: 8px 16px;
+                            text-decoration: none;
+                            transition: background-color .3s;
+                            margin: 0 4px;
+                            border: 1px solid #ddd;
+                            border-radius: 4px;
+                        }
+
+                        .pagination a:hover {
+                            background-color: #ddd;
+                        }
+
+                        .pagination a.active {
+                            background-color: #4dccc6;
+                            color: white;
+                            border: 1px solid #4dccc6;
+                        }
+
+                    </style>
+                    <div class="pagination">
+                        <c:forEach var="i" begin="1" end="${totalPages}">
+                            <a href="ServiceList?page=${i}" class="${i == currentPage ? 'active' : ''}">${i}</a>
+                        </c:forEach>
+                    </div>
                 </div>
         </main><!-- End #main -->
 
@@ -1029,11 +1065,11 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <script>
-        function addToCart(serviceId) {
-            // Implement AJAX request to add service to cart
-            console.log('Adding service to cart: ' + serviceId);
-        }
-    </script>
+                                                        function addToCart(serviceId) {
+                                                            // Implement AJAX request to add service to cart
+                                                            console.log('Adding service to cart: ' + serviceId);
+                                                        }
+        </script>
         <!--        <script>
                     function searchByName(param) {
                         var txtSearch = param.value;

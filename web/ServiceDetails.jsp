@@ -1001,7 +1001,7 @@
                                             </figure>
                                             <!-- Post content-->
                                             <section class="mb-5" style="margin-right: 610px;">
-                                                <p style="margin-right: 50px" class="fs-5 mb-4">Rate star: ${service.service_Status}/5 <i style="color: yellow" class="bi bi-star-fill"></i></p>
+                                                <p style="margin-right: 50px" class="fs-5 mb-4">Category: ${service.category_name}</p>
                                                 <p style="margin-right: 50px" class="fs-5 mb-4">Old Price: ${service.original_prices}$</p>
                                                 <p class="fs-5 mb-4">Discount Price: <i class="text-danger">${service.sale_prices}$</i></p>
                                             </section>

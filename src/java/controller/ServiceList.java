@@ -49,7 +49,7 @@ public class ServiceList extends HttpServlet {
             out.println("</html>");
         }
     }
-    private static final int PAGE_SIZE = 10;
+    private static final int PAGE_SIZE = 2;
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
