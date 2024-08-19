@@ -1,75 +1,81 @@
 package controller;
 
 import dal.UserDAO;
-import java.io.IOException;
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.util.regex.Pattern;
 import model.User;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @WebServlet(name = "ChangePassword", urlPatterns = {"/changePassword"})
 public class ChangePassword extends HttpServlet {
-
-    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{10,40}$");
-
-    private boolean isPasswordValid(String password) {
-        return PASSWORD_PATTERN.matcher(password).matches();
-    }
-
-    private boolean isOldPasswordCorrect(HttpServletRequest request, User acc) {
-        String oldPass = request.getParameter("oldpass");
-        return acc != null && acc.getPassword().equals(oldPass);
-    }
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/ChangePassword.jsp").forward(request, response);
+        // Forward to the ForgotPassword.jsp page
+        RequestDispatcher dispatcher = request.getRequestDispatcher("changePassword.jsp");
+        dispatcher.forward(request, response);
     }
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String oldPassword = request.getParameter("oldpass");
+        String newPassword = request.getParameter("newpass");
+        String rePassword = request.getParameter("repass");
+
         HttpSession session = request.getSession();
-        User acc = (User) session.getAttribute("acc");
+        User currentUser = (User) session.getAttribute("acc");
 
-        if (acc == null || !isOldPasswordCorrect(request, acc)) {
-            request.setAttribute("mess", "Wrong old password");
+        if (currentUser == null) {
             request.setAttribute("messType", "error");
-            request.getRequestDispatcher("/ChangePassword.jsp").forward(request, response);
+            request.setAttribute("mess", "User is not logged in.");
+            request.getRequestDispatcher("/changePassword.jsp").forward(request, response);
             return;
         }
 
-        String newPass = request.getParameter("newpass");
-        String rePass = request.getParameter("repass");
+        String email = currentUser.getEmail_address();
 
-        if (newPass == null || !newPass.equals(rePass)) {
-            request.setAttribute("mess", "New password and confirmation password do not match");
+        UserDAO userDAO = new UserDAO();
+        try {
+            if (!newPassword.equals(rePassword)) {
+                request.setAttribute("messType", "error");
+                request.setAttribute("mess", "New passwords do not match.");
+                request.getRequestDispatcher("/changePassword.jsp").forward(request, response);
+                return;
+            }
+
+            User user = userDAO.getUserByEmail(email);
+            if (user == null || !user.getPassword().equals(oldPassword)) {
+                request.setAttribute("messType", "error");
+                request.setAttribute("mess", "Old password is incorrect.");
+                request.getRequestDispatcher("/changePassword.jsp").forward(request, response);
+                return;
+            }
+
+            boolean isUpdated = userDAO.updateByEmail(email, newPassword);
+            if (isUpdated) {
+                request.setAttribute("messType", "success");
+                request.setAttribute("mess", "Password successfully changed.");
+                User updatedUser = userDAO.getUserByEmail(email);
+                session.setAttribute("acc", updatedUser);
+            } else {
+                request.setAttribute("messType", "error");
+                request.setAttribute("mess", "Failed to change password. Please try again.");
+            }
+
+            request.getRequestDispatcher("/UserProfile.jsp").forward(request, response);
+
+        } catch (Exception ex) {
+            Logger.getLogger(ChangePassword.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute("messType", "error");
-            request.getRequestDispatcher("/ChangePassword.jsp").forward(request, response);
-            return;
+            request.setAttribute("mess", "An error occurred. Please try again later.");
+            request.getRequestDispatcher("/changePassword.jsp").forward(request, response);
         }
-
-        if (!isPasswordValid(newPass)) {
-            request.setAttribute("mess", "Password must be 10-40 characters long and include at least one letter and one number");
-            request.setAttribute("messType", "error");
-            request.getRequestDispatcher("/ChangePassword.jsp").forward(request, response);
-            return;
-        }
-
-        UserDAO dao = new UserDAO();
-        dao.changePassword(acc.getEmail_address(), newPass);
-        request.setAttribute("mess", "Password changed successfully");
-        request.setAttribute("messType", "success");
-        request.getRequestDispatcher("/ChangePassword.jsp").forward(request, response);
-    }
-
-    @Override
-    public String getServletInfo() {
-        return "Servlet for changing password";
     }
 }

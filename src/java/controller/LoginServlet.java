@@ -113,16 +113,16 @@ public class LoginServlet extends HttpServlet {
                 session.setAttribute("acc", acc);
                 switch (acc.getRole_id()) {
                     case 1:
-                        response.sendRedirect("HomePage");
+                        response.sendRedirect("HomePage.jsp");
                         break;
                     case 2:
-                        response.sendRedirect("HomePage");
+                        response.sendRedirect("HomePage.jsp");
                         break;
                     case 3:
-                        response.sendRedirect("HomePage");
+                        response.sendRedirect("HomePage.jsp");
                         break;
                     case 4:
-                        response.sendRedirect("HomePage");
+                        response.sendRedirect("HomePage.jsp");
                         break;
                     default:
                         response.sendRedirect("login");

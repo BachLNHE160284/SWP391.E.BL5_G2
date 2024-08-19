@@ -8,22 +8,19 @@ import dal.SliderDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.Part;
-import java.io.File;
+import java.util.List;
 import model.Slider;
 
 /**
  *
  * @author ntung
  */
-@WebServlet(name = "AddSlider", urlPatterns = {"/AddSlider"})
-@MultipartConfig
-public class AddSlider extends HttpServlet {
+@WebServlet(name = "SliderList", urlPatterns = {"/SliderList"})
+public class SliderList extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,10 +39,10 @@ public class AddSlider extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet AddSlider</title>");
+            out.println("<title>Servlet SliderList</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet AddSlider at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet SliderList at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -63,7 +60,24 @@ public class AddSlider extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("AddSlider.jsp").forward(request, response);
+        SliderDAO sliderDAO = new SliderDAO();
+        int page = 1;
+        int pageSize = 5;
+
+        if (request.getParameter("page") != null) {
+            page = Integer.parseInt(request.getParameter("page"));
+        }
+
+        int offset = (page - 1) * pageSize;
+        List<Slider> sliders = sliderDAO.getPaginatedSliders(offset, pageSize);
+        int totalSliders = sliderDAO.getTotalSliderCount();
+        int totalPages = (int) Math.ceil((double) totalSliders / pageSize);
+
+        request.setAttribute("sliders", sliders);
+        request.setAttribute("currentPage", page);
+        request.setAttribute("totalPages", totalPages);
+
+        request.getRequestDispatcher("SliderList.jsp").forward(request, response);
     }
 
     /**
@@ -77,43 +91,18 @@ public class AddSlider extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        SliderDAO slider = new SliderDAO();
+        SliderDAO sliderDAO = new SliderDAO();
+        String action = request.getParameter("action");
+        int sliderId = Integer.parseInt(request.getParameter("sliderId"));
 
-        String backlink = request.getParameter("backlink");
-        //boolean status = Boolean.parseBoolean(request.getParameter("status"));
-        int status = Integer.parseInt(request.getParameter("status"));
-        String sliderTitle = request.getParameter("sliderTitle");
-        String sliderDetail = request.getParameter("sliderDetail");
-        int updateBy = Integer.parseInt(request.getParameter("updateBy"));
-        Part filePart = request.getPart("sliderImg");
-        // Xử lý upload ảnh
-
-        // Lấy tên file và đường dẫn upload
-        String fileName = filePart.getSubmittedFileName();
-        String uploadPath = getServletContext().getRealPath("") + File.separator + "uploads";
-
-        // Tạo thư mục uploads nếu chưa tồn tại
-        File uploadDir = new File(uploadPath);
-        if (!uploadDir.exists()) {
-            uploadDir.mkdirs();
+        if ("hide".equals(action)) {
+            sliderDAO.updateSliderStatus(sliderId, 0); // Hide (set status to 0)
+        } else if ("show".equals(action)) {
+            sliderDAO.updateSliderStatus(sliderId, 1); // Show (set status to 1)
         }
 
-        // Đường dẫn đầy đủ để lưu file
-        String filePath = uploadPath + File.separator + fileName;
-
-        // Ghi file vào thư mục uploads
-        filePart.write(filePath);
-
-        // Tạo đối tượng
-        Slider sl = new Slider();
-        sl.setBacklink(backlink);
-        sl.setStatus(status);
-        sl.setSlider_title(sliderTitle);
-        sl.setSlider_detail(sliderDetail);
-        sl.setUpdate_by(updateBy);
-        sl.setSlider_img("uploads/" + fileName);
-        slider.addSlider(sl);
-        response.sendRedirect("AddSlider");
+        // Redirect back to the slider list
+        response.sendRedirect("SliderList");
     }
 
     /**

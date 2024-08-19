@@ -4,9 +4,8 @@
  */
 package controller;
 
-import dal.BlogDAO;
+import dal.CategoryDAO;
 import dal.ServiceDAO;
-import dal.SliderDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,18 +13,16 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.List;
-import model.Blog;
+import model.Category;
 import model.Service;
-import model.Slider;
 
 /**
  *
  * @author ntung
  */
-@WebServlet(name = "HomePage", urlPatterns = {"/HomePage"})
-public class HomePage extends HttpServlet {
+@WebServlet(name = "ServiceDetails", urlPatterns = {"/ServiceDetails"})
+public class ServiceDetails extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,50 +35,34 @@ public class HomePage extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
 //        try (PrintWriter out = response.getWriter()) {
 //            /* TODO output your page here. You may use following sample code. */
 //            out.println("<!DOCTYPE html>");
 //            out.println("<html>");
 //            out.println("<head>");
-//            out.println("<title>Servlet HomePage</title>");  
+//            out.println("<title>Servlet ServiceDetails</title>");  
 //            out.println("</head>");
 //            out.println("<body>");
-//            out.println("<h1>Servlet HomePage at " + request.getContextPath () + "</h1>");
+//            out.println("<h1>Servlet ServiceDetails at " + request.getContextPath () + "</h1>");
 //            out.println("</body>");
 //            out.println("</html>");
 //        }
-        BlogDAO bld = new BlogDAO();
-        List<Blog> topnew6 = bld.getAllBlogNewtop6();
-        List<Blog> topnew31 = new ArrayList<>();
-        List<Blog> topnew32 = new ArrayList<>();
-        for (int i = 0; i < topnew6.size(); i++) {
-            if (i <= 2) {
-                topnew31.add(topnew6.get(i));
-            } else {
-                topnew32.add(topnew6.get(i));
-            }
-        }
-        Blog newbl = bld.getBlogNew();
-        ServiceDAO sv = new ServiceDAO();
-        List<Service> listservicenew = sv.getServiceNew();
-//          ProductDao prd = new ProductDao();
-//          List<Product> lpr = prd.getProductNew();
-        SliderDAO sld = new SliderDAO();
-        List<Slider> lsl = sld.getAllSliderWithStatus(1);
-        request.setAttribute("newtop6", topnew6);
-        request.setAttribute("newtop31", topnew31);
-        request.setAttribute("topnew32", topnew32);
-        //=====================================================
-        request.setAttribute("newbl", newbl);
-        request.setAttribute("listslider", lsl);
-        request.setAttribute("listservicenew", listservicenew);
-//          request.setAttribute("listproductnew", lpr);
-        request.getRequestDispatcher("HomePage.jsp").forward(request, response);
-
+        int id = Integer.parseInt(request.getParameter("serviceID"));
+        CategoryDAO cd = new CategoryDAO();
+        ServiceDAO dpr = new ServiceDAO();
+        List<Category> listCategory = cd.getAllCategories();
+        request.setAttribute("listcategory", listCategory);
+        Service service = dpr.getServiceById1(id);
+        List<String> limg = dpr.getimg(service.getImg_service());
+        request.setAttribute("service", service);
+        request.setAttribute("listimg", limg);
+        //List<Service> newproduct = dpr.GetListLastProduct();
+        //request.setAttribute("newproduct", newproduct);
+        request.getRequestDispatcher("ServiceDetails.jsp").forward(request, response);
     }
 
-// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

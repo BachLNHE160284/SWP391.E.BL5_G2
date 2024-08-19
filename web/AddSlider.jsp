@@ -80,16 +80,18 @@
                 <textarea id="sliderDetail" name="sliderDetail" rows="5" required></textarea>
             </div>
             <div class="form-group">
-                <label for="updateBy">Updated By (User ID):</label>
-                <input type="number" id="updateBy" name="updateBy" required/>
-            </div>
-            <div class="form-group">
                 <label for="status">Status:</label>
                 <select id="status" name="status">
                     <option value="1">Active</option>
                     <option value="0">Inactive</option>
                 </select>
             </div>
+            <div class="form-group">
+            <div class="form-group">
+                <label for="updateBy">Updated By (User ID):</label>
+                <input type="number" id="updateBy" name="updateBy" required/>
+            </div>
+            
             <div class="form-group">
                 <button type="submit">Add Slider</button>
             </div>

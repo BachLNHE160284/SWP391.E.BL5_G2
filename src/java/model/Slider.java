@@ -12,7 +12,7 @@ public class Slider {
     private int slider_id;
     private String slider_img;
     private String backlink;
-    private boolean status;
+    private int status;
     private String slider_title;
     private String slider_detail;
     private int update_by;
@@ -21,7 +21,7 @@ public class Slider {
     public Slider() {
     }
 
-    public Slider(int slider_id, String slider_img, String backlink, boolean status, String slider_title, String slider_detail, int update_by, String create_date) {
+    public Slider(int slider_id, String slider_img, String backlink, int status, String slider_title, String slider_detail, int update_by, String create_date) {
         this.slider_id = slider_id;
         this.slider_img = slider_img;
         this.backlink = backlink;
@@ -56,15 +56,13 @@ public class Slider {
         this.backlink = backlink;
     }
 
-    public boolean isStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(int status) {
         this.status = status;
     }
-
-    
 
     public String getSlider_title() {
         return slider_title;
@@ -102,5 +100,7 @@ public class Slider {
     public String toString() {
         return "Slider{" + "slider_id=" + slider_id + ", slider_img=" + slider_img + ", backlink=" + backlink + ", status=" + status + ", slider_title=" + slider_title + ", slider_detail=" + slider_detail + ", update_by=" + update_by + ", create_date=" + create_date + '}';
     }
+
+    
     
 }
