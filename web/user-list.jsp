@@ -185,7 +185,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Add User</button>
+                                    <button type="submit" class="btn btn-primary btn-add-user">Add User</button>
                                 </div>
                             </form>
                         </div>
@@ -376,7 +376,7 @@
                 // Handle the "Add New User" form submission
                 $('#addUserForm').submit(function (event) {
                     event.preventDefault(); // Prevent form from submitting normally
-
+                    $('.btn-add-user').attr('disabled', true);
                     // Get form values
                     let email = $('#newUserEmail').val().trim();
                     let role = $('#newUserRole').val();
@@ -396,6 +396,7 @@
                     // Validate role field
                     if (role === null) {
                         alert('Please select a role.');
+                        $('.btn-add-user').attr('disabled', false);
                         return;
                     }
 
@@ -412,6 +413,7 @@
                         contentType: 'application/json',
                         data: JSON.stringify(newUserData),
                         success: function (response) {
+                            $('.btn-add-user').attr('disabled', false);
                             if (response === "1") {
                                 alert('User added successfully.');
                                 // Close the modal
@@ -423,6 +425,7 @@
                             }
                         },
                         error: function (xhr, status, error) {
+                            $('.btn-add-user').attr('disabled', false);
                             alert('Error: ' + error);
                         }
                     });

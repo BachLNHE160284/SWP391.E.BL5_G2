@@ -22,6 +22,7 @@ import model.UserDTO;
  *
  * @author Admin
  */
+@WebServlet(name = "UserListController", urlPatterns = {"/user-list"})
 public class UserListController extends HttpServlet {
 
     /**
