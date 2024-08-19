@@ -41,18 +41,25 @@
             box-sizing: border-box;
         }
 
-        .btn-submit {
-            width: 100%;
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .btn-submit, .btn-cancel {
+            width: 48%;
             padding: 10px;
             border: none;
-            border-radius: 4px;
+            border-radius: 25px;
             background-color: #007bff;
             color: white;
             font-size: 17px;
             cursor: pointer;
+            text-align: center;
         }
 
-        .btn-submit:hover {
+        .btn-submit:hover, .btn-cancel:hover {
             background-color: #0056b3;
         }
 
@@ -89,7 +96,10 @@
                 <input type="password" class="form-control" id="repass" name="repass" placeholder="Confirm New Password" required>
             </div>
 
-            <button type="submit" class="btn-submit">Change Password</button>
+            <div class="btn-container">
+                <button type="submit" class="btn-submit">Change Password</button>
+                <a href="UserProfile.jsp" class="btn-cancel">Cancel</a>
+            </div>
 
             <div class="message">
                 <% 
