@@ -4,24 +4,29 @@
  */
 package controller;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import dal.UserDAO;
+import helper.SendMail;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import java.security.SecureRandom;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.mail.MessagingException;
 import model.User;
 
 /**
  *
  * @author Admin
  */
-@WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
-public class LoginServlet extends HttpServlet {
+@WebServlet(name = "AddUserController", urlPatterns = {"/admin-add-user"})
+public class AddUserController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,15 +40,15 @@ public class LoginServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
+        try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoginServlet</title>");
+            out.println("<title>Servlet AddUserController</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LoginServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet AddUserController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -75,65 +80,59 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        String email = request.getParameter("email");
-        String pass = request.getParameter("password");
-        String remember = request.getParameter("remember");
-
-        //Set cookies: username, password, rememner
-        Cookie cu = new Cookie("cusername", email);
-        Cookie cp = new Cookie("cpassword", pass);
-        Cookie cr = new Cookie("cremember", remember);
-
-        if (remember != null) {
-            cu.setMaxAge(60 * 60 * 24 * 365);
-            cp.setMaxAge(60 * 60 * 24 * 365);
-            cr.setMaxAge(60 * 60 * 24 * 365);
-
-        } else {
-            cu.setMaxAge(0);
-            cp.setMaxAge(0);
-            cr.setMaxAge(0);
+        UserDAO userDAO = new UserDAO();
+        // Read the request body as a JSON string
+        StringBuilder jsonBuffer = new StringBuilder();
+        String line;
+        while ((line = request.getReader().readLine()) != null) {
+            jsonBuffer.append(line);
         }
-        //Lưu vào browser
-        response.addCookie(cu);
-        response.addCookie(cp);
-        response.addCookie(cr);
 
-        UserDAO dao = new UserDAO();
-        User acc = dao.login(email, pass);
+        JsonObject jsonObj = JsonParser.parseString(jsonBuffer.toString()).getAsJsonObject();
 
-        if (acc == null) {
-
-            request.setAttribute("mess", "Account does not exist! Please Sign up! ");
-            request.getRequestDispatcher("/Login.jsp").forward(request, response);
+        String email = jsonObj.get("email").getAsString();
+        int roleId = jsonObj.get("role").getAsInt();
+        
+        User registerdUser = userDAO.checkRegister(email);
+        if(registerdUser != null){
+            response.getWriter().print("Email already exsist!");
+            return;
+        }
+        // Auto-generate a password
+        String generatedPassword = generatePassword(8);
+        User user = new User();
+        user.setEmail_address(email);
+        user.setPassword(generatedPassword);
+        user.setRole_id(roleId);
+        
+        
+        int result = userDAO.addNewUser(user);
+        if (result == 0) {
+            response.getWriter().print("Error");
         } else {
-            HttpSession session = request.getSession();
-            if (acc.getStatus() == 1) {
-                session.setAttribute("acc", acc);
-                switch (acc.getRole_id()) {
-                    case 1:
-                        response.sendRedirect("HomePage.jsp");
-                        break;
-                    case 2:
-                        response.sendRedirect("HomePage.jsp");
-                        break;
-                    case 3:
-                        response.sendRedirect("HomePage.jsp");
-                        break;
-                    case 4:
-                        response.sendRedirect("HomePage.jsp");
-                        break;
-                    default:
-                        response.sendRedirect("login");
-                        break;
-                }
-            } else {
-                request.setAttribute("mess", "Your account has been locked! Please contact the admin to unlock your account!");
-                request.getRequestDispatcher("/Login.jsp").forward(request, response);
+            String messsge = "Your password is : " + generatedPassword;
+            String subject = "[ChildrenCare] New Password";
+            try {
+                SendMail.sendMailContent(email,subject , messsge);
+            } catch (MessagingException ex) {
+                Logger.getLogger(AddUserController.class.getName()).log(Level.SEVERE, null, ex);
             }
+            response.getWriter().print("1");
+        }
+    }
+
+    // Method to generate a random password
+    private String generatePassword(int length) {
+        String charSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%";
+        SecureRandom random = new SecureRandom();
+        StringBuilder password = new StringBuilder(length);
+
+        for (int i = 0; i < length; i++) {
+            int randomIndex = random.nextInt(charSet.length());
+            password.append(charSet.charAt(randomIndex));
         }
 
+        return password.toString();
     }
 
     /**

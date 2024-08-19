@@ -107,7 +107,7 @@
                 </tbody>
             </table>
             <div class="add-user-button">
-                <button class="btn btn-success">Add new user</button>
+                <button class="btn btn-success" id="addUserButton">Add new user</button>
             </div>
         </div>
 
@@ -159,6 +159,102 @@
                 </div>
             </div>
         </div>
+        <!-- Add New User Modal -->
+        <div class="container">
+            <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addUserModalLabel">Add New User</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="addUserForm">
+                                <div class="mb-3">
+                                    <label for="newUserEmail" class="form-label">Email:</label>
+                                    <input type="email" class="form-control" id="newUserEmail" name="email" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="newUserRole" class="form-label">Role:</label>
+                                    <select class="form-select" id="newUserRole" name="role" required>
+                                        <option value="" disabled selected hidden>Select a role</option>
+                                        <c:forEach items="${roles}" var="role">
+                                            <option value="${role.role_id}">${role.role_name}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary btn-add-user">Add User</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Edit user popup -->    
+        <div class="container">
+            <!-- Edit User Info Modal -->
+            <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editUserModalLabel">Edit User Information</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="editUserForm">
+                                <input type="hidden" id="editUserId" name="user_id">
+                                <div class="user-info-container text-center">
+                                    <img src="" id="editUserAvatar" class="rounded-circle mb-3" width="100" height="100" alt="Avatar">
+                                    <h5 id="editUserFullName"></h5>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label for="editUserGender" class="user-info-label">Gender:</label>
+                                        <input type="text" id="editUserGender" class="form-control" disabled>
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="editUserEmail" class="user-info-label">Email:</label>
+                                        <input type="email" id="editUserEmail" class="form-control" disabled>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label for="editUserPhone" class="user-info-label">Phone:</label>
+                                        <input type="text" id="editUserPhone" class="form-control" disabled>
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="editUserRole" class="user-info-label">Role:</label>
+                                        <select id="editUserRole" class="form-select" name="role">
+                                            <c:forEach items="${roles}" var="role">
+                                                <option value="${role.role_id}" > ${role.role_name} </option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label for="editUserStatus" class="user-info-label">Status:</label>
+                                        <select id="editUserStatus" class="form-select" name="status">
+                                            <option value="1">Active</option>
+                                            <option value="0">Inactive</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="modal-footer mt-4">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>    
 
         <script>
             $(document).ready(function () {
@@ -189,8 +285,8 @@
                         user.email_address ? user.email_address : 'NONE',
                         user.phone_number ? user.phone_number : 'NONE',
                         user.role ? user.role.role_name : 'NONE',
-                        user.status ? (user.status == 1 ? ' <span class="status-icon active"><i class="fas fa-check-circle"></i> Active</span>' : '<span class="status-icon inactive"><i class="fas fa-times-circle"></i> Inactive</span>') : 'NONE',
-                        '<button class="btn btn-primary">Edit</button>  <button class="btn btn-info view-user" data-user-id="' + user.user_id + '">View</button>'
+                        user.status ? ' <span class="status-icon active"><i class="fas fa-check-circle"></i> Active</span>' : '<span class="status-icon inactive"><i class="fas fa-times-circle"></i> Inactive</span>',
+                        user.role.role_name.toLowerCase() === 'admin' ? '<button class="btn btn-info view-user" data-user-id="' + user.user_id + '">View</button>'  : '<button class="btn btn-primary btn-edit" data-user-id="' + user.user_id + '">Edit</button>  <button class="btn btn-info view-user" data-user-id="' + user.user_id + '">View</button>'
                     ]).draw(false);
                 });
 
@@ -209,6 +305,130 @@
 
                         $('#userInfoModal').modal('show');
                     }
+                });
+
+                // Handle Edit Button Click
+                $('#usersTable').on('click', '.btn-edit', function () {
+                    const userId = $(this).data('user-id');
+                    const user = users.find(u => u.user_id === userId);
+
+                    // Populate the form with user data
+                    $('#editUserId').val(user.user_id);
+                    $('#editUserAvatar').attr('src', user.avatar || 'default-avatar.png');
+                    $('#editUserFullName').text(user.fullname);
+                    $('#editUserGender').val(user.gender ? 'Male' : 'Female');
+                    $('#editUserEmail').val(user.email_address);
+                    $('#editUserPhone').val(user.phone_number);
+
+                    // Set the role in the dropdown by role ID
+                    $('#editUserRole').val(user.role.role_id);
+
+                    // Set the status in the dropdown
+                    $('#editUserStatus').val(user.status);
+
+                    // Show the modal
+                    $('#editUserModal').modal('show');
+                });
+
+                // Handle Form Submission
+                $('#editUserForm').submit(function (event) {
+                    event.preventDefault();
+                    // Get the selected role and status values
+                    const role = $('#editUserRole').val();
+                    const status = $('#editUserStatus').val();
+
+                    // Check if role or status is empty
+                    if (!role || !status) {
+                        alert('Please ensure both Role and Status are selected.');
+                        return; // Prevent form submission
+                    }
+
+                    const userData = {
+                        user_id: $('#editUserId').val(),
+                        role: $('#editUserRole').val(),
+                        status: $('#editUserStatus').val()
+                    };
+                    $.ajax({
+                        url: 'admin-edit-user',
+                        method: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(userData),
+                        success: function (response) {
+                            console.log(response);
+                            if (response == "1") {
+                                alert('User information updated successfully.');
+                                $('#editUserModal').modal('hide');
+                                window.location.reload();
+                            } else {
+                                alert("Something went wrong");
+                            }
+                        },
+                        error: function (error) {
+                            alert('Error updating user information.');
+                        }
+                    });
+                });
+                // Show "Add New User" modal when the button is clicked
+                $('#addUserButton').click(function () {
+                    $('#addUserModal').modal('show');
+                });
+
+                // Handle the "Add New User" form submission
+                $('#addUserForm').submit(function (event) {
+                    event.preventDefault(); // Prevent form from submitting normally
+                    $('.btn-add-user').attr('disabled', true);
+                    // Get form values
+                    let email = $('#newUserEmail').val().trim();
+                    let role = $('#newUserRole').val();
+
+                    // Email validation regex
+                    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+                    // Validate email field
+                    if (email === '') {
+                        alert('Email field cannot be empty.');
+                        return;
+                    } else if (!emailRegex.test(email)) {
+                        alert('Please enter a valid email address.');
+                        return;
+                    }
+
+                    // Validate role field
+                    if (role === null) {
+                        alert('Please select a role.');
+                        $('.btn-add-user').attr('disabled', false);
+                        return;
+                    }
+
+                    // Prepare the data to be sent
+                    let newUserData = {
+                        email: email,
+                        role: role
+                    };
+
+                    // Send AJAX POST request
+                    $.ajax({
+                        url: 'admin-add-user',
+                        method: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(newUserData),
+                        success: function (response) {
+                            $('.btn-add-user').attr('disabled', false);
+                            if (response === "1") {
+                                alert('User added successfully.');
+                                // Close the modal
+                                $('#addUserModal').modal('hide');
+                                // Optionally, reload the page to update the user list
+                                location.reload();
+                            } else {
+                                alert(response);
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            $('.btn-add-user').attr('disabled', false);
+                            alert('Error: ' + error);
+                        }
+                    });
                 });
             });
         </script>

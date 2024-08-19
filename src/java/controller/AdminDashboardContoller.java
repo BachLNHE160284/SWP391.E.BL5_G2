@@ -4,26 +4,26 @@
  */
 package controller;
 
-import com.google.gson.Gson;
-import dal.RoleDAO;
-import dal.UserDAO;
+import dal.DashboardDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.Role;
-import model.UserDTO;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
+import model.DashboardDTO;
 
 /**
  *
  * @author Admin
  */
-@WebServlet(name = "UserListController", urlPatterns = {"/user-list"})
-public class UserListController extends HttpServlet {
+@WebServlet(name = "AdminDashboardContoller", urlPatterns = {"/dashboard"})
+public class AdminDashboardContoller extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,14 +36,32 @@ public class UserListController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        UserDAO userDAO = new UserDAO();
-        RoleDAO roleDAO = new RoleDAO();
-        Gson gson = new Gson();
-        List<Role> roles = roleDAO.getAll();
-        List<UserDTO> users = userDAO.getAllUserDto();
-        request.setAttribute("users", gson.toJson(users));
-        request.setAttribute("roles", roles);
-        request.getRequestDispatcher("user-list.jsp").forward(request, response);
+        String rawNewReservationFilter = request.getParameter("newReservationFilter");
+        String rawRevenueFilter = request.getParameter("revenueFilter");
+        LocalDate localDate = LocalDate.now();
+        Date newReservationFilter = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date revenueFilter = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            newReservationFilter = formatter.parse(rawNewReservationFilter);
+        } catch (Exception exception) {
+
+        }
+        
+        try {
+            revenueFilter = formatter.parse(rawRevenueFilter);
+        } catch (Exception exception) {
+
+        }
+        DashboardDAO dashboardDAO = new DashboardDAO();
+        DashboardDTO inputDTO = new DashboardDTO();
+        inputDTO.setNewReservationFilter(newReservationFilter);
+        inputDTO.setRevenueFilter(revenueFilter);
+        DashboardDTO result = dashboardDAO.getStatistic(inputDTO);
+        request.setAttribute("revenueFilter", formatter.format(revenueFilter));
+        request.setAttribute("newReservationFilter", formatter.format(newReservationFilter));
+        request.setAttribute("statistic", result);
+        request.getRequestDispatcher("admin-dashboard.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

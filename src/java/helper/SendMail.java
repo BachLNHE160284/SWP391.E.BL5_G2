@@ -22,10 +22,10 @@ public class SendMail {
 
         Session session = Session.getInstance(prop,
                 new javax.mail.Authenticator() {
-                    protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(username, password);
-                    }
-                });
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(username, password);
+            }
+        });
 
         try {
 
@@ -35,7 +35,43 @@ public class SendMail {
                     Message.RecipientType.TO,
                     InternetAddress.parse(email)
             );
-            message.setText("code: "+code);
+            message.setText("code: " + code);
+
+            Transport.send(message);
+
+            System.out.println("Email sent successfully!");
+
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public static void sendMailContent(String email, String subject, String messageContent) throws MessagingException {
+        final String username = "tung020802@gmail.com";
+        final String password = "dvozikmnaqwbpgny";
+        Properties prop = new Properties();
+        prop.put("mail.smtp.host", "smtp.gmail.com");
+        prop.put("mail.smtp.port", "587");
+        prop.put("mail.smtp.auth", "true");
+        prop.put("mail.smtp.starttls.enable", "true"); //TLS
+
+        Session session = Session.getInstance(prop,
+                new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(username, password);
+            }
+        });
+
+        try {
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("tung020802@gmail.com"));
+            message.setRecipients(
+                    Message.RecipientType.TO,
+                    InternetAddress.parse(email)
+            );
+            message.setSubject(subject);  // Set the subject of the email
+            message.setText(messageContent);
 
             Transport.send(message);
 

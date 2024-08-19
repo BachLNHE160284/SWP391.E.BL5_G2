@@ -8,13 +8,17 @@
         <servlet-name>Register</servlet-name>
         <servlet-class>controller.Register</servlet-class>
     </servlet>
+        <servlet>
+        <servlet-name>ChangePassword</servlet-name>
+        <servlet-class>controller.ChangePassword</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>DemoController1</servlet-name>
         <url-pattern>/DemoController1</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>Register</servlet-name>
-        <url-pattern>/register</url-pattern>
+        <servlet-name>ChangePassword</servlet-name>
+        <url-pattern>/changePassword</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
