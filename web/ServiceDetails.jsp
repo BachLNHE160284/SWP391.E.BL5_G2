@@ -1007,6 +1007,7 @@
                                             </section>
                                             <h1>Service description:</h1>
                                             <p>${service.service_detail}</p>
+                                            <a href="SubmitFeedback?id=${service.service_id}" class="btn btn-info btn-sm"></a>
                                         </article>
 
                                     </div>

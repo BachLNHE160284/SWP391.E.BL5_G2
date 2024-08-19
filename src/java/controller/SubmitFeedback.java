@@ -9,6 +9,7 @@ import dal.FeedbackDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,6 +23,7 @@ import model.Feedback;
  * @author lebac
  */
 @WebServlet(name="SubmitFeedback", urlPatterns={"/SubmitFeedback"})
+@MultipartConfig
 public class SubmitFeedback extends HttpServlet {
    
     /** 
@@ -59,7 +61,10 @@ public class SubmitFeedback extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+//        processRequest(request, response);
+        int serviceId = Integer.parseInt(request.getParameter("id"));
+        request.setAttribute("serviceId", serviceId);
+        request.getRequestDispatcher("addFeedback.jsp").forward(request, response);
     } 
 
     /** 
@@ -78,7 +83,8 @@ public class SubmitFeedback extends HttpServlet {
         String feedbackText = request.getParameter("feedback");
         float rateStar = Float.parseFloat(request.getParameter("rate_star"));
         int serviceId = Integer.parseInt(request.getParameter("service_id"));
-        int userId = Integer.parseInt(request.getParameter("user_id"));
+//        int userId = Integer.parseInt(request.getParameter("user_id"));
+        int userId = 1;
 
         // Lấy tên file và đường dẫn upload
         String fileName = filePart.getSubmittedFileName();
