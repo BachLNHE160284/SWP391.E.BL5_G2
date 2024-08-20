@@ -912,6 +912,7 @@
             .btn-16:active {
                 top: 2px;
             }
+
         </style>
     </head>
 
@@ -1007,7 +1008,22 @@
                                             </section>
                                             <h1>Service description:</h1>
                                             <p>${service.service_detail}</p>
-                                            <a href="SubmitFeedback?id=${service.service_id}" class="btn btn-info btn-sm"></a>
+                                            <a href="SubmitFeedback?id=${service.service_id}" 
+                                               class="btn btn-info btn-sm"
+                                               style="background-color: #17a2b8;
+                                               border-color: #17a2b8;
+                                               color: white;
+                                               padding: 6px 12px;
+                                               font-size: 14px;
+                                               border-radius: 4px;
+                                               text-align: center;
+                                               text-decoration: none;
+                                               display: inline-block;
+                                               transition: background-color 0.3s ease, transform 0.3s ease;"
+                                               onmouseover="this.style.backgroundColor = '#138496'; this.style.borderColor = '#117a8b'; this.style.transform = 'scale(1.05)';"
+                                               onmouseout="this.style.backgroundColor = '#17a2b8'; this.style.borderColor = '#17a2b8'; this.style.transform = 'scale(1)';">
+                                                Feedback
+                                            </a>
                                         </article>
 
                                     </div>
@@ -1050,47 +1066,47 @@
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <script src="http://code.jquery.com/jquery-3.5.0.min.js"></script>
         <script>
-            $(() => {
-                $('p img').click(function () {
-                    let imgPath = $(this).attr('src');
-                    $('#main-img').attr('src', imgPath);
-                })
-            })
+                                                   $(() => {
+                                                       $('p img').click(function () {
+                                                           let imgPath = $(this).attr('src');
+                                                           $('#main-img').attr('src', imgPath);
+                                                       })
+                                                   })
 
-            function searchByName(param) {
-                var txtSearch = param.value;
-                $.ajax({
-                    url: "/project_swp391/searchserviceajax",
-                    type: "get", //send it through get method
-                    data: {
-                        txt: txtSearch
-                    },
-                    success: function (data) {
-                        var row = document.getElementById("content");
-                        row.innerHTML = data;
-                    },
-                    error: function (xhr) {
-                        //Do Something to handle error
-                    }
-                });
-            }
-            function loadCate(data) {
-                var cate = data.value;
-                $.ajax({
-                    url: "/project_swp391/servicesbycate",
-                    type: "get", //send it through get method
-                    data: {
-                        cate: cate
-                    },
-                    success: function (data) {
-                        var row = document.getElementById("content");
-                        row.innerHTML = data;
-                    },
-                    error: function (xhr) {
-                        //Do Something to handle error
-                    }
-                });
-            }
+                                                   function searchByName(param) {
+                                                       var txtSearch = param.value;
+                                                       $.ajax({
+                                                           url: "/project_swp391/searchserviceajax",
+                                                           type: "get", //send it through get method
+                                                           data: {
+                                                               txt: txtSearch
+                                                           },
+                                                           success: function (data) {
+                                                               var row = document.getElementById("content");
+                                                               row.innerHTML = data;
+                                                           },
+                                                           error: function (xhr) {
+                                                               //Do Something to handle error
+                                                           }
+                                                       });
+                                                   }
+                                                   function loadCate(data) {
+                                                       var cate = data.value;
+                                                       $.ajax({
+                                                           url: "/project_swp391/servicesbycate",
+                                                           type: "get", //send it through get method
+                                                           data: {
+                                                               cate: cate
+                                                           },
+                                                           success: function (data) {
+                                                               var row = document.getElementById("content");
+                                                               row.innerHTML = data;
+                                                           },
+                                                           error: function (xhr) {
+                                                               //Do Something to handle error
+                                                           }
+                                                       });
+                                                   }
         </script>
     </body>
 

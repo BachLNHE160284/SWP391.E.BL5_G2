@@ -3,7 +3,25 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/model/Blog.java</file>
+            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/controller/UpdatePostServlet.java</file>
+            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/dal/FeedbackDAO.java</file>
+            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/dal/BlogDAO.java</file>
+            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/model/Feedback.java</file>
+            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/dal/ServiceDAO.java</file>
+            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/utils/Constance.java</file>
             <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/controller/SubmitFeedback.java</file>
+            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/controller/ViewServiceServlet.java</file>
+            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/web/ServiceDetails.jsp</file>
+            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/controller/ServiceManagementServlet.java</file>
+            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/controller/PostManagementServlet.java</file>
+            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/controller/UpdateServiceServlet.java</file>
+            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/controller/AddServiceServlet.java</file>
+            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/model/Service.java</file>
+            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/context/DBContext.java</file>
+            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/controller/DeleteBlogServlet.java</file>
+            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/controller/DeleteServiceServlet.java</file>
+            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/controller/ViewPostServlet.java</file>
         </group>
     </open-files>
 </project-private>
