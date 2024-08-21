@@ -613,58 +613,171 @@ public class ServiceDAO extends DBContext {
         return totalServices;
     }
 
-    public static void main(String[] args) {
-        // Khởi tạo đối tượng ServiceDAO
-        ServiceDAO serviceDAO = new ServiceDAO();
-
-        // Định nghĩa các tham số đầu vào
-        int categoryId = 1; // Ví dụ: danh mục ID
-        int pageIndex = 1;  // Ví dụ: trang đầu tiên
-        int pageSize = 2;   // Ví dụ: 2 dịch vụ mỗi trang
-
-        // Gọi phương thức getServicesByCategoryId
-        List<Service> services = serviceDAO.getServicesByCategoryId(categoryId, pageIndex, pageSize);
-
-        // Hiển thị kết quả
-        System.out.println("Services in Category ID " + categoryId + ":");
-        for (Service service : services) {
-            System.out.println(service);
-        }
-    }
-    
-    public List<Service> searchServices(String keyword) {
+//    public static void main(String[] args) {
+//        // Khởi tạo đối tượng ServiceDAO
+//        ServiceDAO serviceDAO = new ServiceDAO();
+//
+//        // Định nghĩa các tham số đầu vào
+//        int categoryId = 1; // Ví dụ: danh mục ID
+//        int pageIndex = 1;  // Ví dụ: trang đầu tiên
+//        int pageSize = 2;   // Ví dụ: 2 dịch vụ mỗi trang
+//
+//        // Gọi phương thức getServicesByCategoryId
+//        List<Service> services = serviceDAO.getServicesByCategoryId(categoryId, pageIndex, pageSize);
+//
+//        // Hiển thị kết quả
+//        System.out.println("Services in Category ID " + categoryId + ":");
+//        for (Service service : services) {
+//            System.out.println(service);
+//        }
+//    }
+    // Get a list of services with optional search keyword, pagination
+//    public List<Service> searchAndPaginateServices(String keyword, int offset, int limit) {
+//        List<Service> services = new ArrayList<>();
+//        String sql = "SELECT s.service_id, s.name_service, s.original_prices, s.sale_prices, s.quantity, s.thumbnail, s.brief_infor,\n"
+//                + "    s.service_detail, s.date_add, s.service_Status, s.create_date, s.img_service, c.category_id, c.category_name\n"
+//                + "FROM service s\n"
+//                + "INNER JOIN category c ON s.category_id = c.category_id\n"
+//                + "ORDER BY date_add\n"
+//                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
+//
+//        try ( Connection con = getConnection();  PreparedStatement ps = con.prepareStatement(sql)) {
+//            ps.setString(1, "%" + keyword + "%");
+//            ps.setInt(2, offset);
+//            ps.setInt(3, limit);
+//            ResultSet rs = ps.executeQuery();
+//
+//            while (rs.next()) {
+//                Service service = new Service();
+//                    service.setService_id(rs.getInt("service_id"));
+//                    service.setCategory_id(rs.getInt("category_id"));
+//                    service.setName_service(rs.getString("name_service"));
+//                    service.setOriginal_prices(rs.getFloat("original_prices"));
+//                    service.setSale_prices(rs.getFloat("sale_prices"));
+//                    service.setQuantity(rs.getInt("quantity"));
+//                    // Assuming you have a method to get Category by id
+//                    service.setCategory_name(rs.getString("category_name"));
+//                    service.setThumbnail(rs.getString("thumbnail"));
+//                    service.setBrief_infor(rs.getString("brief_infor"));
+//                    service.setService_detail(rs.getString("service_detail"));
+//                    service.setImg_service(rs.getString("img_service"));
+//                    service.setDate_add(rs.getString("date_add"));
+//                    service.setService_Status(rs.getInt("service_Status"));
+//                    service.setCreate_date(rs.getString("create_date"));
+//                    services.add(service);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        return services;
+//    }
+//
+//    public static void main(String[] args) {
+//        ServiceDAO serviceDao = new ServiceDAO();
+//
+//        // Sample data for testing
+//        String keyword = "su"; // Tìm kiếm với từ khóa "spa"
+//        int offset = 0; // Số dòng cần bỏ qua (bắt đầu từ dòng đầu tiên)
+//        int limit = 4;  // Số dòng cần lấy (phân trang mỗi lần 5 dòng)
+//
+//        // Gọi phương thức searchAndPaginateServices để lấy danh sách dịch vụ
+//        List<Service> services = serviceDao.searchAndPaginateServices(keyword, offset, limit);
+//
+//        // In ra kết quả
+//        for (Service service : services) {
+//            System.out.println(service.toString());
+//        }
+//    }
+//
+//    // Get the total number of services that match the search keyword
+//    public int countServices(String keyword) {
+//        String sql = "SELECT COUNT(*) FROM service WHERE name_service LIKE ?";
+//
+//        try ( Connection con = getConnection();  PreparedStatement ps = con.prepareStatement(sql)) {
+//            ps.setString(1, "%" + keyword + "%");
+//            ResultSet rs = ps.executeQuery();
+//            if (rs.next()) {
+//                return rs.getInt(1);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        return 0;
+//    }
+    public List<Service> searchAndPaginateServices(String keyword, int offset, int limit) {
         List<Service> services = new ArrayList<>();
-        String sql = "SELECT * FROM service WHERE name_service LIKE ?";
-        
-        try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        String sql = "SELECT s.*, c.category_name FROM service s "
+                + "JOIN category c ON s.category_id = c.category_id "
+                + "WHERE s.name_service LIKE ? "
+                + "ORDER BY s.service_id "
+                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+        try ( Connection con = getConnection();  PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, "%" + keyword + "%");
+            ps.setInt(2, offset);
+            ps.setInt(3, limit);
             ResultSet rs = ps.executeQuery();
-            
+
             while (rs.next()) {
                 Service service = new Service(
-                    rs.getInt("service_id"),
-                    rs.getInt("category_id"),
-                    rs.getString("name_service"),
-                    rs.getFloat("original_prices"),
-                    rs.getFloat("sale_prices"),
-                    rs.getInt("quantity"),
-                    rs.getString("category_name"),
-                    rs.getString("thumbnail"),
-                    rs.getString("brief_infor"),
-                    rs.getString("service_detail"),
-                    rs.getString("date_add"),
-                    rs.getInt("service_Status"),
-                    rs.getString("create_date"),
-                    rs.getString("img_service"),
-                    new Category(rs.getInt("category_id"), rs.getString("category_name"))
+                        rs.getInt("service_id"),
+                        rs.getInt("category_id"),
+                        rs.getString("name_service"),
+                        rs.getFloat("original_prices"),
+                        rs.getFloat("sale_prices"),
+                        rs.getInt("quantity"),
+                        rs.getString("category_name"),
+                        rs.getString("thumbnail"),
+                        rs.getString("brief_infor"),
+                        rs.getString("service_detail"),
+                        rs.getString("date_add"),
+                        rs.getInt("service_Status"),
+                        rs.getString("create_date"),
+                        rs.getString("img_service"),
+                        new Category(rs.getInt("category_id"), rs.getString("category_name"))
                 );
                 services.add(service);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         return services;
+    }
+
+    public static void main(String[] args) {
+        // Tạo đối tượng DAO để truy cập dữ liệu dịch vụ
+        ServiceDAO serviceDAO = new ServiceDAO();
+
+        // Định nghĩa từ khóa tìm kiếm, offset, và limit
+        String keyword = "su"; // Từ khóa tìm kiếm
+        int offset = 0; // Số dòng cần bỏ qua (bắt đầu từ dòng đầu tiên)
+        int limit = 5;  // Số dòng cần lấy (phân trang mỗi lần 5 dòng)
+
+        // Gọi phương thức để tìm kiếm và phân trang dịch vụ
+        List<Service> services = serviceDAO.searchAndPaginateServices(keyword, offset, limit);
+
+        // In ra kết quả tìm kiếm
+        for (Service service : services) {
+            System.out.println(service);
+        }
+    }
+        // Get the total number of services that match the search keyword
+    public int countServices(String keyword) {
+        String sql = "SELECT COUNT(*) FROM service WHERE name_service LIKE ?";
+
+        try ( Connection con = getConnection();  PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, "%" + keyword + "%");
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return 0;
     }
 }

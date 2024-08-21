@@ -949,11 +949,13 @@
 
                                     <!-- Search bar for services -->
                                     <div class="col-md-3">
-                                        <div >
-                                            <nav class="navbar navbar-light bg-light w-100 "  style="display: block">
-                                                <form action="serchservice" class="form-inline">
+                                        <div>
+                                            <nav class="navbar navbar-light bg-light w-100" style="display: block">
+                                                <!-- Thay đổi action thành URL của servlet 'SearchService' -->
+                                                <form action="SearchService" class="form-inline" method="GET">
                                                     <div class="input-group input-group-sm">
-                                                        <input name="txt" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Search...">
+                                                        <!-- Giữ nguyên tên input là 'keyword' để trùng khớp với code trong servlet -->
+                                                        <input name="keyword" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Search...">
                                                         <div class="input-group-append">
                                                             <button type="submit" style="border-radius: 0px" class="btn btn-secondary btn-number">
                                                                 <i class="fa fa-search"></i>
@@ -964,6 +966,7 @@
                                             </nav>
                                         </div>
                                     </div>
+
                                 </div>
 
                                 <!-- Display services based on selected category -->
