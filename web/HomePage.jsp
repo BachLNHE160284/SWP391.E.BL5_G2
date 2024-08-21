@@ -873,13 +873,6 @@
                 </div>
             </section>
             <!-- End Recent Blog Posts Section -->
-
-
-
-           
-
-
-
         </main><!-- End #main -->
 
         <!-- ======= Footer ======= -->
