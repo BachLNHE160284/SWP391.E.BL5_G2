@@ -13,6 +13,7 @@ import model.Feedback;
  * @author lebac
  */
 public class FeedbackDAO extends DBContext{
+    //BACHLNHE160284
     public void addFeedBack(Feedback p) {
         String sql = "INSERT INTO Feedback (feedback_img, feedback, rate_star, service_id, user_id, create_date) VALUES (?, ?, ?, ?, ?, GETDATE())";
         try {
@@ -28,18 +29,19 @@ public class FeedbackDAO extends DBContext{
         }
     }
     
+    //BACHLNHE160284
+    public void deleteFeedBack(int feedBackId) {
+        String sql = "DELETE FROM feedback WHERE feedback_id = ?";
+        try ( PreparedStatement ps = getConnection().prepareStatement(sql)) {
+            ps.setInt(1, feedBackId);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+    
     public static void main(String[] args) {
         FeedbackDAO dao = new FeedbackDAO();
-        
-        // Creating a test Feedback object
-        Feedback testFeedback = new Feedback();
-        testFeedback.setFeedback_img(null); // Assuming no image for now
-        testFeedback.setFeedback("Great service!");
-        testFeedback.setRate_star(4.5f);
-        testFeedback.setService_id(1);
-        testFeedback.setUser_id(2);
-
-        // Call the addFeedback method to test it
-        dao.addFeedBack(testFeedback);
+        dao.deleteFeedBack(3);
     }
 }
