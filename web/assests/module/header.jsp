@@ -16,40 +16,13 @@
                 <li><a class="nav-link scrollto" href="ServiceList">Services</a></li>
                 <c:if test="${sessionScope.acc.role_id == 4}">
                     <li><a class="nav-link scrollto" href="ManagerDashboard.jsp">Manager Dashboard</a></li>
-                    </c:if>
-
-                <c:if test="${sessionScope.listSetting.get(1).setting_status==true}">
-
-                    <li><a class="nav-link scrollto" href="servicelist">Services</a></li>
-                    </c:if>
-                    <c:if test="${sessionScope.listSetting.get(3).setting_status==true}">
-                    <li><a class="nav-link scrollto" href="blogs-list">Blogs</a></li>
-                    </c:if>
-                    <c:if test="${sessionScope.listSetting.get(5).setting_status==true}">
-                    <li><a class="nav-link scrollto" href="feedback">Feedback</a></li>
-                    </c:if>
-                    <c:if test="${sessionScope.admin != null}">
-                    <li><a class="nav-link scrollto" href="/project_swp391/Admin/AdminDashBoard">Admin</a></li>
-                    </c:if>
-                    <c:if test="${sessionScope.account.user_role == 5}">
-                    <li class="dropdown"><a href="#"><span>Manager</span><i class="bi bi-chevron-right"></i></a>
-                        <ul>
-                            <li><a href="medicalexamination">Medical examination</a></li>
-                            <li><a href="/project_swp391/FeedbackManagerServlet">Feedback List</a></li>
-                            <li><a href="/project_swp391/ReservationListController">Reservation List</a></li>
-                            <li><a href="/project_swp391/listslidermanager">Slider List Manager</a></li>
-                            <li><a href="/project_swp391/ListServiceManager">Service List Manager</a></li>
-                            <li><a href="/project_swp391/customerList">Customer List Manager</a></li>
-
-                        </ul>
-                    </li>
-                </c:if>
+                    </c:if>                   
                 <c:if test="${sessionScope.acc != null || sessionScope.acc != null}">
                     <li class="dropdown"><a href="#"><span>User Manager</span><i class="bi bi-chevron-right"></i></a>
                         <ul>
                             <li><a href="user_profile">Edit profile</a></li>
                             <li><a href="myreservation">My Reservation</a></li>
-                                <c:if test="${sessionScope.account.user_role == 2}">
+                                <c:if test="${sessionScope.account.user_role == 3}">
                                 <li><a href="MyCustomerList">Customer List</a></li>
                                 <li><a href="DoctorMedicalexammination">Medical exammination</a></li>
                                 </c:if>
