@@ -14,7 +14,9 @@
                 <li><a class="nav-link scrollto " href="HomePage">Home</a></li>
                 <li><a class="nav-link scrollto" href="BlogList">Blogs</a></li>
                 <li><a class="nav-link scrollto" href="ServiceList">Services</a></li>
-                <li><a class="nav-link scrollto" href="SubmitFeedback">FeedBack</a></li>
+                <c:if test="${sessionScope.acc.role_id == 4}">
+                    <li><a class="nav-link scrollto" href="ManagerDashboard.jsp">Manager Dashboard</a></li>
+                    </c:if>
 
                 <c:if test="${sessionScope.listSetting.get(1).setting_status==true}">
 
@@ -52,7 +54,6 @@
                                 <li><a href="DoctorMedicalexammination">Medical exammination</a></li>
                                 </c:if>
                             <li><a href="UserMedicalexammination">Medical exammination</a></li>
-                            <li><a href="changpassword">Change Password</a></li>
                             <li><a href="Logout">Logout</a></li>
                         </ul>
                     </li>

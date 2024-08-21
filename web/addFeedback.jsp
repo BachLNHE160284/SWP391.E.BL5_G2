@@ -113,7 +113,7 @@
             <h1>Submit Your Feedback</h1>
             <form action="SubmitFeedback" method="post" enctype="multipart/form-data">
                 <label for="service_id">Service ID:</label>
-                <input type="text" id="service_id" name="service_id" required><br>
+                <input type="text" id="service_id" name="service_id" value ="${serviceId}" readonly required><br>
                 <label for="feedback">Feedback:</label>
                 <textarea id="feedback" name="feedback" rows="4" required style="resize:none"></textarea><br>
 
