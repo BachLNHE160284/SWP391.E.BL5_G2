@@ -15,7 +15,7 @@ public class Feedback {
     private float rate_star;
     private int service_id;
     private int user_id;
-    private boolean feedback_status;
+    private int feedback_status;
     private String create_date;
     private Service service;
     private User user;
@@ -23,7 +23,7 @@ public class Feedback {
     public Feedback() {
     }
 
-    public Feedback(int feedback_id, String feedback_img, String feedback, float rate_star, int service_id, int user_id, boolean feedback_status, String create_date, Service service, User user) {
+    public Feedback(int feedback_id, String feedback_img, String feedback, float rate_star, int service_id, int user_id, int feedback_status, String create_date, Service service, User user) {
         this.feedback_id = feedback_id;
         this.feedback_img = feedback_img;
         this.feedback = feedback;
@@ -84,11 +84,11 @@ public class Feedback {
         this.user_id = user_id;
     }
 
-    public boolean isFeedback_status() {
+    public int getFeedback_status() {
         return feedback_status;
     }
 
-    public void setFeedback_status(boolean feedback_status) {
+    public void setFeedback_status(int feedback_status) {
         this.feedback_status = feedback_status;
     }
 
@@ -120,6 +120,8 @@ public class Feedback {
     public String toString() {
         return "Feedback{" + "feedback_id=" + feedback_id + ", feedback_img=" + feedback_img + ", feedback=" + feedback + ", rate_star=" + rate_star + ", service_id=" + service_id + ", user_id=" + user_id + ", feedback_status=" + feedback_status + ", create_date=" + create_date + ", service=" + service + ", user=" + user + '}';
     }
+
+    
     
     
 }

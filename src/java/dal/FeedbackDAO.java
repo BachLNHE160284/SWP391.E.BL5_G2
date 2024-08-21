@@ -25,7 +25,7 @@ public class FeedbackDAO extends DBContext {
 
     //BACHLNHE160284
     public void addFeedBack(Feedback p) {
-        String sql = "INSERT INTO Feedback (feedback_img, feedback, rate_star, service_id, user_id, create_date) VALUES (?, ?, ?, ?, ?, GETDATE())";
+        String sql = "INSERT INTO Feedback (feedback_img, feedback, rate_star, service_id, user_id, feedback_status, create_date) VALUES (?, ?, ?, ?, ?, ?, GETDATE())";
         try {
             PreparedStatement ps = getConnection().prepareStatement(sql);
             ps.setString(1, p.getFeedback_img());
@@ -33,6 +33,7 @@ public class FeedbackDAO extends DBContext {
             ps.setFloat(3, p.getRate_star());
             ps.setInt(4, p.getService_id());
             ps.setInt(5, p.getUser_id());
+            ps.setInt(6, p.getFeedback_status());
             ps.executeUpdate();
         } catch (Exception e) {
             System.out.println(e);
@@ -74,7 +75,7 @@ public class FeedbackDAO extends DBContext {
                 feedback.setRate_star(rs.getFloat("rate_star"));
                 feedback.setService_id(rs.getInt("service_id"));
                 feedback.setUser_id(rs.getInt("user_id"));
-                feedback.setFeedback_status(rs.getBoolean("feedback_status"));
+                feedback.setFeedback_status(rs.getInt("feedback_status"));
                 feedback.setCreate_date(rs.getString("create_date"));
 
                 // Tạo đối tượng User và gán dữ liệu
@@ -136,7 +137,7 @@ public class FeedbackDAO extends DBContext {
                     feedback.setFeedback_img(rs.getString("feedback_img"));
                     feedback.setFeedback(rs.getString("feedback"));
                     feedback.setRate_star(rs.getFloat("rate_star"));
-                    feedback.setFeedback_status(rs.getBoolean("feedback_status"));
+                    feedback.setFeedback_status(rs.getInt("feedback_status"));
                     feedback.setCreate_date(rs.getString("create_date"));
 
                     Service service = new Service();
@@ -189,7 +190,7 @@ public class FeedbackDAO extends DBContext {
                     feedback.setFeedback_img(rs.getString("feedback_img"));
                     feedback.setFeedback(rs.getString("feedback"));
                     feedback.setRate_star(rs.getFloat("rate_star"));
-                    feedback.setFeedback_status(rs.getBoolean("feedback_status"));
+                    feedback.setFeedback_status(rs.getInt("feedback_status"));
                     feedback.setCreate_date(rs.getString("create_date"));
 
                     // Set user details

@@ -90,6 +90,7 @@ public class SubmitFeedback extends HttpServlet {
         String feedbackText = request.getParameter("feedback");
         float rateStar = Float.parseFloat(request.getParameter("rate_star"));
         int serviceId = Integer.parseInt(request.getParameter("service_id"));
+        int feedbackStatus = 1;
 //        int userId = Integer.parseInt(request.getSession());
         int userId = -1;
 
@@ -125,6 +126,7 @@ public class SubmitFeedback extends HttpServlet {
         feedback.setRate_star(rateStar);
         feedback.setService_id(serviceId);
         feedback.setUser_id(userId);
+        feedback.setFeedback_status(feedbackStatus);
         dao.addFeedBack(feedback);
         response.sendRedirect("ServiceList");
     }

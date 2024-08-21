@@ -93,6 +93,13 @@
                     <label for="service_detail" class="form-label">Service Detail</label>
                     <textarea class="form-control" id="service_detail" name="service_detail" rows="3">${service.service_detail}</textarea>
                 </div>
+                <div class="mb-3">
+                    <label for="status" class="form-label">Status</label>
+                    <select class="form-select" id="status" name="status" required>
+                        <option value="1" ${service.service_Status == 1 ? 'selected' : ''}>Active</option>
+                        <option value="0" ${service.service_Status == 0 ? 'selected' : ''}>Inactive</option>
+                    </select>
+                </div>
                 
                 <div class="mb-3">
                             <label for="img_service" class="form-label">Image Service</label>

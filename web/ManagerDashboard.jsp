@@ -83,35 +83,35 @@
     </nav>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <div class="stat-card">
                     <img src="https://cdn-icons-png.flaticon.com/512/4646/4646577.png" alt="Major Image" style="width: 50px; height: 50px;">
                     <h3>Services</h3>
                     <a href="ServiceManagementServlet" class="btn btn-warning">Manage Services</a>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <div class="stat-card">
                     <img src="https://cdn-icons-png.flaticon.com/512/4658/4658825.png" alt="Major Image" style="width: 50px; height: 50px;">
                     <h3>Feedbacks</h3>
                     <a href="FeedbackManagementServlet" class="btn btn-warning">Manage Feedbacks</a>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <div class="stat-card">
                     <img src="https://static.vecteezy.com/system/resources/previews/002/553/976/non_2x/delivery-cargo-service-logistic-cardboard-box-and-mail-post-line-style-icon-free-vector.jpg" alt="Major Image" style="width: 50px; height: 50px;">
                     <h3>Posts</h3>
                     <a href="PostManagementServlet" class="btn btn-warning">Manage Posts</a>
                 </div>
             </div>
-            <div class="col-md-4">
+<!--            <div class="col-md-4">
                 <div class="stat-card">
                     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPiFxdPfQeUYEz_SDGpwzJcLgNUtH9sBl1Jg&s" alt="Major Image" style="width: 50px; height: 50px;">
                     <h3>Customers</h3>
                     <a href="majorManagement.html" class="btn btn-warning">Manage Customers</a>
                 </div>
-            </div>
-            <div class="col-md-4">
+            </div>-->
+            <div class="col-md-6">
                 <div class="stat-card">
                     <img src="https://cdn-icons-png.flaticon.com/512/7545/7545476.png" alt="Major Image" style="width: 50px; height: 50px;">
                     <h3>Sliders</h3>

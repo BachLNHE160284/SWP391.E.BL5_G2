@@ -110,7 +110,7 @@
                 </select>
             </div>
             <button type="submit" class="btn btn-primary w-100 mb-3">Add Blog</button>
-            <a href="BlogManagementServlet" class="btn btn-primary w-100">Back to Blog Management</a>
+            <a href="PostManagementServlet" class="btn btn-primary w-100">Back to Blog Management</a>
         </form>
         
         <%
