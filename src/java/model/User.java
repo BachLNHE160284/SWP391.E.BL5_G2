@@ -139,4 +139,10 @@ public class User {
         this.create_date = create_date;
     }
 
+    @Override
+    public String toString() {
+        return "User{" + "user_id=" + user_id + ", fullname=" + fullname + ", gender=" + gender + ", phone_number=" + phone_number + ", email_address=" + email_address + ", address=" + address + ", username=" + username + ", password=" + password + ", avartar=" + avartar + ", role_id=" + role_id + ", Status=" + Status + ", create_date=" + create_date + '}';
+    }
+    
+
 }
