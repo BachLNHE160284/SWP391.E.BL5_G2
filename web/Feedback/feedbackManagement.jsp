@@ -199,10 +199,10 @@
                 <div class="sort-controls">
                     <label for="sortField">Sort by:</label>
                     <select id="sortField" name="sortField" onchange="submitSortingForm()">
-                        <option value="blog_id" ${param.sortField == 'blog_id' ? 'selected' : ''}>Blog ID</option>
-                        <option value="title" ${param.sortField == 'title' ? 'selected' : ''}>Title</option>
-                        <option value="content" ${param.sortField == 'content' ? 'selected' : ''}>Content</option>
-                        <option value="brief_infor" ${param.sortField == 'brief_infor' ? 'selected' : ''}>Brief Information</option>
+                        <option value="feedback_id" ${param.sortField == 'feedback_id' ? 'selected' : ''}>Feedback ID</option>
+                        <option value="feedback" ${param.sortField == 'feedback' ? 'selected' : ''}>Feedback Detail</option>
+                        <option value="rate_star" ${param.sortField == 'rate_star' ? 'selected' : ''}>Star</option>
+                        <option value="create_date" ${param.sortField == 'create_date' ? 'selected' : ''}>Feedback Date</option>
                     </select>
                     <select id="sortOrder" name="sortOrder" onchange="submitSortingForm()">
                         <option value="ASC" ${param.sortOrder == 'ASC' ? 'selected' : ''}>Ascending</option>
@@ -219,7 +219,7 @@
                             <th scope="col" style="width: 150px;">Feedback detail</th>
                             <th scope="col" style="width: 200px;">Star</th>
                             <th scope="col" style="width: 200px;">Service Name</th>
-                            <th scope="col" style="width: 150px;">User Name</th>
+                            <th scope="col" style="width: 150px;">Username</th>
                             <th scope="col" style="width: 100px;">Feedback Date</th>
                             <th scope="col" style="width: 150px;">Feedback Image</th>
                             <th scope="col" style="width: 200px;">Actions</th>
@@ -230,7 +230,48 @@
                             <tr>
                                 <th scope="row">${feedbacks.feedback_id}</th>
                                 <td>${feedbacks.feedback}</td>
-                                <td>${feedbacks.rate_star}</td>
+                                <td>
+                                    <c:choose>
+                                        <c:when test="${feedback.rate_star >= 1}">
+                                            <i class="fas fa-star"></i>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <i class="far fa-star"></i>
+                                        </c:otherwise>
+                                    </c:choose>
+                                    <c:choose>
+                                        <c:when test="${feedback.rate_star >= 2}">
+                                            <i class="fas fa-star"></i>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <i class="far fa-star"></i>
+                                        </c:otherwise>
+                                    </c:choose>
+                                    <c:choose>
+                                        <c:when test="${feedback.rate_star >= 3}">
+                                            <i class="fas fa-star"></i>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <i class="far fa-star"></i>
+                                        </c:otherwise>
+                                    </c:choose>
+                                    <c:choose>
+                                        <c:when test="${feedback.rate_star >= 4}">
+                                            <i class="fas fa-star"></i>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <i class="far fa-star"></i>
+                                        </c:otherwise>
+                                    </c:choose>
+                                    <c:choose>
+                                        <c:when test="${feedback.rate_star >= 5}">
+                                            <i class="fas fa-star"></i>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <i class="far fa-star"></i>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </td>
                                 <td>${feedbacks.service.name_service}</td>
                                 <td>${feedbacks.user.fullname}</td>
                                 <td>${feedbacks.create_date}</td>
