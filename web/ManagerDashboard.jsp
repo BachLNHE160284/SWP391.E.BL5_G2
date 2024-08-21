@@ -94,7 +94,7 @@
                 <div class="stat-card">
                     <img src="https://cdn-icons-png.flaticon.com/512/4658/4658825.png" alt="Major Image" style="width: 50px; height: 50px;">
                     <h3>Feedbacks</h3>
-                    <a href="mentorManagement.html" class="btn btn-warning">Manage Feedbacks</a>
+                    <a href="FeedbackManagementServlet" class="btn btn-warning">Manage Feedbacks</a>
                 </div>
             </div>
             <div class="col-md-4">
