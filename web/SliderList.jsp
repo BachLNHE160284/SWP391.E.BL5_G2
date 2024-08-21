@@ -14,6 +14,10 @@
         <title>Slider List</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.3/css/bootstrap.min.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.3/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <style>
             body {
                 background-color: #f8f9fa;
@@ -54,12 +58,37 @@
             .table img {
                 width: 100px;
                 height: auto;
+                
             }
+            .btn-custom {
+                display: inline-flex;
+                align-items: center;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 0.25rem;
+                background-color: #ff6600; /* Màu nền chính */
+                color: #ffffff; /* Màu chữ */
+                font-size: 16px;
+                font-weight: bold;
+                text-decoration: none;
+                cursor: pointer;
+                transition: background-color 0.3s, box-shadow 0.3s;
+                margin-bottom: 20px; /* Khoảng cách dưới nút */
+            }
+            .btn-custom:hover {
+                background-color: #e65c00; /* Màu nền khi di chuột qua */
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Hiệu ứng bóng */
+            }
+            .btn-custom i {
+                margin-right: 8px; /* Khoảng cách giữa biểu tượng và chữ */
         </style>
     </head>
     <body>
         <div class="container mt-5">
             <h2 class="mb-4">Slider List</h2>
+            <a href="AddSlider" class="btn-custom" title="Add Slider">
+                <i class="fas fa-plus"></i> Add Slider
+            </a>
             <form action="SliderList" method="GET">
                 <table class="table table-bordered">
                     <thead>
@@ -136,7 +165,7 @@
                     </ul>
                 </nav>
 
-                <a href="AddSlider" class="btn btn-primary w-100 mt-3">Back to Slider Management</a>
+                <a href="ManagerDashboard.jsp" class="btn btn-primary w-100 mt-3">Back to Slider Management</a>
             </form>
         </div>
 

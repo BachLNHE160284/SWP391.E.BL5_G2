@@ -164,6 +164,24 @@ public class SliderDAO {
         }
         return false;
     }
+//    public static void main(String[] args) {
+//        // Khởi tạo đối tượng DAO
+//        SliderDAO sliderDao = new SliderDAO();
+//
+//        // Khai báo các tham số để cập nhật trạng thái của Slider
+//        int sliderId = 1; // ID của Slider cần cập nhật
+//        int newStatus = 0; // Trạng thái mới muốn cập nhật (ví dụ: 1 cho "Hiển thị", 0 cho "Ẩn")
+//
+//        // Gọi hàm updateSliderStatus và nhận kết quả
+//        boolean isUpdated = sliderDao.updateSliderStatus(sliderId, newStatus);
+//
+//        // Kiểm tra kết quả và in ra thông báo
+//        if (isUpdated) {
+//            System.out.println("Cập nhật trạng thái của Slider thành công.");
+//        } else {
+//            System.out.println("Cập nhật trạng thái của Slider thất bại.");
+//        }
+//    }
 
     public void updateSlider(String title, String backlink, String img, int status) {
         String query = "UPDATE Slider SET slider_title = ?, backlink = ?, slider_img = ?, status = ? WHERE slider_id = ?";
