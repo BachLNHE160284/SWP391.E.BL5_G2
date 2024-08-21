@@ -16,6 +16,8 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.3/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
         <style>
             body {
                 background-color: #f4f7f6;
@@ -183,6 +185,9 @@
             .btn-custom i {
                 margin-right: 8px; /* Khoảng cách giữa biểu tượng và chữ */
             }
+            .star-yellow {
+                color: gold;
+            }
         </style>
     </head>
     <body>
@@ -231,50 +236,39 @@
                                 <th scope="row">${feedbacks.feedback_id}</th>
                                 <td>${feedbacks.feedback}</td>
                                 <td>
-                                    <c:choose>
-                                        <c:when test="${feedback.rate_star >= 1}">
-                                            <i class="fas fa-star"></i>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <i class="far fa-star"></i>
-                                        </c:otherwise>
-                                    </c:choose>
-                                    <c:choose>
-                                        <c:when test="${feedback.rate_star >= 2}">
-                                            <i class="fas fa-star"></i>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <i class="far fa-star"></i>
-                                        </c:otherwise>
-                                    </c:choose>
-                                    <c:choose>
-                                        <c:when test="${feedback.rate_star >= 3}">
-                                            <i class="fas fa-star"></i>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <i class="far fa-star"></i>
-                                        </c:otherwise>
-                                    </c:choose>
-                                    <c:choose>
-                                        <c:when test="${feedback.rate_star >= 4}">
-                                            <i class="fas fa-star"></i>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <i class="far fa-star"></i>
-                                        </c:otherwise>
-                                    </c:choose>
-                                    <c:choose>
-                                        <c:when test="${feedback.rate_star >= 5}">
-                                            <i class="fas fa-star"></i>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <i class="far fa-star"></i>
-                                        </c:otherwise>
-                                    </c:choose>
+                                    <c:forEach var="i" begin="1" end="5">
+                                        <c:choose>
+                                            <c:when test="${feedbacks.rate_star >= i}">
+                                                <!-- Hiển thị sao đầy nếu rate_star >= i -->
+                                                <i class="fas fa-star star-yellow"></i>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <!-- Hiển thị sao rỗng nếu rate_star < i -->
+                                                <i class="far fa-star star-yellow"></i>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:forEach>
                                 </td>
                                 <td>${feedbacks.service.name_service}</td>
                                 <td>${feedbacks.user.fullname}</td>
-                                <td>${feedbacks.create_date}</td>
+                                <td>
+                                    <span class="date">${feedbacks.create_date}</span>
+                                    <script>
+                                        function formatDate(dateString) {
+                                            // Tạo đối tượng Date từ chuỗi ngày
+                                            var date = new Date(dateString);
+                                            // Định dạng ngày theo mong muốn
+                                            var options = {year: 'numeric', month: '2-digit', day: '2-digit'};
+                                            return date.toLocaleDateString(undefined, options);
+                                        }
+
+                                        // Tìm tất cả các thẻ có class là 'date' và cập nhật nội dung của chúng
+                                        document.querySelectorAll('.date').forEach(function (element) {
+                                            var formattedDate = formatDate(element.textContent);
+                                            element.textContent = formattedDate;
+                                        });
+                                    </script>
+                                </td>
                                 <td>
                                     <c:if test="${not empty feedbacks.feedback_img}">
                                         <img src="${feedbacks.feedback_img}" alt="Image Service" class="service-image">
@@ -334,6 +328,7 @@
                 // Submit the form when sortOrder changes
                 submitSortingForm();
             });
+
         </script>
     </body>
 </html>

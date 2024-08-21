@@ -126,7 +126,7 @@ public class SubmitFeedback extends HttpServlet {
         feedback.setService_id(serviceId);
         feedback.setUser_id(userId);
         dao.addFeedBack(feedback);
-        response.sendRedirect("ServiceManagementServlet");
+        response.sendRedirect("ServiceList");
     }
 
     /**

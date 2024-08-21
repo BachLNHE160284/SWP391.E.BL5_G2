@@ -235,7 +235,24 @@
                                 <td>${services.name_service}</td>
                                 <td>${services.category_name}</td>
                                 <td>${services.service_detail}</td>
-                                <td class="dateAdd">${services.date_add}</td>
+                                <td>
+                                    <span class="date">${services.date_add}</span>
+                                    <script>
+                                        function formatDate(dateString) {
+                                            // Tạo đối tượng Date từ chuỗi ngày
+                                            var date = new Date(dateString);
+                                            // Định dạng ngày theo mong muốn
+                                            var options = {year: 'numeric', month: '2-digit', day: '2-digit'};
+                                            return date.toLocaleDateString(undefined, options);
+                                        }
+
+                                        // Tìm tất cả các thẻ có class là 'date' và cập nhật nội dung của chúng
+                                        document.querySelectorAll('.date').forEach(function (element) {
+                                            var formattedDate = formatDate(element.textContent);
+                                            element.textContent = formattedDate;
+                                        });
+                                    </script>
+                                </td>
                                 <td class="${services.service_Status == 1 ? 'status-active' : 'status-inactive'}">
                                     ${services.service_Status == 1 ? 'Active' : 'Inactive'}
                                 </td>
@@ -273,7 +290,7 @@
             </div>
         </div>
         <a href="ManagerDashboard.jsp" class="btn-custom" title="Back">
-             Back
+            Back
         </a>
         <script>
             function confirmDelete(serviceId) {
