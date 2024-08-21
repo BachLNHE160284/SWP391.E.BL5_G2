@@ -275,7 +275,7 @@
                                     </c:if>
                                 </td>
                                 <td>
-                                    <a href="ViewPostServlet?id=${feedbacks.feedback_id}" class="btn btn-info btn-sm" title="View">
+                                    <a href="ViewFeedbackServlet?id=${feedbacks.feedback_id}" class="btn btn-info btn-sm" title="View">
                                         <i class="fas fa-eye"></i>
                                     </a>
                                     <a href="javascript:void(0);" class="btn btn-danger btn-sm" title="Delete" onclick="confirmDelete('${feedbacks.feedback_id}');">
@@ -304,9 +304,9 @@
         </a>
         <script>
             function confirmDelete(blogId) {
-                var result = confirm("Are you sure you want to delete this post?");
+                var result = confirm("Are you sure you want to delete this feedback?");
                 if (result) {
-                    window.location.href = "DeleteBlogServlet?id=" + blogId;
+                    window.location.href = "DeleteFeedbackServlet?id=" + blogId;
                 }
             }
             function submitSortingForm() {

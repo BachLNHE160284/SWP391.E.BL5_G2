@@ -7,9 +7,11 @@
             <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/dal/FeedbackDAO.java</file>
             <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/dal/BlogDAO.java</file>
             <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/dal/ServiceDAO.java</file>
+            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/web/PostManager/viewPost.jsp</file>
             <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/utils/Constance.java</file>
             <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/controller/SubmitFeedback.java</file>
             <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/web/PostManager/postManagement.jsp</file>
+            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/controller/ViewFeedbackServlet.java</file>
             <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/controller/ViewServiceServlet.java</file>
             <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/web/assests/module/header.jsp</file>
             <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/web/ServiceManager/serviceManagement.jsp</file>
@@ -23,7 +25,9 @@
             <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/controller/ViewPostServlet.java</file>
             <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/dal/UserDAO.java</file>
             <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/model/Blog.java</file>
+            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/controller/DeleteFeedbackServlet.java</file>
             <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/model/Feedback.java</file>
+            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/web/Feedback/viewFeedback.jsp</file>
             <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/web/HomePage.jsp</file>
             <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/web/WEB-INF/web.xml</file>
             <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/controller/ForgotPasswordServlet.java</file>
