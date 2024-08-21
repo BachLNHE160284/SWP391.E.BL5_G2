@@ -5,6 +5,9 @@
 
 package controller;
 
+import dal.CartDao;
+import dal.CategoryDAO;
+import dal.ServiceDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,6 +15,12 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import java.util.List;
+import model.Cart;
+import model.Category;
+import model.Service;
+import model.User;
 
 /**
  *
@@ -30,18 +39,37 @@ public class ReservationDetails extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ReservationDetails</title>");  
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ReservationDetails at " + request.getContextPath () + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        HttpSession session = request.getSession();
+        User u = (User) session.getAttribute("u");
+//        if(u==null||u.getRole_id()!=2){
+//        response.sendRedirect("UserLogin");
+//        return;
+//        }
+        String service_idp = request.getParameter("serviceID");
+        String uservicep = request.getParameter("uservice");
+        String checkp = request.getParameter("check");
+        boolean check = false;
+        try {
+            check = Boolean.parseBoolean(checkp);
+        } catch (Exception e) {
         }
+        String servicedelete = request.getParameter("servicedelete");
+        CategoryDAO cd = new CategoryDAO();
+        List<Category> listcataCategory = cd.getAllCategories();
+        CartDao d = new CartDao();
+        ServiceDAO pd = new ServiceDAO();
+        if (service_idp != null) {
+            d.Addtocart(u.getUser_id(), Integer.parseInt(service_idp));
+        }
+        d.UpdateCart(check, uservicep, servicedelete, u.getUser_id());
+        List<Cart> lc = d.getALlCartByUserID(u.getUser_id());
+        double totals = d.getTotals(lc);
+        //List<Service> newservice = pd.GetListLastProduct();
+        //request.setAttribute("newproduct", newproduct);
+        request.setAttribute("listcart", lc);
+        request.setAttribute("totals", totals);
+        request.setAttribute("listcatacategory", listcataCategory);
+        request.getRequestDispatcher("ReservationDetails.jsp").forward(request, response);
     } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

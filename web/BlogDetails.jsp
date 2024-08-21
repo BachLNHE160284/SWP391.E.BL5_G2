@@ -536,14 +536,6 @@
 
                                     <div class="sidebar">
 
-                                        <div class="sidebar-item search-form">
-                                            <h3 class="sidebar-title" >Search</h3>
-                                            <form action="" class="mt-3">
-                                                <input type="text" style="border: 1px solid;">
-                                                <button type="submit"><i class="bi bi-search"></i></button>
-                                            </form>
-                                        </div><!-- End sidebar search formn-->
-
                                         <div class="sidebar-item categories">
                                             <h3 class="sidebar-title">Categories</h3>
                                             <ul class="mt-3">
@@ -552,20 +544,6 @@
                                                     </c:forEach>
                                             </ul>
                                         </div><!-- End sidebar categories-->
-                                        <div class="sidebar-item recent-posts">
-                                            <h3 class="sidebar-title">New Posts</h3>
-
-                                            <div class="mt-3">
-
-
-
-
-                                            </div>
-
-                                        </div><!-- End sidebar recent posts-->
-
-
-
                                     </div>
                                 </div>
                             </div>

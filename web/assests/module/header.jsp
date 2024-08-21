@@ -14,6 +14,7 @@
                 <li><a class="nav-link scrollto " href="HomePage">Home</a></li>
                 <li><a class="nav-link scrollto" href="BlogList">Blogs</a></li>
                 <li><a class="nav-link scrollto" href="ServiceList">Services</a></li>
+                <li><a class="nav-link scrollto" href="SubmitFeedback">FeedBack</a></li>
 
                 <c:if test="${sessionScope.listSetting.get(1).setting_status==true}">
 
@@ -62,7 +63,7 @@
         </nav><!-- .navbar -->
 
         <!--      <a href="login" class="appointment-btn scrollto"><span class="d-none d-md-inline"></span>Login</a>-->
-        <a class="me-3 m-auto" href="reservation-detail" >
+        <a class="me-3 m-auto" href="ReservationDetails" >
             <i style="font-size: 30px;color:grey;" class="fas fa-shopping-cart"></i>
             <span id="cart-number" class="position-absolute bottom-50 start-99 translate-middle badge rounded-pill bg-danger">
                 <c:choose>
