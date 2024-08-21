@@ -272,6 +272,9 @@
                 </div>
             </div>
         </div>
+        <a href="ManagerDashboard.jsp" class="btn-custom" title="Back">
+             Back
+        </a>
         <script>
             function confirmDelete(serviceId) {
                 var result = confirm("Are you sure you want to delete this service?");

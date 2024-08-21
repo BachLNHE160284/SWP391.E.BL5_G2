@@ -17,8 +17,8 @@
         <url-pattern>/DemoController1</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ChangePassword</servlet-name>
-        <url-pattern>/changePassword</url-pattern>
+        <servlet-name>Register</servlet-name>
+        <url-pattern>/register</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
