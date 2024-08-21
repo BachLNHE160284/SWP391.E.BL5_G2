@@ -631,4 +631,40 @@ public class ServiceDAO extends DBContext {
             System.out.println(service);
         }
     }
+    
+    public List<Service> searchServices(String keyword) {
+        List<Service> services = new ArrayList<>();
+        String sql = "SELECT * FROM service WHERE name_service LIKE ?";
+        
+        try (Connection con = getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, "%" + keyword + "%");
+            ResultSet rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                Service service = new Service(
+                    rs.getInt("service_id"),
+                    rs.getInt("category_id"),
+                    rs.getString("name_service"),
+                    rs.getFloat("original_prices"),
+                    rs.getFloat("sale_prices"),
+                    rs.getInt("quantity"),
+                    rs.getString("category_name"),
+                    rs.getString("thumbnail"),
+                    rs.getString("brief_infor"),
+                    rs.getString("service_detail"),
+                    rs.getString("date_add"),
+                    rs.getInt("service_Status"),
+                    rs.getString("create_date"),
+                    rs.getString("img_service"),
+                    new Category(rs.getInt("category_id"), rs.getString("category_name"))
+                );
+                services.add(service);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return services;
+    }
 }

@@ -122,7 +122,7 @@
                         <c:forEach items="${listCate}" var="c">
                             <div class="col-md-2">
                                 <div class="frame">
-                                    <a href="servicesbycategory?cid=${c.getCategory_id()}"><button name="cate" value="${c.getCategory_id()}" class="custom-btn btn-5"><span>${c.getCategory_name()}</span></button></a>
+                                    <a href="ServiceList?cateId=${c.getCategory_id()}"><button name="cate" value="${c.getCategory_id()}" class="custom-btn btn-5"><span>${c.getCategory_name()}</span></button></a>
                                 </div>
                             </div>
 
@@ -153,7 +153,7 @@
                     <div class="container h-100">
                         <div class="row d-flex justify-content-center align-items-center h-100">
                             <div class="col">
-                                <p><span class="h2">Your Reservation Detail   </span><span class="h4">(${sessionScope.carts.size()} item in your cart)</span></p>
+                                <p><span class="h2">Your Reservation Detail</span><span class="h4">(${sessionScope.carts.size()} item in your cart)</span></p>
 
                                 <div class="card mb-4">
 
