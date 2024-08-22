@@ -3,50 +3,19 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/controller/UpdatePostServlet.java</file>
-            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/dal/FeedbackDAO.java</file>
-            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/dal/BlogDAO.java</file>
-            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/dal/ServiceDAO.java</file>
-            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/web/PostManager/viewPost.jsp</file>
-            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/utils/Constance.java</file>
-            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/controller/SubmitFeedback.java</file>
-            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/web/PostManager/postManagement.jsp</file>
-            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/controller/ViewFeedbackServlet.java</file>
-            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/controller/ViewServiceServlet.java</file>
-            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/web/assests/module/header.jsp</file>
-            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/web/ServiceManager/serviceManagement.jsp</file>
-            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/web/Register.jsp</file>
-            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/controller/ServiceList.java</file>
-            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/model/Service.java</file>
-            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/web/ManagerDashboard.jsp</file>
-            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/controller/DeleteBlogServlet.java</file>
-            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/helper/SendMail.java</file>
-            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/controller/Register.java</file>
-            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/controller/ViewPostServlet.java</file>
-            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/dal/UserDAO.java</file>
-            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/model/Blog.java</file>
-            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/controller/DeleteFeedbackServlet.java</file>
-            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/model/Feedback.java</file>
-            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/web/Feedback/viewFeedback.jsp</file>
-            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/web/HomePage.jsp</file>
-            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/web/WEB-INF/web.xml</file>
-            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/controller/ForgotPasswordServlet.java</file>
-            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/controller/HomePage.java</file>
-            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/web/ServiceDetails.jsp</file>
-            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/controller/LoginServlet.java</file>
-            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/controller/ServiceManagementServlet.java</file>
-            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/controller/PostManagementServlet.java</file>
-            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/controller/UpdateServiceServlet.java</file>
-            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/model/User.java</file>
-            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/controller/FeedbackManagementServlet.java</file>
-            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/controller/AddServiceServlet.java</file>
-            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/controller/SliderList.java</file>
-            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/context/DBContext.java</file>
-            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/web/Feedback/feedbackManagement.jsp</file>
-            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/controller/Logout.java</file>
-            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/controller/ChangePassword.java</file>
-            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/controller/DeleteServiceServlet.java</file>
-            <file>file:/C:/Users/lebac/OneDrive/Máy%20tính/8-8/SWP391.E.BL5_G2/src/java/model/DashboardDTO.java</file>
+            <file>file:/E:/FULearning/Summer2024/SWP391/Project/IDE%20new/SWP391.E.BL5_G2/src/java/model/User.java</file>
+            <file>file:/E:/FULearning/Summer2024/SWP391/Project/IDE%20new/SWP391.E.BL5_G2/src/java/controller/ViewCustomerServlet.java</file>
+            <file>file:/E:/FULearning/Summer2024/SWP391/Project/IDE%20new/SWP391.E.BL5_G2/web/Feedback/viewFeedback.jsp</file>
+            <file>file:/E:/FULearning/Summer2024/SWP391/Project/IDE%20new/SWP391.E.BL5_G2/src/java/controller/CustomerManagerServlet.java</file>
+            <file>file:/E:/FULearning/Summer2024/SWP391/Project/IDE%20new/SWP391.E.BL5_G2/src/java/controller/DeleteCustomerServlet.java</file>
+            <file>file:/E:/FULearning/Summer2024/SWP391/Project/IDE%20new/SWP391.E.BL5_G2/src/java/controller/ViewFeedbackServlet.java</file>
+            <file>file:/E:/FULearning/Summer2024/SWP391/Project/IDE%20new/SWP391.E.BL5_G2/src/java/dal/FeedbackDAO.java</file>
+            <file>file:/E:/FULearning/Summer2024/SWP391/Project/IDE%20new/SWP391.E.BL5_G2/web/ServiceList.jsp</file>
+            <file>file:/E:/FULearning/Summer2024/SWP391/Project/IDE%20new/SWP391.E.BL5_G2/src/java/controller/DeleteFeedbackServlet.java</file>
+            <file>file:/E:/FULearning/Summer2024/SWP391/Project/IDE%20new/SWP391.E.BL5_G2/web/ViewCustomer.jsp</file>
+            <file>file:/E:/FULearning/Summer2024/SWP391/Project/IDE%20new/SWP391.E.BL5_G2/web/CustomerManagement.jsp</file>
+            <file>file:/E:/FULearning/Summer2024/SWP391/Project/IDE%20new/SWP391.E.BL5_G2/src/java/dal/UserDAO.java</file>
+            <file>file:/E:/FULearning/Summer2024/SWP391/Project/IDE%20new/SWP391.E.BL5_G2/web/Feedback/feedbackManagement.jsp</file>
         </group>
     </open-files>
 </project-private>
