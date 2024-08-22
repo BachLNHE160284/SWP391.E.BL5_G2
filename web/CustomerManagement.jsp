@@ -226,7 +226,9 @@
                                 <td>${users.email_address}</td>
 
                                 <td>
-                                    <a href="ViewCustomerServlet?id=${users.user_id}" class="btn btn-warning btn-sm">View</a>
+                                    <a href="ViewCustomerServlet?id=${users.user_id}" class="btn btn-info btn-sm" title="View">
+                                    <i class="fas fa-eye"></i>
+                                    </a>
                                     <a href="javascript:void(0);" class="btn btn-danger btn-sm" title="Delete" onclick="confirmDelete('${users.user_id}');">
                                         <i class="fas fa-trash-alt"></i>
                                     </a>

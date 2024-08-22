@@ -1014,7 +1014,7 @@
                                                     <form action="AddToCart" method="POST">
                                                         <input type="hidden" name="serviceID" value="${service.service_id}" />
                                                         <input type="hidden" name="quantity" value="1" /> <!-- Default quantity is 1 -->
-                                                        <button type="submit" class="btn btn-primary">Book Service</button>
+                                                        <button type="submit" class="btn btn-outline-primary btn-sm mt-2">Book Service</button>
                                                     </form>
                                                 </div>
                                             </div>

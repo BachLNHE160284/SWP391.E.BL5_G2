@@ -116,7 +116,7 @@ public class AddToCartServlet extends HttpServlet {
                 cartDAO.AddCart(c);
             }
 
-            List<Cart> listC = cartDAO.getCartByUserId(userId);
+            List<Cart> listC = cartDAO.getCartByUserId1(userId);
             List<Service> s = serviceDAO.getAllService();
 
 //            request.setAttribute("ListProduct", p);
