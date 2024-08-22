@@ -79,16 +79,18 @@ public class SettingsDAO extends DBContext {
             ps.setString(1, url);
             ps.setInt(2, roleId);
             rs = ps.executeQuery();
-            Settings st = new Settings();
-            st.setUrl(url);
+            Settings st = null;
             List<Role> roles = new ArrayList<>();
             while (rs.next()) {
+                st = new Settings();
                 st.setUrl(rs.getString("url"));
                 Role role = new Role();
                 role.setRole_id(rs.getInt("role_id"));
                 role.setRole_name(rs.getString("role_name"));
                 roles.add(role);
             }
+            if(st == null) return null;
+            st.setUrl(url);
             st.setRoles(roles);
             return st;
         } catch (Exception ex) {
@@ -124,8 +126,8 @@ public class SettingsDAO extends DBContext {
         try {
             conn = new DBContext().getConnection(); // Open connection to SQL
             ps = conn.prepareStatement(sql);
-            ps.setString(1, url);
-            ps.setInt(2, roleId);
+            ps.setString(2, url);
+            ps.setInt(1, roleId);
             int affectedRows = ps.executeUpdate();
             return affectedRows;
         } catch (Exception exception) {
