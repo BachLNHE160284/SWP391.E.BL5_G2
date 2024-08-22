@@ -57,6 +57,10 @@
             text-align: right;
             margin-top: 20px;
         }
+
+        .back-btn {
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
@@ -67,6 +71,11 @@
     <main id="main">
         <div class="container-fluid">
             <h1 class="my-4">Your Cart</h1>
+
+            <div class="back-btn">
+                <a href="ServiceDetails" class="btn btn-secondary">Back</a>
+            </div>
+
             <c:if test="${not empty services}">
                 <table class="table table-hover">
                     <thead class="thead-light">

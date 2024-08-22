@@ -6,6 +6,7 @@ package controller;
 
 import dal.CategoryDAO;
 import dal.ServiceDAO;
+import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -74,7 +75,8 @@ public class ServiceDetails extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+                                RequestDispatcher dispatcher = request.getRequestDispatcher("ServiceDetails.jsp");
+        dispatcher.forward(request, response);
     }
 
     /**
