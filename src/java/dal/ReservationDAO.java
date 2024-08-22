@@ -19,7 +19,10 @@ import model.ReservationDTO;
  * @author Admin
  */
 public class ReservationDAO extends DBContext {
-
+    
+    Connection conn = null;
+    PreparedStatement ps = null;
+    ResultSet rs = null;
     public List<ReservationDTO> getAll(String from, String to) {
         List<ReservationDTO> reservationDTOs = new ArrayList<>();
         try {
@@ -50,5 +53,30 @@ public class ReservationDAO extends DBContext {
             Logger.getLogger(ReservationDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return reservationDTOs;
+    }
+    
+    public void updateReservation(int serviceID, int quantity) {
+        String sql = "UPDATE Reservation SET quantity = ? WHERE service_id = ?";
+        try {
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, quantity);
+            ps.setInt(2, serviceID);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteReservation(int serviceID) {
+        String sql = "DELETE FROM Reservation WHERE service_id = ?";
+        try {
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, serviceID);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

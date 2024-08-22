@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Cart;
 import model.Category;
 import model.Service;
 
@@ -23,7 +24,9 @@ import model.Service;
  */
 public class ServiceDAO extends DBContext {
 
-    //BACHLNHE160284
+    Connection conn = null;
+    PreparedStatement ps = null;
+    ResultSet rs = null;
     public void addService(Service service) {
         String sql = "INSERT INTO service (name_service, original_prices, sale_prices, quantity, category_id, thumbnail, "
                 + "brief_infor, service_detail, img_service, date_add, service_Status, create_date) "
@@ -746,24 +749,38 @@ public class ServiceDAO extends DBContext {
 
         return services;
     }
+    
+ public List<Service> getServicesByCart(List<Cart> cartList) {
+        List<Service> services = new ArrayList<>();
+        String sql = "SELECT * FROM Service WHERE service_id = ?";
 
-    public static void main(String[] args) {
-        // Tạo đối tượng DAO để truy cập dữ liệu dịch vụ
-        ServiceDAO serviceDAO = new ServiceDAO();
+        try (Connection conn = new DBContext().getConnection()) {
+            for (Cart cart : cartList) {
+                try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                    ps.setInt(1, cart.getService().getService_id());
 
-        // Định nghĩa từ khóa tìm kiếm, offset, và limit
-        String keyword = "su"; // Từ khóa tìm kiếm
-        int offset = 0; // Số dòng cần bỏ qua (bắt đầu từ dòng đầu tiên)
-        int limit = 5;  // Số dòng cần lấy (phân trang mỗi lần 5 dòng)
-
-        // Gọi phương thức để tìm kiếm và phân trang dịch vụ
-        List<Service> services = serviceDAO.searchAndPaginateServices(keyword, offset, limit);
-
-        // In ra kết quả tìm kiếm
-        for (Service service : services) {
-            System.out.println(service);
+                    try (ResultSet rs = ps.executeQuery()) {
+                        if (rs.next()) {
+                            Service service = new Service();
+                            service.setService_id(rs.getInt("service_id"));
+                            service.setName_service(rs.getString("name_service"));
+                            service.setBrief_infor(rs.getString("brief_infor"));
+                            service.setSale_prices(rs.getFloat("sale_prices"));
+                            service.setOriginal_prices(rs.getFloat("original_prices"));
+                            service.setThumbnail(rs.getString("thumbnail"));
+                            services.add(service);
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
+        return services;
     }
+
+   
         // Get the total number of services that match the search keyword
     public int countServices(String keyword) {
         String sql = "SELECT COUNT(*) FROM service WHERE name_service LIKE ?";
@@ -779,5 +796,34 @@ public class ServiceDAO extends DBContext {
         }
 
         return 0;
+    }
+    
+    public static void main(String[] args) {
+        // Step 1: Create a mock cart item with service_id = 1
+        Cart cart = new Cart();
+        Service mockService = new Service();
+        mockService.setService_id(1);  // Set the service_id to 1
+        cart.setService(mockService);
+
+        // Step 2: Add the cart to a list
+        List<Cart> cartList = new ArrayList<>();
+        cartList.add(cart);
+
+        // Step 3: Create an instance of ServiceDAO
+        ServiceDAO serviceDAO = new ServiceDAO();
+
+        // Step 4: Call the getServicesByCart method
+        List<Service> services = serviceDAO.getServicesByCart(cartList);
+
+        // Step 5: Print the service details to verify the output
+        for (Service service : services) {
+            System.out.println("Service ID: " + service.getService_id());
+            System.out.println("Service Name: " + service.getName_service());
+            System.out.println("Brief Info: " + service.getBrief_infor());
+            System.out.println("Sale Price: " + service.getSale_prices());
+            System.out.println("Original Price: " + service.getOriginal_prices());
+            System.out.println("Thumbnail: " + service.getThumbnail());
+            System.out.println("-------------------------------------------");
+        }
     }
 }

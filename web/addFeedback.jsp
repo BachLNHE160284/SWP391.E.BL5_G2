@@ -112,29 +112,28 @@
         <div class="container">
             <h1>Submit Your Feedback</h1>
             <form action="SubmitFeedback" method="post" enctype="multipart/form-data">
-                <label for="service_id">Service ID:</label>
-                <input type="text" id="service_id" name="service_id" value ="${serviceId}" readonly required><br>
+                <!--                <label for="service_id">Service ID:</label>-->
+                <input type="hidden" id="service_id" name="service_id" value ="${serviceId}" readonly required><br>
                 <label for="feedback">Feedback:</label>
                 <textarea id="feedback" name="feedback" rows="4" required style="resize:none"></textarea><br>
 
                 <label for="star">Rating (1-5):</label>
                 <div class="rating">
-                    <!-- Notice that the stars are in reverse order -->
-
-                    <input type="radio" id="star5" name="rate_star" value="5">
-                    <label for="star5">&#9733;</label>
-                    <input type="radio" id="star4" name="rate_star" value="4">
-                    <label for="star4">&#9733;</label>
-                    <input type="radio" id="star3" name="rate_star" value="3">
-                    <label for="star3">&#9733;</label>
-                    <input type="radio" id="star2" name="rate_star" value="2">
-                    <label for="star2">&#9733;</label>
-                    <input type="radio" id="star1" name="rate_star" value="1">
-                    <label for="star1">&#9733;</label>
+                        <!-- Notice that the stars are in reverse order -->
+                        <input type="radio" id="star5" name="rate_star" value="5" required>
+                        <label for="star5">&#9733;</label>
+                        <input type="radio" id="star4" name="rate_star" value="4" required>
+                        <label for="star4">&#9733;</label>
+                        <input type="radio" id="star3" name="rate_star" value="3" required>
+                        <label for="star3">&#9733;</label>
+                        <input type="radio" id="star2" name="rate_star" value="2" required>
+                        <label for="star2">&#9733;</label>
+                        <input type="radio" id="star1" name="rate_star" value="1" required>
+                        <label for="star1">&#9733;</label>
                 </div>
 
                 <label for="feedback_img">Feedback Image:</label>
-                <input type="file" id="feedback_img" name="feedback_img" accept="image/*"><br>
+                <input type="file" id="feedback_img" name="feedback_img" accept="image/*" required><br>
                 <button type="submit">Submit Feedback</button>
             </form>
         </div>

@@ -1011,9 +1011,10 @@
                                                     <button onclick="window.location.href = './ServiceDetails?serviceID=${service.service_id}'" 
                                                             class="btn btn-primary btn-sm" 
                                                             type="button">Details Service</button>
-                                                    <form action="AddToCartServlet" method="post">
-                                                        <input type="hidden" name="id" value="${service.service_id}">
-                                                        <button type="submit" class="btn btn-outline-primary btn-sm mt-2" type="button">Book Service</button>
+                                                    <form action="AddToCart" method="POST">
+                                                        <input type="hidden" name="serviceID" value="${service.service_id}" />
+                                                        <input type="hidden" name="quantity" value="1" /> <!-- Default quantity is 1 -->
+                                                        <button type="submit" class="btn btn-primary">Book Service</button>
                                                     </form>
                                                 </div>
                                             </div>

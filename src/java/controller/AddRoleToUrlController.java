@@ -79,6 +79,7 @@ public class AddRoleToUrlController extends HttpServlet {
         SettingsDAO settingsDAO = new SettingsDAO();
         Settings setting = settingsDAO.getSettings(url, roleId);
         if(setting != null){
+            response.getWriter().print("The url : "+ url + " and the selected role has already exsist!!");
             response.setStatus(500);
             return;
         }

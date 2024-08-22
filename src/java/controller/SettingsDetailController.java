@@ -5,19 +5,14 @@
 package controller;
 
 import com.google.gson.Gson;
-import dal.RoleDAO;
 import dal.SettingsDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
-import model.Role;
 import model.Settings;
-import model.SettingsDetail;
 
 /**
  *
@@ -43,14 +38,9 @@ public class SettingsDetailController extends HttpServlet {
             response.setStatus(500);
             return;
         }
-        RoleDAO roleDAO = new RoleDAO();
-        List<Role> roles = roleDAO.getAll();
         SettingsDAO settingsDAO = new SettingsDAO();
         Settings settings = settingsDAO.getDetail(url);
-        SettingsDetail detail = new SettingsDetail();
-        detail.setRoles(roles);
-        detail.setSettings(settings);
-        response.getWriter().print(gson.toJson(detail));
+        response.getWriter().print(gson.toJson(settings));
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

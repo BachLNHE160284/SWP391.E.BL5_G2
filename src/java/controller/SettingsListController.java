@@ -5,6 +5,7 @@
 package controller;
 
 import com.google.gson.Gson;
+import dal.RoleDAO;
 import dal.SettingsDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,6 +15,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
+import model.Role;
 import model.Settings;
 
 /**
@@ -37,6 +39,9 @@ public class SettingsListController extends HttpServlet {
         Gson gson = new Gson();
         SettingsDAO settingsDAO = new SettingsDAO();
         List<Settings> settings = settingsDAO.getAll();
+        RoleDAO roleDAO = new RoleDAO();
+        List<Role> roles = roleDAO.getAll();
+        request.setAttribute("roles", gson.toJson(roles));
         request.setAttribute("settings", gson.toJson(settings));
         request.getRequestDispatcher("settings-list.jsp").forward(request, response);
     }

@@ -115,8 +115,8 @@ public class UpdateServiceServlet extends HttpServlet {
             } else {
                 imgService = request.getParameter("currentImagePath"); // Nếu không có ảnh mới, giữ nguyên ảnh cũ
             }
-
-            int serviceStatus = 1; // Giả sử trạng thái dịch vụ mặc định là 1
+            int serviceStatus = Integer.parseInt(request.getParameter("status"));
+//            int serviceStatus = 1; 
 
             // Tạo đối tượng Service với các thông tin lấy từ form
             Service service = new Service();
