@@ -9,8 +9,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.Cart;
 import model.Service;
+import model.User;
 
 @WebServlet(name = "ReservationDetails", urlPatterns = {"/ReservationDetails"})
 public class ReservationDetails extends HttpServlet {
@@ -18,11 +20,16 @@ public class ReservationDetails extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        int userId = 8; // Default user_id = 8
+
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("acc");
+        if (user == null) {
+            response.sendRedirect("Login.jsp");
+            return;
+        }
 
         CartDao cartDao = new CartDao();
-        List<Cart> cartList = cartDao.getCartByUserId(userId);
+        List<Cart> cartList = cartDao.getCartByUserId(user.getUser_id());
 
         ServiceDAO serviceDAO = new ServiceDAO();
         List<Service> services = serviceDAO.getServicesByCart(cartList);
