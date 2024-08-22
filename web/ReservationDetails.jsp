@@ -1,3 +1,4 @@
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,6 +48,15 @@
             margin: auto;
             padding: 20px;
         }
+
+        .table .total-row th {
+            text-align: right;
+        }
+
+        .checkout-btn {
+            text-align: right;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -55,17 +65,61 @@
     </header>
 
     <main id="main">
-        <div class="container">
-            <h1 class="my-4">Service Reservation</h1>
-            <div class="service-details">
-                <c:forEach var="service" items="${services}">
-                    <h2>${service.name_service}</h2>
-                    <img src="./${service.thumbnail}" alt="${service.name_service}" />
-                    <p>${service.brief_infor}</p>
-                    <p class="price">Price: ${service.sale_prices}</p>
-                    <p class="original-price">Original Price: ${service.original_prices}</p>
-                </c:forEach>
-            </div>
+        <div class="container-fluid">
+            <h1 class="my-4">Your Cart</h1>
+            <c:if test="${not empty services}">
+                <table class="table table-hover">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">Service</th>
+                            <th scope="col">Thumbnail</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Original Price</th>
+                            <th scope="col">Total</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:set var="grandTotal" value="0" />
+                        <c:forEach var="item" items="${services}">
+                            <tr>
+                                <td>${item.name_service}</td>
+                                <td><img src="./${item.thumbnail}" alt="${item.name_service}" class="img-thumbnail" width="100" /></td>
+                                <td>${item.sale_prices}</td>
+                                <td>
+                                    <form action="UpdateCartServlet" method="post" class="form-inline">
+                                        <input type="hidden" name="serviceID" value="${item.service_id}" />
+                                        <input type="number" name="quantity" class="form-control" value="${item.quantity}" min="1" max="99" />
+                                        <button type="submit" class="btn btn-primary ml-2">Update</button>
+                                    </form>
+                                </td>
+                                <td>${item.original_prices}</td>
+                                <td>${item.sale_prices * item.quantity}</td>
+                                <td>
+                                    <form action="DeleteCartServlet" method="post">
+                                        <input type="hidden" name="serviceID" value="${item.service_id}" />
+                                        <input type="hidden" name="action" value="delete" />
+                                        <button onclick="return confirm('Are you sure to delete this service?')" type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <c:set var="grandTotal" value="${grandTotal + (item.sale_prices * item.quantity)}" />
+                        </c:forEach>
+                        <tr class="total-row">
+                            <th colspan="5">Grand Total:</th>
+                            <th colspan="2">${grandTotal}</th>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="checkout-btn">
+                    <a href="CheckoutServlet" class="btn btn-success btn-lg">Proceed to Checkout</a>
+                </div>
+            </c:if>
+            <c:if test="${empty services}">
+                <p>Your cart is empty.</p>
+            </c:if>
         </div>
     </main>
 
