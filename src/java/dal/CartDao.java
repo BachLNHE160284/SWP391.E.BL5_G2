@@ -13,6 +13,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import model.Cart;
+import model.Service;
 
 /**
  *
@@ -32,25 +33,30 @@ public class CartDao {
         return false;
     }
 
-    public List<Cart> getALlCartByUserID(int id) {
-        ServiceDAO s = new ServiceDAO();
-        List<Cart> list = new ArrayList<>();
-        try {
-            Connection con = new DBContext().getConnection();
-            String sql = "select * from cart where user_id = " + id + ";";
-            Statement stm = con.createStatement();
-            ResultSet rs = stm.executeQuery(sql);
+    public List<Cart> getCartByUserId(int userId) {
+    List<Cart> cartList = new ArrayList<>();
+    String sql = "SELECT * FROM Cart WHERE user_id = ?";
+    try (Connection conn = new DBContext().getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, userId);
+        try (ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Cart cart = new Cart();
-                cart.setUser_id(rs.getInt(1));
-                cart.setService(s.getServiceById(rs.getInt(2)));
-                cart.setQuantity(rs.getInt(3));
-                list.add(cart);
+                cart.setUser_id(rs.getInt("user_id"));
+                
+                Service service = new Service(); // Create a new Service object
+                service.setService_id(rs.getInt("service_id")); // Set the service_id from the ResultSet
+                cart.setService(service); // Set the Service object in the Cart
+                
+                cart.setQuantity(rs.getInt("quantity"));
+                cartList.add(cart);
             }
-        } catch (Exception ex) {
         }
-        return list;
+    } catch (Exception ex) {
+        ex.printStackTrace();
     }
+    return cartList;
+}
 
     public void Addtocart(int user_id, int service_ID, int quantity) {
         try {
@@ -67,7 +73,7 @@ public class CartDao {
     public void Addtocart(int user_id, int service_ID) {
         boolean check = false;
         int quantity = 0;
-        List<Cart> l = getALlCartByUserID(user_id);
+        List<Cart> l = getCartByUserId(user_id);
         for (Cart c : l) {
             if (c.getService().getService_id()== service_ID) {
                 quantity = c.getQuantity();
@@ -148,4 +154,21 @@ public class CartDao {
             }
         }
     }
+    
+public static void main(String[] args) {
+    // Step 1: Create an instance of CartDao
+    CartDao cartDao = new CartDao();
+
+    // Step 2: Call the getCartByUserId method with user_id = 8
+    List<Cart> cartList = cartDao.getCartByUserId(8);
+
+    // Step 3: Print the cart details to verify the output
+    for (Cart cart : cartList) {
+        System.out.println("User ID: " + cart.getUser_id());
+        System.out.println("Service ID: " + cart.getService().getService_id());
+        System.out.println("Quantity: " + cart.getQuantity());
+        System.out.println("-------------------------------------------");
+    }
+}
+
 }
