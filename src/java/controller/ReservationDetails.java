@@ -36,6 +36,12 @@ public class ReservationDetails extends HttpServlet {
         ServiceDAO serviceDAO = new ServiceDAO();
         List<Service> allServices = serviceDAO.getServicesByCart(cartList);
 
+        // Calculate the grand total across all services in the cart
+        double grandTotal = 0;
+        for (Service service : allServices) {
+            grandTotal += service.getSale_prices()* service.getQuantity();
+        }
+
         // Pagination logic
         int page = 1;  // Default to first page
         if (request.getParameter("page") != null) {
@@ -50,9 +56,11 @@ public class ReservationDetails extends HttpServlet {
 
         List<Service> servicesForPage = allServices.subList(startIndex, endIndex);
 
+        // Set attributes for JSP
         request.setAttribute("services", servicesForPage);
         request.setAttribute("currentPage", page);
         request.setAttribute("totalPages", totalPages);
+        request.setAttribute("grandTotal", grandTotal);  // Set the grand total for all pages
         request.getRequestDispatcher("ReservationDetails.jsp").forward(request, response);
     }
 }

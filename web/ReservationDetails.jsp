@@ -64,7 +64,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <c:set var="grandTotal" value="0" />
                             <c:forEach var="item" items="${services}">
                                 <tr>
                                     <td>${item.name_service}</td>
@@ -87,7 +86,6 @@
                                         </form>
                                     </td>
                                 </tr>
-                                <c:set var="grandTotal" value="${grandTotal + (item.sale_prices * item.quantity)}" />
                             </c:forEach>
                             <tr class="total-row">
                                 <th colspan="5">Grand Total:</th>
