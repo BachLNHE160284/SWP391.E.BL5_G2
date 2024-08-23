@@ -47,7 +47,7 @@
                 <h1 class="my-4">Your Cart</h1>
 
                 <div class="back-btn">
-                    <a href="ServiceDetails" class="btn btn-secondary">Back</a>
+                    <a href="ServiceList" class="btn btn-secondary">Back</a>
                 </div>
 
                 <c:if test="${not empty services}">
