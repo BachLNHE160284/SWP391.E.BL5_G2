@@ -15,51 +15,25 @@
                 background-color: #fff;
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             }
-
-            .service-details h2 {
-                font-size: 24px;
-                margin-bottom: 15px;
-            }
-
-            .service-details img {
-                max-width: 100%;
-                border-radius: 8px;
-                margin-bottom: 15px;
-            }
-
-            .service-details p {
-                font-size: 16px;
-                margin-bottom: 10px;
-            }
-
-            .service-details .price {
-                font-size: 18px;
-                font-weight: bold;
-                color: #4CAF50;
-            }
-
-            .service-details .original-price {
-                text-decoration: line-through;
-                color: #888;
-            }
-
             .container {
                 max-width: 800px;
                 margin: auto;
                 padding: 20px;
             }
-
             .table .total-row th {
                 text-align: right;
             }
-
             .checkout-btn {
                 text-align: right;
                 margin-top: 20px;
             }
-
             .back-btn {
                 margin-bottom: 20px;
+            }
+            .pagination {
+                display: flex;
+                justify-content: center;
+                margin-top: 20px;
             }
         </style>
     </head>
@@ -126,6 +100,17 @@
                         <form action="CheckoutServlet" method="post">
                             <button type="submit" class="btn btn-success btn-lg">Proceed to Checkout</button>
                         </form>
+                    </div>
+
+                    <!-- Pagination Controls -->
+                    <div class="pagination">
+                        <ul class="pagination">
+                            <c:forEach begin="1" end="${totalPages}" var="i">
+                                <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                    <a class="page-link" href="ReservationDetails?page=${i}">${i}</a>
+                                </li>
+                            </c:forEach>
+                        </ul>
                     </div>
                 </c:if>
                 <c:if test="${empty services}">

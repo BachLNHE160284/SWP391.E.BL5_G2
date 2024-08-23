@@ -17,6 +17,8 @@ import model.User;
 @WebServlet(name = "ReservationDetails", urlPatterns = {"/ReservationDetails"})
 public class ReservationDetails extends HttpServlet {
 
+    private static final int PAGE_SIZE = 4;  // Number of services per page
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -32,9 +34,25 @@ public class ReservationDetails extends HttpServlet {
         List<Cart> cartList = cartDao.getCartByUserId(user.getUser_id());
 
         ServiceDAO serviceDAO = new ServiceDAO();
-        List<Service> services = serviceDAO.getServicesByCart(cartList);
+        List<Service> allServices = serviceDAO.getServicesByCart(cartList);
 
-        request.setAttribute("services", services);
+        // Pagination logic
+        int page = 1;  // Default to first page
+        if (request.getParameter("page") != null) {
+            page = Integer.parseInt(request.getParameter("page"));
+        }
+
+        int totalServices = allServices.size();
+        int totalPages = (int) Math.ceil((double) totalServices / PAGE_SIZE);
+
+        int startIndex = (page - 1) * PAGE_SIZE;
+        int endIndex = Math.min(startIndex + PAGE_SIZE, totalServices);
+
+        List<Service> servicesForPage = allServices.subList(startIndex, endIndex);
+
+        request.setAttribute("services", servicesForPage);
+        request.setAttribute("currentPage", page);
+        request.setAttribute("totalPages", totalPages);
         request.getRequestDispatcher("ReservationDetails.jsp").forward(request, response);
     }
 }
