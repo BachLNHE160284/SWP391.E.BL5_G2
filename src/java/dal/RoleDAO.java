@@ -111,63 +111,54 @@ public class RoleDAO extends DBContext{
 //        }
 //    }
 
+        // Returns the number of roles that are authorized for a given URL
     public int getNumberRole(String url) {
         int count = 0;
-        try {
-            Connection con = new DBContext().getConnection();
-            String sql = "select * from userauthorization where URL like '" + url + "'";
-            Statement stm = con.createStatement();
-            ResultSet rs = stm.executeQuery(sql);
-            while (rs.next()) {
-                count = count + 1;
+        String query = "SELECT COUNT(*) FROM userauthorization WHERE URL = ?";
+        
+        try (Connection con = new DBContext().getConnection();
+             PreparedStatement pst = con.prepareStatement(query)) {
+            pst.setString(1, url);
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    count = rs.getInt(1);
+                }
             }
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return count;
     }
 
+    // Checks if a role has permission for a given URL
     public boolean Haspermission(int role, String url) {
-        url = url.substring(1);
-        System.out.println(url);
-        try {
-            Connection con = new DBContext().getConnection();
-            String sql = "select * from userauthorization where URL like '" + url + "'";
-            int number = getNumberRole(url);
-            Statement stm = con.createStatement();
-            if (number == 0) {
-                return true;
-            }
-            ResultSet rs = stm.executeQuery(sql);
-            if (number == 1) {
+        boolean hasPermission = false;
+        String query = "SELECT role_id FROM userauthorization WHERE URL = ?";
+        
+        try (Connection con = new DBContext().getConnection();
+             PreparedStatement pst = con.prepareStatement(query)) {
+            pst.setString(1, url);
+            try (ResultSet rs = pst.executeQuery()) {
                 while (rs.next()) {
-                    int rOle = rs.getInt(1);
+                    int rOle = rs.getInt("role_id");
                     if (rOle == role) {
-                        return true;
-                    } else {
-                        return false;
+                        hasPermission = true;
+                        break;
                     }
                 }
-            } else {
-                while (rs.next()) {
-                    int rOle = rs.getInt(1);
-                    System.out.println(rOle);
-                    if (rOle == role) {
-                        return true;
-                    }
-                }
-                return false;
             }
-            return true;
         } catch (Exception e) {
-            return false;
+            e.printStackTrace();
         }
+        
+        return hasPermission;
     }
 
-//    public static void main(String[] args) {
-//        RoleDAO rd = new RoleDAO();
-//        int role = 5;
-//        String url = "/ServiceList";
-//        System.out.println(rd.Haspermission(role, url));
-//    }
+    public static void main(String[] args) {
+        RoleDAO rd = new RoleDAO();
+        int role = 1;
+        String url = "/ServiceManagementServlet";
+        System.out.println(rd.Haspermission(role, url));
+    }
     
 }

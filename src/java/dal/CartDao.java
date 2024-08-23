@@ -13,6 +13,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import model.Cart;
+import model.Service;
 
 /**
  *
@@ -32,44 +33,71 @@ public class CartDao {
         return false;
     }
 
-    public List<Cart> getALlCartByUserID(int id) {
-        ServiceDAO s = new ServiceDAO();
-        List<Cart> list = new ArrayList<>();
-        try {
-            Connection con = new DBContext().getConnection();
-            String sql = "select * from cart where user_id = " + id + ";";
-            Statement stm = con.createStatement();
-            ResultSet rs = stm.executeQuery(sql);
-            while (rs.next()) {
-                Cart cart = new Cart();
-                cart.setUser_id(rs.getInt(1));
-                cart.setService(s.getServiceById(rs.getInt(2)));
-                cart.setQuantity(rs.getInt(3));
-                list.add(cart);
+    public List<Cart> getCartByUserId(int userId) {
+        List<Cart> cartList = new ArrayList<>();
+        String sql = "SELECT * FROM Cart WHERE user_id = ?";
+        try (Connection conn = new DBContext().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Cart cart = new Cart();
+                    cart.setUser_id(rs.getInt("user_id"));
+
+                    Service service = new Service(); // Create a new Service object
+                    service.setService_id(rs.getInt("service_id")); // Set the service_id from the ResultSet
+                    cart.setService(service); // Set the Service object in the Cart
+
+                    cart.setQuantity(rs.getInt("quantity"));
+                    cartList.add(cart);
+                }
             }
         } catch (Exception ex) {
+            ex.printStackTrace();
         }
-        return list;
+        return cartList;
     }
 
-    public void Addtocart(int user_id, int service_ID, int quantity) {
+    public void Addtocart(int userId, int serviceID, int quantity) throws Exception {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
         try {
-            Connection con = new DBContext().getConnection();
-            String sql = "insert into cart values"
-                    + "(" + user_id + ", " + service_ID + ", " + quantity + ");";
-            System.out.println(sql);
-            PreparedStatement stm = con.prepareStatement(sql);
-            stm.executeUpdate();
-        } catch (Exception e) {
+            conn = new DBContext().getConnection();
+
+            String checkQuery = "SELECT quantity FROM Cart WHERE user_id = ? AND service_id = ?";
+            stmt = conn.prepareStatement(checkQuery);
+            stmt.setInt(1, userId);
+            stmt.setInt(2, serviceID);
+            rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                // If the item exists, update the quantity
+                int currentQuantity = rs.getInt("quantity");
+                String updateQuery = "UPDATE Cart SET quantity = ? WHERE user_id = ? AND service_id = ?";
+                stmt = conn.prepareStatement(updateQuery);
+                stmt.setInt(1, currentQuantity + quantity);
+                stmt.setInt(2, userId);
+                stmt.setInt(3, serviceID);
+            } else {
+                // If the item does not exist, insert a new row
+                String insertQuery = "INSERT INTO Cart (user_id, service_id, quantity) VALUES (?, ?, ?)";
+                stmt = conn.prepareStatement(insertQuery);
+                stmt.setInt(1, userId);
+                stmt.setInt(2, serviceID);
+                stmt.setInt(3, quantity);
+            }
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error: " + e);
         }
     }
 
     public void Addtocart(int user_id, int service_ID) {
         boolean check = false;
         int quantity = 0;
-        List<Cart> l = getALlCartByUserID(user_id);
+        List<Cart> l = getCartByUserId(user_id);
         for (Cart c : l) {
-            if (c.getService().getService_id()== service_ID) {
+            if (c.getService().getService_id() == service_ID) {
                 quantity = c.getQuantity();
                 check = true;
             }
@@ -104,48 +132,49 @@ public class CartDao {
         return totals;
     }
 
-    public void UpdateCart(boolean check, String uservice, String servicedelete, int user_id) {
-        if (servicedelete != null) {
-            try {
-                Connection con = new DBContext().getConnection();
-                String sql = "delete from cart where user_id = " + user_id + " and  service_id = " + servicedelete + ";";
-                System.out.println(sql);
-                PreparedStatement stm = con.prepareStatement(sql);
-                stm.executeUpdate();
-            } catch (Exception e) {
+    public void updateCartItem(int userId, int serviceID, int quantity) throws Exception {
+        String sql = "UPDATE Cart SET quantity = ? WHERE user_id = ? AND service_id = ?";
+        try (Connection conn = new DBContext().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            }
-        }
-        if (uservice != null) {
-            try {
-                Connection con = new DBContext().getConnection();
-                int quantity = 0;
-                String sql1 = "select quantity from cart where service_id = " + uservice + " and user_id = " + user_id + ";";
-                Statement st = con.createStatement();
-                ResultSet rs = st.executeQuery(sql1);
-                while (rs.next()) {
-                    quantity = rs.getInt(1);
-                }
-                if (check == true) {
-                    quantity = quantity + 1;
+            stmt.setInt(1, quantity);
+            stmt.setInt(2, userId);
+            stmt.setInt(3, serviceID);
+            stmt.executeUpdate();
 
-                    String sql = " update cart set quantity = " + quantity + " where service_id = " + uservice + " and user_id = " + user_id + ";";
-                    System.out.println(sql);
-                    PreparedStatement stm = con.prepareStatement(sql);
-                    stm.executeUpdate();
-                } else {
-                    quantity = quantity - 1;
-                    if (quantity < 0) {
-                        quantity = quantity + 1;
-                    }
-                    String sql = " update cart set quantity = " + quantity + " where service_id = " + uservice + " and user_id = " + user_id + ";";
-                    System.out.println(sql);
-                    PreparedStatement stm = con.prepareStatement(sql);
-                    stm.executeUpdate();
-                }
-            } catch (Exception e) {
-
-            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
+
+    public void deleteCartItem(int userId, int serviceID) throws Exception {
+        String sql = "DELETE FROM Cart WHERE user_id = ? AND service_id = ?";
+        try (Connection conn = new DBContext().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, userId);
+            stmt.setInt(2, serviceID);
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        // Step 1: Create an instance of CartDao
+        CartDao cartDao = new CartDao();
+
+        // Step 2: Call the getCartByUserId method with user_id = 8
+        List<Cart> cartList = cartDao.getCartByUserId(8);
+
+        // Step 3: Print the cart details to verify the output
+        for (Cart cart : cartList) {
+            System.out.println("User ID: " + cart.getUser_id());
+            System.out.println("Service ID: " + cart.getService().getService_id());
+            System.out.println("Quantity: " + cart.getQuantity());
+            System.out.println("-------------------------------------------");
+        }
+    }
+
 }

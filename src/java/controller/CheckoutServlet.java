@@ -4,9 +4,6 @@
  */
 package controller;
 
-import com.google.gson.Gson;
-import dal.RoleDAO;
-import dal.SettingsDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,16 +11,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
-import model.Role;
-import model.Settings;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
  * @author Admin
  */
-@WebServlet(name = "SettingsListController", urlPatterns = {"/settings"})
-public class SettingsListController extends HttpServlet {
+@WebServlet(name = "CheckoutServlet", urlPatterns = {"/CheckoutServlet"})
+public class CheckoutServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,14 +31,19 @@ public class SettingsListController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Gson gson = new Gson();
-        SettingsDAO settingsDAO = new SettingsDAO();
-        List<Settings> settings = settingsDAO.getAll();
-        RoleDAO roleDAO = new RoleDAO();
-        List<Role> roles = roleDAO.getAll();
-        request.setAttribute("roles", gson.toJson(roles));
-        request.setAttribute("settings", gson.toJson(settings));
-        request.getRequestDispatcher("settings-list.jsp").forward(request, response);
+        response.setContentType("text/html;charset=UTF-8");
+        try ( PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet CheckoutServlet</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet CheckoutServlet at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -72,7 +72,12 @@ public class SettingsListController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        // Set a session attribute to indicate the checkout was successful
+        HttpSession session = request.getSession();
+        session.setAttribute("checkoutSuccess", "Proceed to Checkout Successful");
+
+        // Redirect to HomePage.jsp
+        response.sendRedirect("HomePage.jsp");
     }
 
     /**

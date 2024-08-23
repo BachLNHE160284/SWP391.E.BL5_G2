@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Cart;
 import model.Category;
 import model.Service;
 
@@ -23,13 +24,16 @@ import model.Service;
  */
 public class ServiceDAO extends DBContext {
 
-    //BACHLNHE160284
+    Connection conn = null;
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+
     public void addService(Service service) {
         String sql = "INSERT INTO service (name_service, original_prices, sale_prices, quantity, category_id, thumbnail, "
                 + "brief_infor, service_detail, img_service, date_add, service_Status, create_date) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, GETDATE(), 1, GETDATE())";
         try (
-                 PreparedStatement ps = getConnection().prepareStatement(sql)) {
+                PreparedStatement ps = getConnection().prepareStatement(sql)) {
             ps.setString(1, service.getName_service());
             ps.setFloat(2, service.getOriginal_prices());
             ps.setFloat(3, service.getSale_prices());
@@ -54,7 +58,7 @@ public class ServiceDAO extends DBContext {
                 + "INNER JOIN category c ON s.category_id = c.category_id;";
 
         try (
-                 Connection conn = getConnection();  PreparedStatement ps = conn.prepareStatement(sql);  ResultSet rs = ps.executeQuery()) {
+                Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
                 Service service = new Service();
@@ -89,7 +93,7 @@ public class ServiceDAO extends DBContext {
                 + "category_id = ?, thumbnail = ?, brief_infor = ?, service_detail = ?, img_service = ?, "
                 + "date_add = GETDATE(), service_Status = ? WHERE service_id = ?";
         try (
-                 PreparedStatement ps = getConnection().prepareStatement(sql)) {
+                PreparedStatement ps = getConnection().prepareStatement(sql)) {
             ps.setString(1, service.getName_service());
             ps.setFloat(2, service.getOriginal_prices());
             ps.setFloat(3, service.getSale_prices());
@@ -115,7 +119,7 @@ public class ServiceDAO extends DBContext {
                 + "JOIN category c ON s.category_id = c.category_id "
                 + "WHERE s.service_id = ?";
         try (
-                 PreparedStatement ps = getConnection().prepareStatement(sql)) {
+                PreparedStatement ps = getConnection().prepareStatement(sql)) {
             ps.setInt(1, service_id);
             ResultSet rs = ps.executeQuery();
 
@@ -150,7 +154,7 @@ public class ServiceDAO extends DBContext {
     //BACHLNHE160284
     public void deleteService(int serviceId) {
         String sql = "DELETE FROM service WHERE service_id = ?";
-        try ( PreparedStatement ps = getConnection().prepareStatement(sql)) {
+        try (PreparedStatement ps = getConnection().prepareStatement(sql)) {
             ps.setInt(1, serviceId);
             ps.executeUpdate();
         } catch (Exception e) {
@@ -183,11 +187,11 @@ public class ServiceDAO extends DBContext {
                 + "WHERE s.name_service LIKE ?\n"
                 + "ORDER BY " + sortField + " " + sortOrder + "\n"
                 + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
-        try ( Connection conn = getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, "%" + searchTerm + "%");
             ps.setInt(2, (page - 1) * pageSize);
             ps.setInt(3, pageSize);
-            try ( ResultSet rs = ps.executeQuery()) {
+            try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     Service service = new Service();
                     service.setService_id(rs.getInt("service_id"));
@@ -217,7 +221,7 @@ public class ServiceDAO extends DBContext {
     //BACHLNHE160284
     public int getTotalServiceCount() throws Exception {
         String sql = "SELECT COUNT(*) FROM service";
-        try ( Connection conn = getConnection();  PreparedStatement ps = conn.prepareStatement(sql);  ResultSet rs = ps.executeQuery()) {
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             if (rs.next()) {
                 return rs.getInt(1);
             }
@@ -236,10 +240,10 @@ public class ServiceDAO extends DBContext {
                 + "INNER JOIN category c ON s.category_id = c.category_id\n"
                 + "ORDER BY " + sortField + " " + sortOrder + "\n"
                 + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
-        try ( Connection conn = getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, (page - 1) * 4);
             ps.setInt(2, 4);
-            try ( ResultSet rs = ps.executeQuery()) {
+            try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     Service service = new Service();
                     service.setService_id(rs.getInt("service_id"));
@@ -273,7 +277,7 @@ public class ServiceDAO extends DBContext {
                 + "ORDER BY s.date_add DESC "
                 + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
-        try ( Connection conn = new DBContext().getConnection();  PreparedStatement ps = conn.prepareStatement(query)) {
+        try (Connection conn = new DBContext().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
 
             ps.setInt(1, (pageIndex - 1) * pageSize);
             ps.setInt(2, pageSize);
@@ -309,7 +313,7 @@ public class ServiceDAO extends DBContext {
 
     public int getTotalServices() {
         String query = "SELECT COUNT(*) AS total FROM service";
-        try ( Connection conn = new DBContext().getConnection();  PreparedStatement ps = conn.prepareStatement(query)) {
+        try (Connection conn = new DBContext().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
 
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -330,7 +334,7 @@ public class ServiceDAO extends DBContext {
                 + "                     JOIN category c ON s.category_id = c.category_id \n"
                 + "                     WHERE s.service_id = ?";
 
-        try ( Connection connection = new DBContext().getConnection();  PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        try (Connection connection = new DBContext().getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, serviceId);
 
@@ -415,7 +419,7 @@ public class ServiceDAO extends DBContext {
         List<Service> services = new ArrayList<>();
         String query = "SELECT * FROM service WHERE category_id = ?";
 
-        try ( Connection connection = new DBContext().getConnection();  PreparedStatement ps = connection.prepareStatement(query)) {
+        try (Connection connection = new DBContext().getConnection(); PreparedStatement ps = connection.prepareStatement(query)) {
 
             ps.setInt(1, categoryId);
             ResultSet rs = ps.executeQuery();
@@ -569,7 +573,7 @@ public class ServiceDAO extends DBContext {
         List<Service> services = new ArrayList<>();
         String sql = "SELECT * FROM service WHERE category_id = ? AND service_Status = 1 ORDER BY date_add DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
-        try ( Connection connection = new DBContext().getConnection();  PreparedStatement ps = connection.prepareStatement(sql)) {
+        try (Connection connection = new DBContext().getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
 
             ps.setInt(1, categoryId);
             ps.setInt(2, (pageIndex - 1) * pageSize);
@@ -598,7 +602,7 @@ public class ServiceDAO extends DBContext {
         String sql = "SELECT COUNT(*) FROM service WHERE category_id = ? AND service_Status = 1";
         int totalServices = 0;
 
-        try ( Connection connection = new DBContext().getConnection();  PreparedStatement ps = connection.prepareStatement(sql)) {
+        try (Connection connection = new DBContext().getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
 
             ps.setInt(1, categoryId);
             ResultSet rs = ps.executeQuery();
@@ -714,7 +718,7 @@ public class ServiceDAO extends DBContext {
                 + "ORDER BY s.service_id "
                 + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
-        try ( Connection con = getConnection();  PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, "%" + keyword + "%");
             ps.setInt(2, offset);
             ps.setInt(3, limit);
@@ -747,28 +751,73 @@ public class ServiceDAO extends DBContext {
         return services;
     }
 
-    public static void main(String[] args) {
-        // Tạo đối tượng DAO để truy cập dữ liệu dịch vụ
-        ServiceDAO serviceDAO = new ServiceDAO();
+    public List<Service> getServicesByCart(List<Cart> cartList) {
+        List<Service> services = new ArrayList<>();
+        String sql = "SELECT * FROM Service WHERE service_id = ?";
 
-        // Định nghĩa từ khóa tìm kiếm, offset, và limit
-        String keyword = "su"; // Từ khóa tìm kiếm
-        int offset = 0; // Số dòng cần bỏ qua (bắt đầu từ dòng đầu tiên)
-        int limit = 5;  // Số dòng cần lấy (phân trang mỗi lần 5 dòng)
-
-        // Gọi phương thức để tìm kiếm và phân trang dịch vụ
-        List<Service> services = serviceDAO.searchAndPaginateServices(keyword, offset, limit);
-
-        // In ra kết quả tìm kiếm
-        for (Service service : services) {
-            System.out.println(service);
+        try (Connection conn = new DBContext().getConnection()) {
+            for (Cart cart : cartList) {
+                try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                    ps.setInt(1, cart.getService().getService_id());
+                    try (ResultSet rs = ps.executeQuery()) {
+                        if (rs.next()) {
+                            Service service = new Service();
+                            service.setService_id(rs.getInt("service_id"));
+                            service.setName_service(rs.getString("name_service"));
+                            service.setBrief_infor(rs.getString("brief_infor"));
+                            service.setSale_prices(rs.getFloat("sale_prices"));
+                            service.setOriginal_prices(rs.getFloat("original_prices"));
+                            service.setThumbnail(rs.getString("thumbnail"));
+                            service.setQuantity(cart.getQuantity());
+                            services.add(service);
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
+        return services;
     }
-        // Get the total number of services that match the search keyword
+
+    public void updateCartItem(int userId, int serviceID, int quantity) throws Exception {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        try {
+            conn = new DBContext().getConnection();
+            String updateQuery = "UPDATE Cart SET quantity = ? WHERE user_id = ? AND service_id = ?";
+            stmt = conn.prepareStatement(updateQuery);
+            stmt.setInt(1, quantity);
+            stmt.setInt(2, userId);
+            stmt.setInt(3, serviceID);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } 
+    }
+
+    // Delete an item from the cart
+    public void deleteCartItem(int userId, int serviceID) throws Exception {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        try {
+            conn = new DBContext().getConnection();
+            String deleteQuery = "DELETE FROM Cart WHERE user_id = ? AND service_id = ?";
+            stmt = conn.prepareStatement(deleteQuery);
+            stmt.setInt(1, userId);
+            stmt.setInt(2, serviceID);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } 
+    }
+
+    // Get the total number of services that match the search keyword
     public int countServices(String keyword) {
         String sql = "SELECT COUNT(*) FROM service WHERE name_service LIKE ?";
 
-        try ( Connection con = getConnection();  PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, "%" + keyword + "%");
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -779,5 +828,34 @@ public class ServiceDAO extends DBContext {
         }
 
         return 0;
+    }
+
+    public static void main(String[] args) {
+        // Step 1: Create a mock cart item with service_id = 1
+        Cart cart = new Cart();
+        Service mockService = new Service();
+        mockService.setService_id(1);  // Set the service_id to 1
+        cart.setService(mockService);
+
+        // Step 2: Add the cart to a list
+        List<Cart> cartList = new ArrayList<>();
+        cartList.add(cart);
+
+        // Step 3: Create an instance of ServiceDAO
+        ServiceDAO serviceDAO = new ServiceDAO();
+
+        // Step 4: Call the getServicesByCart method
+        List<Service> services = serviceDAO.getServicesByCart(cartList);
+
+        // Step 5: Print the service details to verify the output
+        for (Service service : services) {
+            System.out.println("Service ID: " + service.getService_id());
+            System.out.println("Service Name: " + service.getName_service());
+            System.out.println("Brief Info: " + service.getBrief_infor());
+            System.out.println("Sale Price: " + service.getSale_prices());
+            System.out.println("Original Price: " + service.getOriginal_prices());
+            System.out.println("Thumbnail: " + service.getThumbnail());
+            System.out.println("-------------------------------------------");
+        }
     }
 }

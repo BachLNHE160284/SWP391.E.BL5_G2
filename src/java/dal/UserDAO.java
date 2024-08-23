@@ -40,7 +40,7 @@ public class UserDAO extends DBContext {
             ps.setString(1, email);
             ps.setString(2, password);
             rs = ps.executeQuery();
-
+            System.out.println("Conn:  " + conn);
             if (rs.next()) {
                 return new User(
                         rs.getInt("user_id"),

@@ -14,19 +14,19 @@
                 <li><a class="nav-link scrollto " href="HomePage">Home</a></li>
                 <li><a class="nav-link scrollto" href="BlogList">Blogs</a></li>
                 <li><a class="nav-link scrollto" href="ServiceList">Services</a></li>
+                <li><a class="nav-link scrollto" href="CustomerManagerServlet">Test</a></li>
+
                 <c:if test="${sessionScope.acc.role_id == 4}">
                     <li><a class="nav-link scrollto" href="ManagerDashboard.jsp">Manager Dashboard</a></li>
                     </c:if>                   
-                <c:if test="${sessionScope.acc != null || sessionScope.acc != null}">
+                    <c:if test="${sessionScope.acc != null || sessionScope.acc != null}">
                     <li class="dropdown"><a href="#"><span>User Manager</span><i class="bi bi-chevron-right"></i></a>
                         <ul>
-                            <li><a href="user_profile">Edit profile</a></li>
+                            <li><a href="updateProfile">Edit profile</a></li>
                             <li><a href="myreservation">My Reservation</a></li>
-                                <c:if test="${sessionScope.account.user_role == 3}">
+                                <c:if test="${sessionScope.acc.role_id == 3}">
                                 <li><a href="MyCustomerList">Customer List</a></li>
-                                <li><a href="DoctorMedicalexammination">Medical exammination</a></li>
                                 </c:if>
-                            <li><a href="UserMedicalexammination">Medical exammination</a></li>
                             <li><a href="Logout">Logout</a></li>
                         </ul>
                     </li>
@@ -41,8 +41,8 @@
             <i style="font-size: 30px;color:grey;" class="fas fa-shopping-cart"></i>
             <span id="cart-number" class="position-absolute bottom-50 start-99 translate-middle badge rounded-pill bg-danger">
                 <c:choose>
-                    <c:when test="${sessionScope.carts.size() != null}">${sessionScope.carts.size()}</c:when>
-                    <c:otherwise>0</c:otherwise>
+                    <c:when test="${sessionScope.size() != null}">${sessionScope.size()}</c:when>
+                    <c:otherwise>.</c:otherwise>
                 </c:choose>
                 <span  class="visually-hidden">Cart item</span>
             </span>

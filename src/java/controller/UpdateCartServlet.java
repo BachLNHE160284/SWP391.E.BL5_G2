@@ -4,9 +4,7 @@
  */
 package controller;
 
-import com.google.gson.Gson;
-import dal.RoleDAO;
-import dal.SettingsDAO;
+import dal.CartDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,16 +12,17 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
-import model.Role;
-import model.Settings;
+import jakarta.servlet.http.HttpSession;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import model.User;
 
 /**
  *
- * @author Admin
+ * @author HP
  */
-@WebServlet(name = "SettingsListController", urlPatterns = {"/settings"})
-public class SettingsListController extends HttpServlet {
+@WebServlet(name = "UpdateCartServlet", urlPatterns = {"/UpdateCartServlet"})
+public class UpdateCartServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,14 +35,19 @@ public class SettingsListController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Gson gson = new Gson();
-        SettingsDAO settingsDAO = new SettingsDAO();
-        List<Settings> settings = settingsDAO.getAll();
-        RoleDAO roleDAO = new RoleDAO();
-        List<Role> roles = roleDAO.getAll();
-        request.setAttribute("roles", gson.toJson(roles));
-        request.setAttribute("settings", gson.toJson(settings));
-        request.getRequestDispatcher("settings-list.jsp").forward(request, response);
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet UpdateCartServlet</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet UpdateCartServlet at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -72,7 +76,23 @@ public class SettingsListController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("acc");
+        if (user == null) {
+            response.sendRedirect("Login.jsp");
+            return;
+        }
+
+        int serviceID = Integer.parseInt(request.getParameter("serviceID"));
+        int quantity = Integer.parseInt(request.getParameter("quantity"));
+
+        CartDao cartDao = new CartDao();
+        try {
+            cartDao.updateCartItem(user.getUser_id(), serviceID, quantity);
+        } catch (Exception ex) {
+            System.out.println("Error: " + ex);
+        }
+        response.sendRedirect("ReservationDetails");
     }
 
     /**
