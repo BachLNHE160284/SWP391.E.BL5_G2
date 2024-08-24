@@ -95,7 +95,7 @@
                     <td>${us.address}</td>
                 </tr>
             </table>
-            <a href="CustomerManagerServlet" class="btn btn-primary w-100">Back to Feedback Management</a>
+            <a href="CustomerManagerServlet" class="btn btn-primary w-100">Back to Customer Management</a>
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
