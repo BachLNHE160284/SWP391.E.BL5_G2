@@ -707,7 +707,16 @@
 
         <main id="main">
 
+            <div class="container">
+                <c:if test="${not empty sessionScope.checkoutSuccess}">
+                    <div class="alert alert-success" role="alert">
+                        ${sessionScope.checkoutSuccess}
+                    </div>
+                    <c:remove var="checkoutSuccess" scope="session" />
+                </c:if>
 
+                <!-- Rest of your home page content -->
+            </div>
 
             <!-- ======= About Section ======= -->
             <section id="about" class="about">
@@ -873,6 +882,8 @@
                 </div>
             </section>
             <!-- End Recent Blog Posts Section -->
+
+
         </main><!-- End #main -->
 
         <!-- ======= Footer ======= -->

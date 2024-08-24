@@ -4,9 +4,6 @@
  */
 package controller;
 
-import dal.CategoryDAO;
-import dal.ServiceDAO;
-import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,16 +11,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
-import model.Category;
-import model.Service;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
- * @author ntung
+ * @author Admin
  */
-@WebServlet(name = "ServiceDetails", urlPatterns = {"/ServiceDetails"})
-public class ServiceDetails extends HttpServlet {
+@WebServlet(name = "CheckoutServlet", urlPatterns = {"/CheckoutServlet"})
+public class CheckoutServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,30 +32,18 @@ public class ServiceDetails extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-//        try (PrintWriter out = response.getWriter()) {
-//            /* TODO output your page here. You may use following sample code. */
-//            out.println("<!DOCTYPE html>");
-//            out.println("<html>");
-//            out.println("<head>");
-//            out.println("<title>Servlet ServiceDetails</title>");  
-//            out.println("</head>");
-//            out.println("<body>");
-//            out.println("<h1>Servlet ServiceDetails at " + request.getContextPath () + "</h1>");
-//            out.println("</body>");
-//            out.println("</html>");
-//        }
-        int id = Integer.parseInt(request.getParameter("serviceID"));
-        CategoryDAO cd = new CategoryDAO();
-        ServiceDAO dpr = new ServiceDAO();
-        List<Category> listCategory = cd.getAllCategories();
-        request.setAttribute("listcategory", listCategory);
-        Service service = dpr.getServiceById1(id);
-        List<String> limg = dpr.getimg(service.getImg_service());
-        request.setAttribute("service", service);
-        request.setAttribute("listimg", limg);
-        //List<Service> newproduct = dpr.GetListLastProduct();
-        //request.setAttribute("newproduct", newproduct);
-        request.getRequestDispatcher("ServiceDetails.jsp").forward(request, response);
+        try ( PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet CheckoutServlet</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet CheckoutServlet at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -75,8 +58,7 @@ public class ServiceDetails extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-                                RequestDispatcher dispatcher = request.getRequestDispatcher("ServiceDetails.jsp");
-        dispatcher.forward(request, response);
+        processRequest(request, response);
     }
 
     /**
@@ -90,7 +72,12 @@ public class ServiceDetails extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        // Set a session attribute to indicate the checkout was successful
+        HttpSession session = request.getSession();
+        session.setAttribute("checkoutSuccess", "Proceed to Checkout Successful");
+
+        // Redirect to HomePage.jsp
+        response.sendRedirect("HomePage.jsp");
     }
 
     /**

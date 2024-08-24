@@ -8,7 +8,6 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -984,7 +983,12 @@
                                                 <div class="d-flex flex-row">
                                                     <div class="ratings mr-2">
                                                         <!-- Display star ratings based on service status -->
-
+                                                        <c:forEach begin="1" end="${service.service_Status}" varStatus="status">
+                                                            <span class="fa fa-star checked"></span>
+                                                        </c:forEach>
+                                                        <c:forEach begin="1" end="${5 - service.service_Status}" varStatus="status">
+                                                            <span class="fa fa-star"></span>
+                                                        </c:forEach>
                                                     </div>
                                                     <br>
                                                 </div>
@@ -994,18 +998,10 @@
                                                 </div>
                                             </div>
                                             <div class="align-items-center align-content-center col-md-3 border-left mt-1">
-                                                <div class="d-flex flex-column">
-                                                    <div class="d-flex align-items-baseline">
-                                                        <h4 class="font-weight-bold text-danger mr-2">
-                                                            <fmt:formatNumber value="${service.sale_prices}" type="number" groupingUsed="true" minFractionDigits="0" />đ
-                                                        </h4>
-                                                        <span class="strike-text text-muted" style="text-decoration: line-through;">
-                                                            <fmt:formatNumber value="${service.original_prices}" type="number" groupingUsed="true" minFractionDigits="0" />đ
-                                                        </span>
-                                                    </div>
-                                                    <span class="text-success small">Limited Time Offer!</span>
+                                                <div class="d-flex flex-row align-items-center">
+                                                    <h4 class="mr-1">${service.sale_prices}</h4>
+                                                    <span class="strike-text">${service.original_prices}</span>
                                                 </div>
-
                                                 <div class="d-flex flex-column mt-4">
                                                     <!-- Buttons for service details and booking -->
                                                     <button onclick="window.location.href = './ServiceDetails?serviceID=${service.service_id}'" 
@@ -1013,8 +1009,8 @@
                                                             type="button">Details Service</button>
                                                     <form action="AddToCart" method="POST">
                                                         <input type="hidden" name="serviceID" value="${service.service_id}" />
-                                                        <input type="hidden" name="quantity" value="1" /> <!-- Default quantity is 1 -->
-                                                        <button type="submit" class="btn btn-outline-primary btn-sm mt-2">Book Service</button>
+                                                        <input type="hidden" name="quantity" value="1" /> 
+                                                        <button type="submit" class="btn btn-primary">Book Service</button>
                                                     </form>
                                                 </div>
                                             </div>
@@ -1083,7 +1079,6 @@
         <script src="assests/js/main.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
     </body>
 
 </html>

@@ -4,9 +4,7 @@
  */
 package controller;
 
-import dal.CategoryDAO;
-import dal.ServiceDAO;
-import jakarta.servlet.RequestDispatcher;
+import dal.CartDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,16 +12,17 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
-import model.Category;
-import model.Service;
+import jakarta.servlet.http.HttpSession;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import model.User;
 
 /**
  *
- * @author ntung
+ * @author HP
  */
-@WebServlet(name = "ServiceDetails", urlPatterns = {"/ServiceDetails"})
-public class ServiceDetails extends HttpServlet {
+@WebServlet(name = "DeleteCartServlet", urlPatterns = {"/DeleteCartServlet"})
+public class DeleteCartServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,30 +36,18 @@ public class ServiceDetails extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-//        try (PrintWriter out = response.getWriter()) {
-//            /* TODO output your page here. You may use following sample code. */
-//            out.println("<!DOCTYPE html>");
-//            out.println("<html>");
-//            out.println("<head>");
-//            out.println("<title>Servlet ServiceDetails</title>");  
-//            out.println("</head>");
-//            out.println("<body>");
-//            out.println("<h1>Servlet ServiceDetails at " + request.getContextPath () + "</h1>");
-//            out.println("</body>");
-//            out.println("</html>");
-//        }
-        int id = Integer.parseInt(request.getParameter("serviceID"));
-        CategoryDAO cd = new CategoryDAO();
-        ServiceDAO dpr = new ServiceDAO();
-        List<Category> listCategory = cd.getAllCategories();
-        request.setAttribute("listcategory", listCategory);
-        Service service = dpr.getServiceById1(id);
-        List<String> limg = dpr.getimg(service.getImg_service());
-        request.setAttribute("service", service);
-        request.setAttribute("listimg", limg);
-        //List<Service> newproduct = dpr.GetListLastProduct();
-        //request.setAttribute("newproduct", newproduct);
-        request.getRequestDispatcher("ServiceDetails.jsp").forward(request, response);
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet DeleteCartServlet</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet DeleteCartServlet at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -75,8 +62,7 @@ public class ServiceDetails extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-                                RequestDispatcher dispatcher = request.getRequestDispatcher("ServiceDetails.jsp");
-        dispatcher.forward(request, response);
+        processRequest(request, response);
     }
 
     /**
@@ -90,7 +76,22 @@ public class ServiceDetails extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("acc");
+        if (user == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
+
+        int serviceID = Integer.parseInt(request.getParameter("serviceID"));
+
+        CartDao cartDao = new CartDao();
+        try {
+            cartDao.deleteCartItem(user.getUser_id(), serviceID);
+        } catch (Exception ex) {
+            System.out.println("Error: "  + ex);
+        }
+         response.sendRedirect("ReservationDetails");
     }
 
     /**
