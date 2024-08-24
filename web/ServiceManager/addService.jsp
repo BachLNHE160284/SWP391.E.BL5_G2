@@ -5,6 +5,7 @@
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@page import="model.User"%>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -52,6 +53,16 @@
         </style>
     </head>
     <body>
+        <%
+    Object obj = session.getAttribute("acc");
+    User user = null;
+    if (obj != null) {
+        user = (User) obj;
+    }
+    if (user == null || user.getRole_id() != 4) {
+        response.sendRedirect("Login.jsp"); 
+    } else {
+        %>
         <div class="container mt-5">
             <h2 class="mb-4">Add New Service</h2>
             <form id="addProductForm" action="AddServiceServlet" method="POST" enctype="multipart/form-data">
@@ -102,5 +113,8 @@
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <script src="scripts.js"></script>
+        <%
+        }
+        %>
     </body>
 </html>

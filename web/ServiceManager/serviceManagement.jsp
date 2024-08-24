@@ -6,6 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@page import="model.User"%>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -186,6 +187,17 @@
         </style>
     </head>
     <body>
+        <%
+    Object obj = session.getAttribute("acc");
+    User user = null;
+    if (obj != null) {
+        user = (User) obj;
+    }
+    if (user == null || user.getRole_id() != 4) {
+        response.sendRedirect("Login.jsp"); 
+    } else {
+        %>
+        
         <div class="container">
             <h2 class="mb-4 text-center">Service Management</h2>
             <a href="AddServiceServlet" class="btn-custom" title="Add Service">
@@ -333,5 +345,8 @@
             });
 
         </script>
+        <%
+        }
+        %>
     </body>
 </html>
