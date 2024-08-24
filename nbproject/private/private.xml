@@ -16,11 +16,17 @@
             <file>file:/E:/FULearning/Summer2024/SWP391/Project/IDE%20new/SWP391.E.BL5_G2/src/java/controller/DeleteFeedbackServlet.java</file>
             <file>file:/E:/FULearning/Summer2024/SWP391/Project/IDE%20new/SWP391.E.BL5_G2/web/ViewCustomer.jsp</file>
             <file>file:/E:/FULearning/Summer2024/SWP391/Project/IDE%20new/SWP391.E.BL5_G2/web/CustomerManagement.jsp</file>
+            <file>file:/E:/FULearning/Summer2024/SWP391/Project/IDE%20new/SWP391.E.BL5_G2/src/java/controller/ServiceList.java</file>
+            <file>file:/E:/FULearning/Summer2024/SWP391/Project/IDE%20new/SWP391.E.BL5_G2/web/ServiceDetails.jsp</file>
             <file>file:/E:/FULearning/Summer2024/SWP391/Project/IDE%20new/SWP391.E.BL5_G2/src/java/dal/CartDao.java</file>
             <file>file:/E:/FULearning/Summer2024/SWP391/Project/IDE%20new/SWP391.E.BL5_G2/src/java/dal/UserDAO.java</file>
             <file>file:/E:/FULearning/Summer2024/SWP391/Project/IDE%20new/SWP391.E.BL5_G2/web/Feedback/feedbackManagement.jsp</file>
+            <file>file:/E:/FULearning/Summer2024/SWP391/Project/IDE%20new/SWP391.E.BL5_G2/src/java/controller/ServiceDetails.java</file>
+            <file>file:/E:/FULearning/Summer2024/SWP391/Project/IDE%20new/SWP391.E.BL5_G2/web/HomePage.jsp</file>
             <file>file:/E:/FULearning/Summer2024/SWP391/Project/IDE%20new/SWP391.E.BL5_G2/src/java/controller/AddToCartServlet.java</file>
+            <file>file:/E:/FULearning/Summer2024/SWP391/Project/IDE%20new/SWP391.E.BL5_G2/src/java/controller/SearchService.java</file>
             <file>file:/E:/FULearning/Summer2024/SWP391/Project/IDE%20new/SWP391.E.BL5_G2/web/ReservationDetails.jsp</file>
+            <file>file:/E:/FULearning/Summer2024/SWP391/Project/IDE%20new/SWP391.E.BL5_G2/src/java/dal/ServiceDAO.java</file>
         </group>
     </open-files>
 </project-private>

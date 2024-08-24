@@ -1068,49 +1068,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <script src="http://code.jquery.com/jquery-3.5.0.min.js"></script>
-        <script>
-                                                   $(() => {
-                                                       $('p img').click(function () {
-                                                           let imgPath = $(this).attr('src');
-                                                           $('#main-img').attr('src', imgPath);
-                                                       })
-                                                   })
 
-                                                   function searchByName(param) {
-                                                       var txtSearch = param.value;
-                                                       $.ajax({
-                                                           url: "/project_swp391/searchserviceajax",
-                                                           type: "get", //send it through get method
-                                                           data: {
-                                                               txt: txtSearch
-                                                           },
-                                                           success: function (data) {
-                                                               var row = document.getElementById("content");
-                                                               row.innerHTML = data;
-                                                           },
-                                                           error: function (xhr) {
-                                                               //Do Something to handle error
-                                                           }
-                                                       });
-                                                   }
-                                                   function loadCate(data) {
-                                                       var cate = data.value;
-                                                       $.ajax({
-                                                           url: "/project_swp391/servicesbycate",
-                                                           type: "get", //send it through get method
-                                                           data: {
-                                                               cate: cate
-                                                           },
-                                                           success: function (data) {
-                                                               var row = document.getElementById("content");
-                                                               row.innerHTML = data;
-                                                           },
-                                                           error: function (xhr) {
-                                                               //Do Something to handle error
-                                                           }
-                                                       });
-                                                   }
-        </script>
     </body>
 
 </html>
