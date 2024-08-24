@@ -402,5 +402,188 @@ public class UserDAO extends DBContext {
         // Print a confirmation message
         System.out.println("Update operation completed.");
     }
+        public int getTotalUserCount() throws Exception {
+        String sql = "SELECT COUNT(*) FROM [dbo].[user] WHERE [role_id] = 3";
+        try ( Connection conn = getConnection();  PreparedStatement ps = conn.prepareStatement(sql);  ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return 0;
+    }
+
+    public List<User> pagingCustomer(int pageIndex, String sortField, String sortOrder) throws SQLException, Exception {
+        List<User> list = new ArrayList<>();
+        String query = "SELECT [user_id], [fullname], [gender], [phone_number], [email_address], [Status] "
+                + "FROM [dbo].[user] "
+                + "WHERE [role_id] = 3 "
+                + "ORDER BY " + sortField + " " + sortOrder + " "
+                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        try ( Connection conn = getConnection();  PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, (pageIndex - 1) * 4);
+            ps.setInt(2, 4);
+            try ( ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    User user = new User();
+                    user.setUser_id(rs.getInt("user_id"));
+                    user.setFullname(rs.getString("fullname"));
+                    user.setGender(rs.getBoolean("gender")); // Assuming gender is stored as a boolean
+                    user.setPhone_number(rs.getString("phone_number"));
+                    user.setEmail_address(rs.getString("email_address"));
+                    user.setStatus(rs.getInt("status")); // Renamed from Status
+
+                    list.add(user);
+                }
+            }
+        }
+        return list;
+    }
+//    public static void main(String[] args) {
+//        try {
+//            UserDAO userdao = new UserDAO();
+//
+//            int a = userdao.getTotalUserCount();
+//            System.out.println(a);
+//        } catch (Exception ex) {
+//            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//
+//    }
+//    public static void main(String[] args) {
+//        try {
+//            // Create an instance of the class containing the pagingCustomer method
+//            UserDAO userDAO = new UserDAO();
+//
+//            // Define parameters for pagination
+//            int pageIndex = 1; // Page index (1-based)
+//            String sortField = "user_id"; // Field to sort by
+//            String sortOrder = "ASC"; // Sort order ("ASC" or "DESC")
+//
+//            // Call the pagingCustomer method
+//            List<User> users = userDAO.pagingCustomer(pageIndex, sortField, sortOrder);
+//
+//            // Print the results
+//            for (User user : users) {
+//                System.out.println(user.toString());
+//            }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+
+    public int countSearch(String search) {
+        String sql = "SELECT COUNT(*) FROM [dbo].[user] WHERE [fullname] LIKE ?";
+        try {
+            PreparedStatement ps = getConnection().prepareStatement(sql);
+            ps.setString(1, "%" + search + "%");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (Exception e) {
+        }
+        return 0;
+    }
+//    public static void main(String[] args) {
+//        try {
+//            // Tạo một đối tượng của lớp chứa phương thức countSearch
+//            UserDAO userDAO = new UserDAO();
+//
+//            // Tìm kiếm
+//            String searchKeyword = "John"; // Ví dụ từ khóa tìm kiếm
+//            int count = userDAO.countSearch(searchKeyword);
+//
+//            // In ra số lượng kết quả tìm được
+//            System.out.println("Số lượng người dùng có tên chứa \"" + searchKeyword + "\": " + count);
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+
+    public List<User> searchCustomer(String searchTerm, String sortField, String sortOrder, int page, int pageSize) throws Exception {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT [user_id], [fullname], [gender], [phone_number], [email_address], [Status] "
+                + "FROM [dbo].[user] "
+                + "WHERE [role_id] = 3 "
+                + "AND [fullname] LIKE ? "
+                + "ORDER BY " + sortField + " " + sortOrder + " "
+                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
+
+        try ( Connection conn = getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, "%" + searchTerm + "%");
+            ps.setInt(2, (page - 1) * pageSize);
+            ps.setInt(3, pageSize);
+
+            try ( ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    User user = new User();
+                    user.setUser_id(rs.getInt("user_id"));
+                    user.setFullname(rs.getString("fullname"));
+                    user.setGender(rs.getBoolean("gender")); // Giả sử gender được lưu dưới dạng boolean
+                    user.setPhone_number(rs.getString("phone_number"));
+                    user.setEmail_address(rs.getString("email_address"));
+                    user.setStatus(rs.getInt("Status")); // Đảm bảo tên trường là đúng
+
+                    users.add(user);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return users;
+    }
+
+    public User getCustomerByID(int userId) throws Exception {
+        User user = null; // Initialize a User object to null
+        String sql = "SELECT [user_id], [fullname], [gender], [phone_number], [email_address],[address], [Status] "
+                + "FROM [dbo].[user] "
+                + "WHERE [role_id] = 3 AND [user_id] = ?"; // Add condition to filter by user_id
+
+        try ( PreparedStatement preparedStatement = getConnection().prepareStatement(sql)) {
+            preparedStatement.setInt(1, userId); // Bind the userId parameter
+            ResultSet rs = preparedStatement.executeQuery();
+
+            if (rs.next()) {
+                user = new User();
+                user.setUser_id(rs.getInt("user_id"));
+                user.setFullname(rs.getString("fullname"));
+                user.setGender(rs.getBoolean("gender")); // Assuming gender is stored as boolean
+                user.setPhone_number(rs.getString("phone_number"));
+                user.setEmail_address(rs.getString("email_address"));
+                user.setAddress(rs.getString("address"));
+                user.setStatus(rs.getInt("Status"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return user; // Return the User object (or null if not found)
+    }
+    public void deleteCustomer(int userId) {
+        String sql = "DELETE FROM [dbo].[user] WHERE [role_id] = 3 AND [user_id] = ?";
+        try ( PreparedStatement ps = getConnection().prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+//    public static void main(String[] args) {
+//        // Create an instance of the class that contains the deleteCustomer method
+//        UserDAO customerDAO = new UserDAO();
+//        
+//        // Define the userId that you want to delete
+//        int userIdToDelete = 3; // Replace 123 with the actual user ID you want to delete
+//
+//        // Call the deleteCustomer method
+//        customerDAO.deleteCustomer(userIdToDelete);
+//
+//        // Optional: Print confirmation message
+//        System.out.println("Customer with ID " + userIdToDelete + " has been deleted (if they existed).");
+//    }
 
 }
