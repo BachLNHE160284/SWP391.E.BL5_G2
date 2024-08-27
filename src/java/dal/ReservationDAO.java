@@ -91,10 +91,10 @@ public class ReservationDAO extends DBContext {
                 + "srv.thumbnail, srv.name_service, c.category_name, rd.prices, rd.quantity, "
                 + "(rd.prices * rd.quantity) AS service_total_cost "
                 + "FROM reservation r "
-                + "INNER JOIN [user] u ON r.user_id = u.user_id "
-                + "INNER JOIN reservation_detail rd ON r.reservation_id = rd.reservation_id "
-                + "INNER JOIN service srv ON rd.service_id = srv.service_id "
-                + "INNER JOIN category c ON srv.category_id = c.category_id "
+                + "LEFT JOIN [user] u ON r.user_id = u.user_id "
+                + "LEFT JOIN reservation_detail rd ON r.reservation_id = rd.reservation_id "
+                + "LEFT JOIN service srv ON rd.service_id = srv.service_id "
+                + "LEFT JOIN category c ON srv.category_id = c.category_id "
                 + "WHERE r.reservation_id = ?";
         ResultSet rs = null;
         PreparedStatement ps = null;
@@ -128,9 +128,11 @@ public class ReservationDAO extends DBContext {
                 }
 
                 // Populate reserved services
+                String nameService = rs.getString("name_service");
+                if(nameService == null) continue;
                 ReservationDetailDTO.ReservedService service = new ReservationDetailDTO.ReservedService();
                 service.setServiceThumbnail(rs.getString("thumbnail"));
-                service.setServiceName(rs.getString("name_service"));
+                service.setServiceName(nameService);
                 service.setCategoryName(rs.getString("category_name"));
                 service.setUnitPrice(rs.getDouble("prices"));
                 service.setNumberOfPerson(rs.getInt("quantity"));

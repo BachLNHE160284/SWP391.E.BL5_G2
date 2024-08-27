@@ -175,7 +175,7 @@
                         <p><strong>Address:</strong> <span id="receiverAddress"></span></p>
 
                         <!-- Reserved Services -->
-                        <h5>Reserved Services</h5>
+                        <h3>Reserved Services</h3>
                         <ul id="reservedServicesList" class="list-group">
                             <!-- Reserved services will be populated here -->
                         </ul>
@@ -262,6 +262,9 @@
                                         '</li>'
                                         );
                             });
+                            if(data.reservedServices.length === 0){
+                                $('#reservedServicesList').append('<span>There is no reserved service</span>')
+                            }
 
                             // Show the modal
                             $('#reservationDetailModal').modal('show');
